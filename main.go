@@ -18,7 +18,7 @@ func main() {
 		fmt.Println("\n===== Student Management System =====")
 		addStudent()
 		viewStudents()
-		fmt.Println("3. Search Student")
+		searchStudent()
 		fmt.Println("4. Update Student")
 		fmt.Println("5. Delete Student")
 		fmt.Println("6. Exit")
@@ -91,4 +91,25 @@ func viewStudents() {
 		fmt.Println("Age:", student.Age)
 		fmt.Println("Grade:", student.Grade)
 	}
+}
+
+func searchStudent() {
+	var id int
+
+	fmt.Print("Enter ID to search: ")
+	fmt.Scan(&id)
+
+	for _, student := range students {
+		if student.ID == id {
+			fmt.Println("\nStudent Found")
+			fmt.Println("----------------")
+			fmt.Println("ID:", student.ID)
+			fmt.Println("Name:", student.Name)
+			fmt.Println("Age:", student.Age)
+			fmt.Println("Grade:", student.Grade)
+
+			return
+		}
+	}
+	fmt.Println("Student not found")
 }
