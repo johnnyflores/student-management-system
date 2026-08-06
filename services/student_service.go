@@ -4,11 +4,9 @@ import (
 	"student-management-system/models"
 )
 
-
 type StudentService struct {
 	Students []models.Student
 }
-
 
 func (s *StudentService) AddStudent(student models.Student) bool {
 
@@ -23,13 +21,11 @@ func (s *StudentService) AddStudent(student models.Student) bool {
 	return true
 }
 
-
 func (s *StudentService) GetStudents() []models.Student {
 
 	return s.Students
 
 }
-
 
 func (s *StudentService) SearchStudent(id int) *models.Student {
 
@@ -45,6 +41,22 @@ func (s *StudentService) SearchStudent(id int) *models.Student {
 	return nil
 }
 
+func (s *StudentService) UpdateStudent(id int, updatedStudent models.Student) bool {
+
+	for i := range s.Students {
+
+		if s.Students[i].ID == id {
+
+			s.Students[i].Name = updatedStudent.Name
+			s.Students[i].Age = updatedStudent.Age
+			s.Students[i].Grade = updatedStudent.Grade
+
+			return true
+		}
+	}
+
+	return false
+}
 
 func (s *StudentService) DeleteStudent(id int) bool {
 

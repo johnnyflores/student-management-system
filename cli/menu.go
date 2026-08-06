@@ -1,0 +1,181 @@
+package cli
+
+import (
+	"bufio"
+	"os"
+	"strings"
+	"fmt"
+
+	"student-management-system/models"
+	"student-management-system/services"
+	"student-management-system/storage"
+)
+
+func Start(service *services.StudentService) {
+
+	for {
+
+		fmt.Println("\n===== Student Management System =====")
+		fmt.Println("1. Add Student")
+		fmt.Println("2. View Students")
+		fmt.Println("3. Search Student")
+		fmt.Println("4. Update Student")
+		fmt.Println("5. Delete Student")
+		fmt.Println("6. Exit")
+
+		var choice int
+
+		fmt.Print("Choose option: ")
+		fmt.Scan(&choice)
+
+		switch choice {
+
+		case 1:
+			addStudent(service)
+
+		case 2:
+			viewStudents(service)
+
+		case 3:
+			searchStudent(service)
+
+		case 4:
+			updateStudent(service)
+
+		case 5:
+			deleteStudent(service)
+
+		case 6:
+			storage.SaveStudents(service.Students)
+			fmt.Println("Goodbye!")
+			return
+
+		default:
+			fmt.Println("Invalid option")
+		}
+	}
+}
+
+func addStudent(service *services.StudentService) {
+
+	var student models.Student
+
+	fmt.Print("Enter ID: ")
+	fmt.Scan(&student.ID)
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter new name: ")
+	name, _ := reader.ReadString('\n')
+	student.Name = strings.TrimSpace(name)
+
+	fmt.Print("Enter Age: ")
+	fmt.Scan(&student.Age)
+
+	fmt.Print("Enter Grade: ")
+	fmt.Scan(&student.Grade)
+
+	if service.AddStudent(student) {
+
+		storage.SaveStudents(service.Students)
+
+		fmt.Println("Student added successfully!")
+
+	} else {
+
+		fmt.Println("Student ID already exists")
+	}
+}
+
+func viewStudents(service *services.StudentService) {
+
+	students := service.GetStudents()
+
+	if len(students) == 0 {
+		fmt.Println("No students found")
+		return
+	}
+
+	for _, student := range students {
+
+		fmt.Println("----------------")
+		fmt.Println("ID:", student.ID)
+		fmt.Println("Name:", student.Name)
+		fmt.Println("Age:", student.Age)
+		fmt.Println("Grade:", student.Grade)
+	}
+}
+
+func searchStudent(service *services.StudentService) {
+
+	var id int
+
+	fmt.Print("Enter student ID: ")
+	fmt.Scan(&id)
+
+	student := service.SearchStudent(id)
+
+	if student == nil {
+
+		fmt.Println("Student not found")
+		return
+	}
+
+	fmt.Println("Student found:")
+	fmt.Println("ID:", student.ID)
+	fmt.Println("Name:", student.Name)
+	fmt.Println("Age:", student.Age)
+	fmt.Println("Grade:", student.Grade)
+}
+
+func updateStudent(service *services.StudentService) {
+
+	var id int
+
+	fmt.Print("Enter student ID to update: ")
+	fmt.Scan(&id)
+
+
+	var student models.Student
+
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Print("Enter new name: ")
+	name, _ := reader.ReadString('\n')
+	student.Name = strings.TrimSpace(name)
+
+	fmt.Print("Enter new age: ")
+	fmt.Scan(&student.Age)
+
+	fmt.Print("Enter new grade: ")
+	fmt.Scan(&student.Grade)
+
+
+	if service.UpdateStudent(id, student) {
+
+		storage.SaveStudents(service.Students)
+
+		fmt.Println("Student updated successfully!")
+
+	} else {
+
+		fmt.Println("Student not found")
+	}
+}
+
+func deleteStudent(service *services.StudentService) {
+
+	var id int
+
+	fmt.Print("Enter student ID to delete: ")
+	fmt.Scan(&id)
+
+	if service.DeleteStudent(id) {
+
+		storage.SaveStudents(service.Students)
+
+		fmt.Println("Student deleted successfully")
+
+	} else {
+
+		fmt.Println("Student not found")
+	}
+}

@@ -6,9 +6,7 @@ import (
 	"strings"
 )
 
-
 var Reader = bufio.NewReader(os.Stdin)
-
 
 func ReadString(message string) string {
 

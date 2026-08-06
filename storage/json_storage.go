@@ -23,7 +23,6 @@ func SaveStudents(students []models.Student) error {
 	return encoder.Encode(students)
 }
 
-
 func LoadStudents() ([]models.Student, error) {
 
 	file, err := os.Open(fileName)

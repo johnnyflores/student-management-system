@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-
+	"student-management-system/cli"
 	"student-management-system/services"
 	"student-management-system/storage"
 )
@@ -15,9 +14,7 @@ func main() {
 		Students: students,
 	}
 
-	fmt.Println("Student Management System Started")
-
-	// TODO: Start CLI menu here
+	cli.Start(&service)
 
 	_ = service
 }
