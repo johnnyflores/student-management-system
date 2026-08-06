@@ -20,7 +20,7 @@ func main() {
 		viewStudents()
 		searchStudent()
 		updateStudent()
-		fmt.Println("5. Delete Student")
+		deleteStudent()
 		fmt.Println("6. Exit")
 
 		var choice int
@@ -137,5 +137,24 @@ func updateStudent() {
 			return
 		}
 	}
+	fmt.Println("Student not found")
+}
+
+func deleteStudent() {
+	var id int
+
+	fmt.Print("Enter student ID to delete: ")
+	fmt.Scan(&id)
+
+	for i, student := range students {
+		if student.ID == id {
+			students = append(students[:i], students[i+1:]...)
+
+			fmt.Println("Student deleted successfully!")
+
+			return
+		}
+	}
+
 	fmt.Println("Student not found")
 }
