@@ -1,10 +1,9 @@
 package cli
 
 import (
-	"bufio"
-	"os"
-	"strings"
+	
 	"fmt"
+	"student-management-system/utils"
 
 	"student-management-system/models"
 	"student-management-system/services"
@@ -60,19 +59,10 @@ func addStudent(service *services.StudentService) {
 
 	var student models.Student
 
-	fmt.Print("Enter ID: ")
-	fmt.Scan(&student.ID)
-
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter new name: ")
-	name, _ := reader.ReadString('\n')
-	student.Name = strings.TrimSpace(name)
-
-	fmt.Print("Enter Age: ")
-	fmt.Scan(&student.Age)
-
-	fmt.Print("Enter Grade: ")
-	fmt.Scan(&student.Grade)
+	student.ID = utils.ReadInt("Enter ID: ")
+	student.Name = utils.ReadString("Enter Name: ")
+	student.Age = utils.ReadInt("Enter Age: ")
+	student.Grade = utils.ReadGrade("Enter Grade: ")
 
 	if service.AddStudent(student) {
 
@@ -129,24 +119,14 @@ func searchStudent(service *services.StudentService) {
 
 func updateStudent(service *services.StudentService) {
 
-	var id int
-
-	fmt.Print("Enter student ID to update: ")
-	fmt.Scan(&id)
+	id := utils.ReadInt("Enter student ID to update: ")
 
 
 	var student models.Student
 
-	reader := bufio.NewReader(os.Stdin)
-	fmt.Print("Enter new name: ")
-	name, _ := reader.ReadString('\n')
-	student.Name = strings.TrimSpace(name)
-
-	fmt.Print("Enter new age: ")
-	fmt.Scan(&student.Age)
-
-	fmt.Print("Enter new grade: ")
-	fmt.Scan(&student.Grade)
+	student.Name = utils.ReadString("Enter new name: ")
+	student.Age = utils.ReadInt("Enter new age: ")
+	student.Grade = utils.ReadGrade("Enter new grade: ")
 
 
 	if service.UpdateStudent(id, student) {
