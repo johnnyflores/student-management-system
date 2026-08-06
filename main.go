@@ -19,7 +19,7 @@ func main() {
 		addStudent()
 		viewStudents()
 		searchStudent()
-		fmt.Println("4. Update Student")
+		updateStudent()
 		fmt.Println("5. Delete Student")
 		fmt.Println("6. Exit")
 
@@ -108,6 +108,32 @@ func searchStudent() {
 			fmt.Println("Age:", student.Age)
 			fmt.Println("Grade:", student.Grade)
 
+			return
+		}
+	}
+	fmt.Println("Student not found")
+}
+
+func updateStudent() {
+	var id int
+
+	fmt.Print("Enter ID to update: ")
+	fmt.Scan(&id)
+
+	for i, student := range students {
+		if student.ID == id {
+			fmt.Println("Student found. Enter new details: ")
+
+			fmt.Print("Enter new name:")
+			fmt.Scan(&students[i].Name)
+
+			fmt.Print("Enter new age:")
+			fmt.Scan(&students[i].Age)
+
+			fmt.Print("Enter new grade:")
+			fmt.Scan(&students[i].Grade)
+
+			fmt.Println("Student updated successfully!")
 			return
 		}
 	}
