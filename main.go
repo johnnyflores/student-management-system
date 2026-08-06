@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
 func init() {
 	loadStudents()
 }
@@ -127,8 +132,11 @@ func updateStudent() {
 		if student.ID == id {
 			fmt.Println("Student found. Enter new details: ")
 
-			fmt.Print("Enter new name:")
-			fmt.Scan(&students[i].Name)
+			reader := bufio.NewReader(os.Stdin)
+			fmt.Print("Enter new name: ")
+			name, _ := reader.ReadString('\n')
+
+			students[i].Name = strings.TrimSpace(name)
 
 			fmt.Print("Enter new age:")
 			fmt.Scan(&students[i].Age)
