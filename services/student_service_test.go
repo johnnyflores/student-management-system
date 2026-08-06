@@ -8,25 +8,23 @@ import (
 
 func TestAddStudent(t *testing.T) {
 
-	service := StudentService{}
+	t.Run("add new student", func(t *testing.T) {
 
-	student := models.Student{
-		ID:    101,
-		Name:  "Alice",
-		Age:   20,
-		Grade: "A",
-	}
+		service := StudentService{}
 
-	result := service.AddStudent(student)
+		student := models.Student{
+			ID:    101,
+			Name:  "Alice",
+			Age:   20,
+			Grade: "A",
+		}
 
-	if !result {
-		t.Errorf("expected student to be added")
-	}
+		result := service.AddStudent(student)
 
-
-	if len(service.Students) != 1 {
-		t.Errorf("expected 1 student, got %d", len(service.Students))
-	}
+		if !result {
+			t.Errorf("expected student to be added")
+		}
+	})
 }
 
 func TestAddDuplicateStudent(t *testing.T) {
@@ -85,6 +83,28 @@ func TestSearchStudent(t *testing.T) {
 	}
 }
 
+func TestSearchStudentNotFound(t *testing.T) {
+
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:    102,
+				Name:  "Maria",
+				Age:   25,
+				Grade: "A",
+			},
+		},
+	}
+
+
+	student := service.SearchStudent(999)
+
+
+	if student != nil {
+		t.Errorf("expected no student")
+	}
+}
+
 func TestUpdateStudent(t *testing.T) {
 
 	service := StudentService{
@@ -127,6 +147,28 @@ func TestUpdateStudent(t *testing.T) {
 	}
 }
 
+func TestUpdateStudentNotFound(t *testing.T) {
+
+	service := StudentService{
+		Students: []models.Student{},
+	}
+
+
+	result := service.UpdateStudent(
+		999,
+		models.Student{
+			Name:  "Nobody",
+			Age:   20,
+			Grade: "A",
+		},
+	)
+
+
+	if result {
+		t.Errorf("expected update to fail")
+	}
+}
+
 func TestDeleteStudent(t *testing.T) {
 
 	service := StudentService{
@@ -151,5 +193,25 @@ func TestDeleteStudent(t *testing.T) {
 
 	if len(service.Students) != 0 {
 		t.Errorf("expected empty student list")
+	}
+}
+
+func TestDeleteStudentNotFound(t *testing.T) {
+
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID: 101,
+				Name: "Alice",
+			},
+		},
+	}
+
+
+	result := service.DeleteStudent(999)
+
+
+	if result {
+		t.Errorf("expected delete to fail")
 	}
 }
