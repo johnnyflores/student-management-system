@@ -24,6 +24,10 @@ func TestAddStudent(t *testing.T) {
 		if !result {
 			t.Errorf("expected student to be added")
 		}
+
+		if len(service.Students) != 1 {
+			t.Errorf("expected 1 student, got %d", len(service.Students))
+		}
 	})
 }
 
@@ -194,5 +198,35 @@ func TestDeleteStudentNotFound(t *testing.T) {
 
 	if result {
 		t.Errorf("expected delete to fail")
+	}
+}
+
+func TestSaveStudent(t *testing.T) {
+
+	repository := &MockRepository{}
+
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:    101,
+				Name:  "Alice",
+				Age:   20,
+				Grade: "A",
+			},
+		},
+		Repository: repository,
+	}
+
+	err := service.Save()
+
+	if err != nil {
+		t.Errorf("expected save success")
+	}
+
+	if len(repository.Students) != 1 {
+		t.Errorf(
+			"expected 1 saved student, got %d",
+			len(repository.Students),
+		)
 	}
 }
