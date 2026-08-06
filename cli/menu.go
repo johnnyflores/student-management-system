@@ -1,13 +1,11 @@
 package cli
 
 import (
-	
 	"fmt"
 	"student-management-system/utils"
 
 	"student-management-system/models"
 	"student-management-system/services"
-	"student-management-system/storage"
 )
 
 func Start(service *services.StudentService) {
@@ -45,7 +43,13 @@ func Start(service *services.StudentService) {
 			deleteStudent(service)
 
 		case 6:
-			storage.SaveStudents(service.Students)
+
+			err := service.Save()
+
+			if err != nil {
+				fmt.Println("Error saving data:", err)
+			}
+
 			fmt.Println("Goodbye!")
 			return
 
@@ -59,16 +63,17 @@ func addStudent(service *services.StudentService) {
 
 	id := utils.ReadPositiveInt("Enter student ID: ")
 
-	student := models.Student{ID: id}
+	student := models.Student{
+		ID: id,
+	}
 
 	student.Name = utils.ReadString("Enter name: ")
-
 	student.Age = utils.ReadAge("Enter age: ")
 	student.Grade = utils.ReadGrade("Enter grade: ")
 
 	if service.AddStudent(student) {
 
-		storage.SaveStudents(service.Students)
+		service.Save()
 
 		fmt.Println("Student added successfully!")
 
@@ -99,10 +104,7 @@ func viewStudents(service *services.StudentService) {
 
 func searchStudent(service *services.StudentService) {
 
-	var id int
-
-	fmt.Print("Enter student ID: ")
-	fmt.Scan(&id)
+	id := utils.ReadPositiveInt("Enter student ID: ")
 
 	student := service.SearchStudent(id)
 
@@ -123,17 +125,15 @@ func updateStudent(service *services.StudentService) {
 
 	id := utils.ReadPositiveInt("Enter student ID to update: ")
 
-
 	var student models.Student
 
 	student.Name = utils.ReadString("Enter new name: ")
 	student.Age = utils.ReadAge("Enter new age: ")
 	student.Grade = utils.ReadGrade("Enter new grade: ")
 
-
 	if service.UpdateStudent(id, student) {
 
-		storage.SaveStudents(service.Students)
+		service.Save()
 
 		fmt.Println("Student updated successfully!")
 
@@ -145,14 +145,11 @@ func updateStudent(service *services.StudentService) {
 
 func deleteStudent(service *services.StudentService) {
 
-	var id int
-
-	fmt.Print("Enter student ID to delete: ")
-	fmt.Scan(&id)
+	id := utils.ReadPositiveInt("Enter student ID to delete: ")
 
 	if service.DeleteStudent(id) {
 
-		storage.SaveStudents(service.Students)
+		service.Save()
 
 		fmt.Println("Student deleted successfully")
 

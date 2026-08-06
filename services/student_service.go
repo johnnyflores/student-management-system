@@ -2,10 +2,12 @@ package services
 
 import (
 	"student-management-system/models"
+	"student-management-system/storage"
 )
 
 type StudentService struct {
-	Students []models.Student
+	Students   []models.Student
+	Repository storage.StudentRepository
 }
 
 func (s *StudentService) AddStudent(student models.Student) bool {
@@ -74,4 +76,10 @@ func (s *StudentService) DeleteStudent(id int) bool {
 	}
 
 	return false
+}
+
+func (s *StudentService) Save() error {
+
+	return s.Repository.Save(s.Students)
+
 }

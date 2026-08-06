@@ -3,14 +3,34 @@ package storage
 import (
 	"encoding/json"
 	"os"
+
 	"student-management-system/models"
 )
 
-const fileName = "data/students.json"
+type JSONStorage struct {
+	FileName string
+}
 
-func SaveStudents(students []models.Student) error {
+func (j JSONStorage) Load() ([]models.Student, error) {
 
-	file, err := os.Create(fileName)
+	file, err := os.Open(j.FileName)
+
+	if err != nil {
+		return []models.Student{}, err
+	}
+
+	defer file.Close()
+
+	var students []models.Student
+
+	err = json.NewDecoder(file).Decode(&students)
+
+	return students, err
+}
+
+func (j JSONStorage) Save(students []models.Student) error {
+
+	file, err := os.Create(j.FileName)
 
 	if err != nil {
 		return err
@@ -18,26 +38,5 @@ func SaveStudents(students []models.Student) error {
 
 	defer file.Close()
 
-	encoder := json.NewEncoder(file)
-
-	return encoder.Encode(students)
-}
-
-func LoadStudents() ([]models.Student, error) {
-
-	file, err := os.Open(fileName)
-
-	if err != nil {
-		return []models.Student{}, nil
-	}
-
-	defer file.Close()
-
-	var students []models.Student
-
-	decoder := json.NewDecoder(file)
-
-	err = decoder.Decode(&students)
-
-	return students, err
+	return json.NewEncoder(file).Encode(students)
 }

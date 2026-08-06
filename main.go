@@ -8,10 +8,15 @@ import (
 
 func main() {
 
-	students, _ := storage.LoadStudents()
+	jsonStorage := storage.JSONStorage{
+		FileName: "data/students.json",
+	}
+
+	students, _ := jsonStorage.Load()
 
 	service := services.StudentService{
-		Students: students,
+		Students:   students,
+		Repository: jsonStorage,
 	}
 
 	cli.Start(&service)
