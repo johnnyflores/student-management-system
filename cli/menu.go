@@ -57,12 +57,14 @@ func Start(service *services.StudentService) {
 
 func addStudent(service *services.StudentService) {
 
-	var student models.Student
+	id := utils.ReadPositiveInt("Enter student ID: ")
 
-	student.ID = utils.ReadInt("Enter ID: ")
-	student.Name = utils.ReadString("Enter Name: ")
-	student.Age = utils.ReadInt("Enter Age: ")
-	student.Grade = utils.ReadGrade("Enter Grade: ")
+	student := models.Student{ID: id}
+
+	student.Name = utils.ReadString("Enter name: ")
+
+	student.Age = utils.ReadAge("Enter age: ")
+	student.Grade = utils.ReadGrade("Enter grade: ")
 
 	if service.AddStudent(student) {
 
@@ -119,13 +121,13 @@ func searchStudent(service *services.StudentService) {
 
 func updateStudent(service *services.StudentService) {
 
-	id := utils.ReadInt("Enter student ID to update: ")
+	id := utils.ReadPositiveInt("Enter student ID to update: ")
 
 
 	var student models.Student
 
 	student.Name = utils.ReadString("Enter new name: ")
-	student.Age = utils.ReadInt("Enter new age: ")
+	student.Age = utils.ReadAge("Enter new age: ")
 	student.Grade = utils.ReadGrade("Enter new grade: ")
 
 
