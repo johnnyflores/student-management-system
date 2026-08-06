@@ -1,6 +1,9 @@
 package main
 
 import "fmt"
+func init() {
+	loadStudents()
+}
 
 type Student struct {
 	ID   int
@@ -13,14 +16,16 @@ var students []Student
 
 func main() {
 
+	loadStudents()
+
 	for {
 
 		fmt.Println("\n===== Student Management System =====")
-		addStudent()
-		viewStudents()
-		searchStudent()
-		updateStudent()
-		deleteStudent()
+		fmt.Println("1. Add Student")
+		fmt.Println("2. View Students")
+		fmt.Println("3. Search Student")
+		fmt.Println("4. Update Student")
+		fmt.Println("5. Delete Student")
 		fmt.Println("6. Exit")
 
 		var choice int
@@ -31,26 +36,23 @@ func main() {
 		switch choice {
 
 		case 1:
-			fmt.Println("Add Student selected")
+			addStudent()
 
 		case 2:
-			fmt.Println("View Student selected")
+			viewStudents()
 
 		case 3:
-			fmt.Println("Search Student selected")
+			searchStudent()
 
 		case 4:
-			fmt.Println("Update Student selected")
+			updateStudent()
 
 		case 5:
-			fmt.Println("Delete Student selected")
+			deleteStudent()
 
 		case 6:
 			fmt.Println("Goodbye!")
 			return
-
-		default:
-			fmt.Println("Invalid option")
 		}
 	}
 }
@@ -72,6 +74,7 @@ func addStudent() {
 	fmt.Scan(&student.Grade)
 
 	students = append(students, student)
+	saveStudents()
 
 	fmt.Println("Student added successfully!")
 }
@@ -133,6 +136,7 @@ func updateStudent() {
 			fmt.Print("Enter new grade:")
 			fmt.Scan(&students[i].Grade)
 
+			saveStudents()
 			fmt.Println("Student updated successfully!")
 			return
 		}
@@ -149,6 +153,7 @@ func deleteStudent() {
 	for i, student := range students {
 		if student.ID == id {
 			students = append(students[:i], students[i+1:]...)
+			saveStudents()
 
 			fmt.Println("Student deleted successfully!")
 
@@ -158,3 +163,4 @@ func deleteStudent() {
 
 	fmt.Println("Student not found")
 }
+
