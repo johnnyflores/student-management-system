@@ -1,12 +1,97 @@
-import { useContext } from 'react';
-import { StudentContext } from '../context/StudentContext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import {
+  createStudent,
+  deleteStudent,
+  getStudents,
+  updateStudent,
+} from '../services/studentApi';
 
-export function useStudents() {
-  const context = useContext(StudentContext);
+import type { Student } from '../types/student';
+import { getStudent } from '../services/studentApi';
 
-  if (!context) {
-    throw new Error('useStudents must be used inside StudentProvider');
-  }
+export default function useStudents() {
+  const queryClient = useQueryClient();
+  const [searchId, setSearchId] = useState<number | null>(null);
 
-  return context;
+  const studentsQuery = useQuery({
+    queryKey: ['students'],
+    queryFn: getStudents,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: createStudent,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['students'],
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, student }: { id: number; student: Student }) =>
+      updateStudent(id, student),
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['students'],
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteStudent,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['students'],
+      });
+    },
+  });
+
+  const searchQuery = useQuery({
+    queryKey: ['student', searchId],
+
+    queryFn: () => getStudent(searchId!),
+
+    enabled: searchId !== null,
+  });
+
+  const searchStudent = (id: number) => {
+    setSearchId(id);
+  };
+
+  const clearSearch = () => {
+    setSearchId(null);
+  };
+
+  return {
+    students: studentsQuery.data ?? [],
+
+    loading: studentsQuery.isLoading,
+
+    error: studentsQuery.error,
+
+    addStudent: createMutation.mutateAsync,
+
+    updateStudent: updateMutation.mutateAsync,
+
+    removeStudent: deleteMutation.mutateAsync,
+
+    searchedStudent: searchQuery.data,
+
+    searchLoading: searchQuery.isLoading,
+
+    searchError: searchQuery.error,
+
+    searchStudent,
+    clearSearch,
+
+    createLoading: createMutation.isPending,
+
+    updateLoading: updateMutation.isPending,
+
+    deleteLoading: deleteMutation.isPending,
+  };
 }

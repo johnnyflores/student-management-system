@@ -5,12 +5,14 @@ interface StudentCardProps {
   student: Student;
   onEdit: (student: Student) => void;
   onDelete: (id: number) => void;
+  deleting?: boolean;
 }
 
 export default function StudentCard({
   student,
   onEdit,
   onDelete,
+  deleting,
 }: StudentCardProps) {
   return (
     <div>
@@ -19,7 +21,9 @@ export default function StudentCard({
       <p>Age: {student.Age}</p>
       <p>Grade: {student.Grade}</p>
       <button onClick={() => onEdit(student)}>Edit</button>
-      <button onClick={() => onDelete(student.ID)}>Delete</button>
+      <button onClick={() => onDelete(student.ID)} disabled={deleting}>
+        {deleting ? 'Deleting...' : 'Delete'}
+      </button>
       <Link to={`/students/${student.ID}`}>View Details</Link>
     </div>
   );

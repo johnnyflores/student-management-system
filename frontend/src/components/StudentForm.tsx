@@ -4,6 +4,7 @@ import type { Student } from '../types/student';
 interface StudentFormProps {
   onSubmit: (student: Student) => void;
   student?: Student;
+  loading?: boolean;
 }
 
 const emptyStudent: Student = {
@@ -16,6 +17,7 @@ const emptyStudent: Student = {
 export default function StudentForm({
   onSubmit,
   student: editingStudent,
+  loading,
 }: StudentFormProps) {
   const [student, setStudent] = useState<Student>(
     editingStudent ?? emptyStudent
@@ -89,8 +91,12 @@ export default function StudentForm({
         />
       </div>
 
-      <button type="submit">
-        {editingStudent ? 'Update Student' : 'Add Student'}
+      <button type="submit" disabled={loading} className="text-purple-600">
+        {loading
+          ? 'Saving...'
+          : editingStudent
+            ? 'Update Student'
+            : 'Add Student'}
       </button>
     </form>
   );
