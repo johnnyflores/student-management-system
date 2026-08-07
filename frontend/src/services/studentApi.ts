@@ -37,3 +37,32 @@ export async function createStudent(student: Student): Promise<Student> {
 
   return response.json();
 }
+
+export async function updateStudent(
+  id: number,
+  student: Student
+): Promise<Student> {
+  const response = await fetch(`${API_URL}/student?id=${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(student),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to update student');
+  }
+
+  return response.json();
+}
+
+export async function deleteStudent(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/student?id=${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete student');
+  }
+}
