@@ -230,3 +230,7 @@ func TestSaveStudent(t *testing.T) {
 		)
 	}
 }
+
+func TestExample(t *testing.T) {
+	t.Errorf("intentional failure")
+}
