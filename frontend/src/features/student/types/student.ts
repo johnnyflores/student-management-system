@@ -4,3 +4,11 @@ export interface Student {
   Age: number;
   Grade: string;
 }
+
+export interface PaginatedStudents {
+  students: Student[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}

@@ -13,12 +13,16 @@ import { getStudent } from '../services/studentApi';
 
 export default function useStudents() {
   const queryClient = useQueryClient();
+
   const [searchId, setSearchId] = useState<number | null>(null);
   const [searchName, setSearchName] = useState('');
+  const [page, setPage] = useState(1);
+
+  const limit = 3;
 
   const studentsQuery = useQuery({
-    queryKey: ['students'],
-    queryFn: getStudents,
+    queryKey: ['students', page, limit],
+    queryFn: () => getStudents(page, limit),
   });
 
   const createMutation = useMutation({
@@ -60,27 +64,37 @@ export default function useStudents() {
     enabled: searchId !== null,
   });
 
+  const searchStudent = (id: number) => {
+    setSearchName('');
+    setSearchId(id);
+  };
+
   const nameSearchQuery = useQuery({
     queryKey: ['students', 'search', searchName],
     queryFn: () => searchStudentsByName(searchName),
     enabled: searchName.trim().length > 0,
   });
 
-  const searchStudent = (id: number) => {
-    setSearchId(id);
-  };
-
   const searchStudentsByNameHandler = (name: string) => {
     setSearchName(name);
+    setSearchId(null);
+    setPage(1);
   };
 
   const clearSearch = () => {
     setSearchId(null);
     setSearchName('');
+    setPage(1);
   };
 
   return {
-    students: studentsQuery.data ?? [],
+    students: studentsQuery.data?.students ?? [],
+
+    page: studentsQuery.data?.page ?? 1,
+    limit: studentsQuery.data?.limit ?? limit,
+    total: studentsQuery.data?.total ?? 0,
+    totalPages: studentsQuery.data?.totalPages ?? 0,
+    setPage,
 
     loading: studentsQuery.isLoading,
     error: studentsQuery.error,

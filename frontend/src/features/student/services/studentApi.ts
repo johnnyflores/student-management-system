@@ -1,9 +1,14 @@
-import type { Student } from '../types/student';
+import type { PaginatedStudents, Student } from '../types/student';
 
 const API_URL = 'http://localhost:8080';
 
-export async function getStudents(): Promise<Student[]> {
-  const response = await fetch(`${API_URL}/students`);
+export async function getStudents(
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedStudents> {
+  const response = await fetch(
+    `${API_URL}/students?page=${page}&limit=${limit}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch students');
