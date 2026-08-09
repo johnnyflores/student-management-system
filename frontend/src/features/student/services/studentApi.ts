@@ -22,6 +22,18 @@ export async function getStudent(id: number): Promise<Student> {
   return response.json();
 }
 
+export async function searchStudentsByName(name: string): Promise<Student[]> {
+  const response = await fetch(
+    `${API_URL}/students?name=${encodeURIComponent(name)}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Failed to search students');
+  }
+
+  return response.json();
+}
+
 export async function createStudent(student: Student): Promise<Student> {
   const response = await fetch(`${API_URL}/students`, {
     method: 'POST',
