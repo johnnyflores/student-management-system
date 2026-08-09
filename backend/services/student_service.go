@@ -1,6 +1,7 @@
 package services
 
 import (
+	"strings"
 	"student-management-system/models"
 	"student-management-system/storage"
 )
@@ -41,6 +42,26 @@ func (s *StudentService) SearchStudent(id int) *models.Student {
 	}
 
 	return nil
+}
+
+func (s *StudentService) SearchStudentsByName(name string) []models.Student {
+	searchName := strings.ToLower(strings.TrimSpace(name))
+
+	if searchName == "" {
+		return []models.Student{}
+	}
+
+	var results []models.Student
+
+	for _, student := range s.Students {
+		studentName := strings.ToLower(student.Name)
+
+		if strings.Contains(studentName, searchName) {
+			results = append(results, student)
+		}
+	}
+
+	return results
 }
 
 func (s *StudentService) UpdateStudent(id int, updatedStudent models.Student) bool {

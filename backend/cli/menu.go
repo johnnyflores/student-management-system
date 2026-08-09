@@ -104,21 +104,45 @@ func viewStudents(service *services.StudentService) {
 
 func searchStudent(service *services.StudentService) {
 
-	id := utils.ReadPositiveInt("Enter student ID: ")
+	fmt.Println("\n--- Search Student ---")
+	fmt.Println("1. Search by ID")
+	fmt.Println("2. Search by Name")
 
-	student := service.SearchStudent(id)
+	var choice int
+	fmt.Print("Choose option: ")
+	fmt.Scan(&choice)
 
-	if student == nil {
+	switch choice {
 
-		fmt.Println("Student not found")
-		return
+	case 1:
+		id := utils.ReadPositiveInt("Enter student ID: ")
+
+		student := service.SearchStudent(id)
+
+		if student == nil {
+			fmt.Println("Student not found")
+			return
+		}
+
+		printStudent(*student)
+
+	case 2:
+		name := utils.ReadString("Enter student name: ")
+
+		students := service.SearchStudentsByName(name)
+
+		if len(students) == 0 {
+			fmt.Println("No students found")
+			return
+		}
+
+		for _, student := range students {
+			printStudent(student)
+		}
+
+	default:
+		fmt.Println("Invalid option")
 	}
-
-	fmt.Println("Student found:")
-	fmt.Println("ID:", student.ID)
-	fmt.Println("Name:", student.Name)
-	fmt.Println("Age:", student.Age)
-	fmt.Println("Grade:", student.Grade)
 }
 
 func updateStudent(service *services.StudentService) {
@@ -157,4 +181,12 @@ func deleteStudent(service *services.StudentService) {
 
 		fmt.Println("Student not found")
 	}
+}
+
+func printStudent(student models.Student) {
+	fmt.Println("----------------")
+	fmt.Println("ID:", student.ID)
+	fmt.Println("Name:", student.Name)
+	fmt.Println("Age:", student.Age)
+	fmt.Println("Grade:", student.Grade)
 }

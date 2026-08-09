@@ -102,6 +102,129 @@ func TestSearchStudentNotFound(t *testing.T) {
 	}
 }
 
+func TestSearchStudentsByName(t *testing.T) {
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:    101,
+				Name:  "Bob Tom",
+				Age:   21,
+				Grade: "Science",
+			},
+			{
+				ID:    102,
+				Name:  "Maria Kean",
+				Age:   25,
+				Grade: "Technology",
+			},
+			{
+				ID:    104,
+				Name:  "Mark Tom",
+				Age:   45,
+				Grade: "A",
+			},
+		},
+	}
+
+	results := service.SearchStudentsByName("tom")
+
+	if len(results) != 2 {
+		t.Fatalf("expected 2 students, got %d", len(results))
+	}
+
+	if results[0].Name != "Bob Tom" {
+		t.Errorf("expected Bob Tom, got %s", results[0].Name)
+	}
+
+	if results[1].Name != "Mark Tom" {
+		t.Errorf("expected Mark Tom, got %s", results[1].Name)
+	}
+}
+
+func TestSearchStudentsByNameCaseInsensitive(t *testing.T) {
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:   101,
+				Name: "Bob Tom",
+			},
+			{
+				ID:   104,
+				Name: "Mark Tom",
+			},
+		},
+	}
+
+	results := service.SearchStudentsByName("TOM")
+
+	if len(results) != 2 {
+		t.Fatalf("expected 2 students, got %d", len(results))
+	}
+}
+
+func TestSearchStudentsByNameNotFound(t *testing.T) {
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:   101,
+				Name: "Bob Tom",
+			},
+			{
+				ID:   102,
+				Name: "Maria Kean",
+			},
+		},
+	}
+
+	results := service.SearchStudentsByName("Charles")
+
+	if len(results) != 0 {
+		t.Errorf("expected no students, got %d", len(results))
+	}
+}
+
+func TestSearchStudentsByNameTrimSpace(t *testing.T) {
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:   101,
+				Name: "Bob Tom",
+			},
+		},
+	}
+
+	results := service.SearchStudentsByName("  tom  ")
+
+	if len(results) != 1 {
+		t.Fatalf("expected 1 student, got %d", len(results))
+	}
+
+	if results[0].Name != "Bob Tom" {
+		t.Errorf("expected Bob Tom, got %s", results[0].Name)
+	}
+}
+
+func TestSearchStudentsByNameEmpty(t *testing.T) {
+	service := StudentService{
+		Students: []models.Student{
+			{
+				ID:   101,
+				Name: "Bob Tom",
+			},
+			{
+				ID:   102,
+				Name: "Maria Kean",
+			},
+		},
+	}
+
+	results := service.SearchStudentsByName("")
+
+	if len(results) != 0 {
+		t.Errorf("expected no students for empty search, got %d", len(results))
+	}
+}
+
 func TestUpdateStudent(t *testing.T) {
 
 	service := StudentService{
