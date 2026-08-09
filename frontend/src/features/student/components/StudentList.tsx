@@ -1,9 +1,10 @@
 import { useState } from 'react';
+
+import SearchBar from '@/components/SearchBar';
 import useStudents from '../hooks/useStudents';
 import type { Student } from '../types/student';
 import StudentForm from './StudentForm';
 import StudentCard from './StudentCard';
-import SearchBar from './SearchBar';
 
 export default function StudentList() {
   const {
