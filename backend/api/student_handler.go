@@ -16,11 +16,74 @@ type StudentHandler struct {
 
 func (h *StudentHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 
-	students := h.Service.GetStudents()
+	page := 1
+	limit := 10
+
+	pageParam := r.URL.Query().Get("page")
+	limitParam := r.URL.Query().Get("limit")
+	name := r.URL.Query().Get("name")
+
+	var err error
+
+	if pageParam != "" {
+		page, err = strconv.Atoi(pageParam)
+
+		if err != nil || page < 1 {
+			http.Error(w, "invalid page", http.StatusBadRequest)
+			return
+		}
+	}
+
+	if limitParam != "" {
+		limit, err = strconv.Atoi(limitParam)
+
+		if err != nil || limit < 1 {
+			http.Error(w, "invalid limit", http.StatusBadRequest)
+			return
+		}
+	}
+
+	var result models.PaginatedStudents
+
+	if name != "" {
+		students := h.Service.SearchStudentsByName(name)
+
+		total := len(students)
+		totalPages := (total + limit - 1) / limit
+
+		start := (page - 1) * limit
+
+		if start >= total {
+			result = models.PaginatedStudents{
+				Students:   []models.Student{},
+				Page:       page,
+				Limit:      limit,
+				Total:      total,
+				TotalPages: totalPages,
+			}
+		} else {
+			end := start + limit
+
+			if end > total {
+				end = total
+			}
+
+			result = models.PaginatedStudents{
+				Students:   students[start:end],
+				Page:       page,
+				Limit:      limit,
+				Total:      total,
+				TotalPages: totalPages,
+			}
+		}
+
+	} else {
+		result = h.Service.GetStudentsPaginated(page, limit)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(students)
+	json.NewEncoder(w).Encode(result)
 }
 
 
