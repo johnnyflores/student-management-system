@@ -33,7 +33,7 @@ const DashboardRecentStudents = () => {
         <Separator className="mt-3 bg-gray-100! dark:bg-gray-800!" />
       </CardHeader>
       <CardContent className="pt-0">
-        <StudentTable />
+        <StudentTable pageSize={3} isShowPagination={true} />
       </CardContent>
     </Card>
   );

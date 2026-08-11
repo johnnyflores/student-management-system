@@ -10,15 +10,16 @@ import {
 
 import type { Student } from '../types/student';
 import { getStudent } from '../services/studentApi';
+import useDebouncedSearch from './useDebouncedSearch';
 
-export default function useStudents() {
+export default function useStudents(initialLimit = 10) {
   const queryClient = useQueryClient();
 
   const [searchId, setSearchId] = useState<number | null>(null);
   const [searchName, setSearchName] = useState('');
+  const debouncedSearchName = useDebouncedSearch(searchName, 500);
   const [page, setPage] = useState(1);
-
-  const limit = 3;
+  const [limit, setLimit] = useState(initialLimit);
 
   const studentsQuery = useQuery({
     queryKey: ['students', page, limit],
@@ -70,9 +71,9 @@ export default function useStudents() {
   };
 
   const nameSearchQuery = useQuery({
-    queryKey: ['students', 'search', searchName],
-    queryFn: () => searchStudentsByName(searchName),
-    enabled: searchName.trim().length > 0,
+    queryKey: ['students', 'search', debouncedSearchName],
+    queryFn: () => searchStudentsByName(debouncedSearchName),
+    enabled: debouncedSearchName.trim().length > 0,
   });
 
   const searchStudentsByNameHandler = (name: string) => {
@@ -91,10 +92,11 @@ export default function useStudents() {
     students: studentsQuery.data?.students ?? [],
 
     page: studentsQuery.data?.page ?? 1,
-    limit: studentsQuery.data?.limit ?? limit,
+    limit: studentsQuery.data?.limit ?? initialLimit,
     total: studentsQuery.data?.total ?? 0,
     totalPages: studentsQuery.data?.totalPages ?? 0,
     setPage,
+    setLimit,
 
     loading: studentsQuery.isLoading,
     error: studentsQuery.error,

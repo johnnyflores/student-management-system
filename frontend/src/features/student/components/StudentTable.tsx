@@ -1,58 +1,75 @@
-import Table from '@/components/Table';
+import { DataTable } from '@/components/data-table/data-table';
+import { Ellipsis } from 'lucide-react';
 import useStudents from '@/features/student/hooks/useStudents';
+import { useState } from 'react';
 
-const StudentTable = () => {
-  const { students, loading, error } = useStudents();
-  const listNameTable = [
-    {
-      name: 'ID',
-    },
-    {
-      name: 'Name',
-    },
-    {
-      name: 'Grade',
-    },
-    {
-      name: 'Actions',
-    },
-  ];
+const StudentTable = (props: {
+  pageSize?: number;
+  isShowPagination?: boolean;
+}) => {
+  const {
+    students,
+    searchStudentsByName,
+    page,
+    limit,
+    total,
+    totalPages,
+    loading,
+    setPage,
+    setLimit,
+  } = useStudents(props.pageSize ?? 10);
+
+  const [searchText, setSearchText] = useState('');
+
+  const searchStudentsByNameHandler = (name: string) => {
+    setSearchText(name);
+    searchStudentsByName(name);
+  };
+
+  const filteredStudents = students.filter((student) =>
+    student.Name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
+  const pagination = {
+    totalItems: total,
+    totalPages: totalPages,
+    pageNumber: page,
+    pageSize: limit,
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
+
+  const handlePageSizeChange = (pageSize: number) => {
+    setLimit(pageSize);
+    setPage(1);
+  };
+
   return (
-    <>
-      <div className="w-full flex flex-col gap-4">
-        {loading && <p>Loading students...</p>}
-        {error && <p className="text-red-500">Failed to load students</p>}
-        {!loading && !error && students.length === 0 && (
-          <p>No students found.</p>
-        )}
-        {!loading && !error && students.length > 0 && (
-          <Table>
-            <Table.Header>
-              {listNameTable.map((item) => (
-                <th key={item.name} className="border border-gray-300 p-2">
-                  {item.name}
-                </th>
-              ))}
-            </Table.Header>
-            <Table.Body
-              data={students}
-              render={(student) => (
-                <tr key={student.ID}>
-                  <td className="border border-gray-300 p-2">{student.ID}</td>
-                  <td className="border border-gray-300 p-2">{student.Name}</td>
-                  <td className="border border-gray-300 p-2">
-                    {student.Grade}
-                  </td>
-                  <td className="border border-gray-300 p-2">
-                    {/* TODO Add action buttons here */}
-                  </td>
-                </tr>
-              )}
-            />
-          </Table>
-        )}
-      </div>
-    </>
+    <div className="flex flex-col gap-4">
+      <DataTable
+        data={filteredStudents}
+        searchPlaceholder="Search students..."
+        isLoading={loading}
+        onSearch={searchStudentsByNameHandler}
+        isShowPagination={props.isShowPagination}
+        columns={[
+          { header: 'ID', accessorKey: 'ID' },
+          { header: 'Name', accessorKey: 'Name' },
+          { header: 'Grade', accessorKey: 'Grade' },
+          {
+            header: 'Actions',
+            accessorKey: 'actions',
+            cell: () => <Ellipsis size={20} />,
+          },
+        ]}
+        pagination={pagination}
+        pageSizeOptions={[3, 6, 9, 20, 50]}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+      />
+    </div>
   );
 };
 
