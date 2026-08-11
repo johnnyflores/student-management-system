@@ -17,7 +17,9 @@ export default function useStudents(initialLimit = 10) {
 
   const [searchId, setSearchId] = useState<number | null>(null);
   const [searchName, setSearchName] = useState('');
+
   const debouncedSearchName = useDebouncedSearch(searchName, 500);
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
 
@@ -91,8 +93,8 @@ export default function useStudents(initialLimit = 10) {
   return {
     students: studentsQuery.data?.students ?? [],
 
-    page: studentsQuery.data?.page ?? 1,
-    limit: studentsQuery.data?.limit ?? initialLimit,
+    page,
+    limit,
     total: studentsQuery.data?.total ?? 0,
     totalPages: studentsQuery.data?.totalPages ?? 0,
     setPage,

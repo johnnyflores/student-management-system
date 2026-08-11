@@ -32,7 +32,7 @@ const StudentTable = (props: {
 
   const pagination = {
     totalItems: total,
-    totalPages: totalPages,
+    totalPages,
     pageNumber: page,
     pageSize: limit,
   };
