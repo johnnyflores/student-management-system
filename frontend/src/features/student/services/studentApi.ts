@@ -1,6 +1,9 @@
-import type { PaginatedStudents, Student } from '../types/student';
+import type {
+  PaginatedStudents,
+  Student,
+} from '@/features/student/types/student';
 
-const API_URL = 'http://localhost:8080';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export async function getStudents(
   page: number = 1,

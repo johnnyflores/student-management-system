@@ -6,11 +6,11 @@ import {
   getStudents,
   searchStudentsByName,
   updateStudent,
-} from '../services/studentApi';
+} from '@/features/student/services/studentApi';
 
-import type { Student } from '../types/student';
-import { getStudent } from '../services/studentApi';
-import useDebouncedSearch from './useDebouncedSearch';
+import type { Student } from '@/features/student/types/student';
+import { getStudent } from '@/features/student/services/studentApi';
+import useDebouncedSearch from '@/features/student/hooks/useDebouncedSearch';
 
 export default function useStudents(initialLimit = 10) {
   const queryClient = useQueryClient();
