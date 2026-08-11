@@ -5,6 +5,7 @@ import useStudents from '../hooks/useStudents';
 import type { Student } from '../types/student';
 import StudentForm from './StudentForm';
 import StudentCard from './StudentCard';
+import StudentTable from './StudentTable';
 
 export default function StudentList() {
   const {
@@ -16,6 +17,7 @@ export default function StudentList() {
     removeStudent,
     searchStudent,
     searchedStudent,
+    searchStudentsByName,
     searchLoading,
     searchError,
     clearSearch,
@@ -26,6 +28,7 @@ export default function StudentList() {
 
   const [editingStudent, setEditingStudent] = useState<Student | null>(null);
   const [actionError, setActionError] = useState('');
+  const [searchText, setSearchText] = useState('');
 
   if (loading) {
     return <p>Loading students...</p>;
@@ -68,9 +71,28 @@ export default function StudentList() {
     }
   };
 
+  const searchStudentsByNameHandler = (name: string) => {
+    setSearchText(name);
+    searchStudentsByName(name);
+  };
+
+  const filteredStudents = students.filter((student) =>
+    student.Name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div>
+      <StudentTable />
       <h1>Students</h1>
+      <input
+        type="text"
+        placeholder="Search by name..."
+        className="mb-4 p-2 border border-gray-300 rounded"
+        value={searchText}
+        onChange={(e) => {
+          searchStudentsByNameHandler(e.target.value);
+        }}
+      />
 
       {error && <p>Failed to load students</p>}
       {actionError && <p>{actionError}</p>}
@@ -92,11 +114,12 @@ export default function StudentList() {
           student={searchedStudent}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          deleting={deleteLoading}
         />
-      ) : students.length === 0 ? (
+      ) : filteredStudents.length === 0 ? (
         <p>No students found</p>
       ) : (
-        students.map((student) => (
+        filteredStudents.map((student) => (
           <StudentCard
             key={student.ID}
             student={student}
