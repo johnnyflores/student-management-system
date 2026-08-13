@@ -6,7 +6,6 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
@@ -49,18 +48,17 @@ const Actions = ({ row }: { row: { original: { ID: number } } }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem onClick={handleEdit}>
             <Pencil className="mr-1 h-4 w-4" />
             Edit
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Link to={`/students/${studentId}`} className="flex items-center">
               <EyeIcon className="mr-1 h-4 w-4" />
               View Details
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setDeleteDialogOpen(true)}>
             <Trash2 className="mr-1 h-4 w-4 text-destructive!" />
             Delete
