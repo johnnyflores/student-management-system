@@ -9,7 +9,6 @@ import {
   type RowData,
   type SortingState,
 } from '@tanstack/react-table';
-
 import {
   Table,
   TableBody,
@@ -26,12 +25,15 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import { features, type DataTableFeatures } from './data-table-features';
+import {
+  features,
+  type DataTableFeatures,
+} from '@/components/data-table/data-table-features';
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { EmptyState } from '@/components/empty-state';
-import { DataTablePagination } from './data-table-pagination';
+import { DataTablePagination } from '@/components/data-table/data-table-pagination';
+import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
@@ -39,6 +41,7 @@ interface DataTableProps<TData extends RowData> {
   data: TData[];
   searchPlaceholder?: string;
   showSearch?: boolean;
+  className?: string;
   onSearch?: (term: string) => void;
   isLoading?: boolean;
   isShowPagination?: boolean;
@@ -56,6 +59,7 @@ export function DataTable<TData extends RowData>({
   columns,
   data,
   searchPlaceholder,
+  className,
   showSearch = true,
   isLoading = false,
   isShowPagination = true,
@@ -151,14 +155,19 @@ export function DataTable<TData extends RowData>({
           </DropdownMenu>
         </div>
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
+      <div className={cn('rounded-md border overflow-x-auto', className)}>
+        <Table
+          className={cn(table.getRowModel().rows.length === 0 ? 'h-50' : '')}
+        >
+          <TableHeader className="sticky top-0 bg-muted z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className="font-medium! text-[13px]!"
+                    >
                       {header.isPlaceholder ? null : (
                         <table.FlexRender header={header} />
                       )}
@@ -176,7 +185,7 @@ export function DataTable<TData extends RowData>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="text-[13.3px]!">
                       <table.FlexRender cell={cell} />
                     </TableCell>
                   ))}
@@ -188,7 +197,7 @@ export function DataTable<TData extends RowData>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <EmptyState title="No records found" description="" />
+                  <EmptyState title="No students found" description="" />
                 </TableCell>
               </TableRow>
             )}
