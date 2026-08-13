@@ -1,23 +1,26 @@
 import PageLayout from '@/components/PageLayout';
-import StudentList from '@/features/student/components/StudentList';
+import { Card, CardContent } from '@/components/ui/card';
+import AddStudentDrawer from '@/features/student/components/add-student-drawer';
+import StudentTable from '@/features/student/components/student-table';
 
 const Students = () => {
   return (
-    <div className="w-full flex flex-col">
-      <PageLayout showHeader={false} addMarginTop={false}>
-        <div className="w-full flex flex-col gap-4">
-          <div className="w-full flex flex-col gap-4">
-            <h1 className="text-2xl font-semibold">Students</h1>
-            <p className="text-sm text-gray-600">
-              Manage all students in the system.
-            </p>
-          </div>
+    <PageLayout
+      title="All Students"
+      subtitle="View and manage all students"
+      addMarginTop
+      rightAction={
+        <div className="flex items-center gap-2">
+          <AddStudentDrawer />
         </div>
-        <div className="w-full flex flex-col gap-4 mt-8">
-          <StudentList />
-        </div>
-      </PageLayout>
-    </div>
+      }
+    >
+      <Card className="border-0 shadow-none">
+        <CardContent>
+          <StudentTable />
+        </CardContent>
+      </Card>
+    </PageLayout>
   );
 };
 
