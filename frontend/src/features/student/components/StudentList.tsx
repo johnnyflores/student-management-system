@@ -5,7 +5,7 @@ import useStudents from '../hooks/useStudents';
 import type { Student } from '../types/student';
 import StudentForm from './StudentForm';
 import StudentCard from './StudentCard';
-import StudentTable from './StudentTable';
+import StudentTable from './student-table';
 
 export default function StudentList() {
   const {

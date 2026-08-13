@@ -1,7 +1,8 @@
-import { DataTable } from '@/components/data-table/data-table';
-import { Ellipsis } from 'lucide-react';
-import useStudents from '@/features/student/hooks/useStudents';
 import { useState } from 'react';
+import { columns } from '@/features/student/components/student-table/column';
+import useStudents from '@/features/student/hooks/useStudents';
+
+import { DataTable } from '@/components/data-table/data-table';
 
 const StudentTable = (props: {
   pageSize?: number;
@@ -52,18 +53,9 @@ const StudentTable = (props: {
         data={filteredStudents}
         searchPlaceholder="Search students..."
         isLoading={loading}
+        columns={columns}
         onSearch={searchStudentsByNameHandler}
         isShowPagination={props.isShowPagination}
-        columns={[
-          { header: 'ID', accessorKey: 'ID' },
-          { header: 'Name', accessorKey: 'Name' },
-          { header: 'Grade', accessorKey: 'Grade' },
-          {
-            header: 'Actions',
-            accessorKey: 'actions',
-            cell: () => <Ellipsis size={20} />,
-          },
-        ]}
         pagination={pagination}
         pageSizeOptions={[3, 6, 9, 20, 50]}
         onPageChange={handlePageChange}
