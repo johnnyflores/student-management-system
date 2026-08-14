@@ -1,4 +1,5 @@
 import type {
+  CreateStudent,
   PaginatedStudents,
   Student,
 } from '@/features/student/types/student';
@@ -42,7 +43,7 @@ export async function searchStudentsByName(name: string): Promise<Student[]> {
   return response.json();
 }
 
-export async function createStudent(student: Student): Promise<Student> {
+export async function createStudent(student: CreateStudent): Promise<Student> {
   const response = await fetch(`${API_URL}/students`, {
     method: 'POST',
     headers: {

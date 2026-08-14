@@ -13,7 +13,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import useStudents from '@/features/student/hooks/useStudents';
-import type { Student } from '@/features/student/types/student';
 
 import {
   studentSchema,
@@ -41,7 +40,6 @@ const StudentForm = (props: {
   const form = useForm<studentSchemaType>({
     resolver: zodResolver(studentSchema),
     defaultValues: {
-      ID: '',
       Name: '',
       Age: 0,
       Grade: '',
@@ -57,7 +55,6 @@ const StudentForm = (props: {
   useEffect(() => {
     if (isEdit && searchedStudent) {
       form.reset({
-        ID: String(searchedStudent.ID),
         Name: searchedStudent.Name,
         Age: searchedStudent.Age,
         Grade: searchedStudent.Grade,
@@ -65,24 +62,26 @@ const StudentForm = (props: {
     }
   }, [isEdit, searchedStudent, form]);
 
-  const onSubmit = (values: studentSchemaType) => {
-    const studentData: Student = {
-      ID: Number(values.ID),
-      Name: values.Name,
-      Age: Number(values.Age),
-      Grade: values.Grade,
-    };
-
+  const onSubmit = async (values: studentSchemaType) => {
     if (isEdit && studentId) {
-      updateStudent({
+      await updateStudent({
         id: Number(studentId),
-        student: studentData,
+        student: {
+          ID: Number(studentId),
+          Name: values.Name,
+          Age: values.Age,
+          Grade: values.Grade,
+        },
       });
-      onCloseDrawer?.();
     } else {
-      addStudent({ ...studentData });
-      onCloseDrawer?.();
+      await addStudent({
+        Name: values.Name,
+        Age: values.Age,
+        Grade: values.Grade,
+      });
     }
+
+    onCloseDrawer?.();
   };
   return (
     <div className="relative pb-10 pt-5 px-2.5">
@@ -90,19 +89,14 @@ const StudentForm = (props: {
       <Form {...form}>
         <form className="space-y-6 px-4" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="ID"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="font-normal!">ID</FormLabel>
-                  <FormControl>
-                    <Input placeholder="ID" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {isEdit && (
+              <FormItem>
+                <FormLabel>ID</FormLabel>
+                <FormControl>
+                  <Input value={studentId ?? ''} disabled />
+                </FormControl>
+              </FormItem>
+            )}
             <FormField
               control={form.control}
               name="Name"

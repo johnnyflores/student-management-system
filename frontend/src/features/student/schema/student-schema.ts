@@ -1,9 +1,13 @@
 import z from 'zod';
 
 export const studentSchema = z.object({
-  ID: z.string().min(1, { message: 'ID is required' }),
   Name: z.string().min(1, { message: 'Name is required' }),
-  Age: z.number().min(0, { message: 'Age must be a positive number' }),
+  Age: z
+    .number({
+      error: 'Age is required',
+    })
+    .int({ message: 'Age must be a whole number' })
+    .min(1, { message: 'Age must be greater than 0' }),
   Grade: z.string().min(1, { message: 'Grade is required' }),
 });
 
