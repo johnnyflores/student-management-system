@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"student-management-system/models"
 	"student-management-system/services"
@@ -111,14 +112,47 @@ func (h *StudentHandler) GetStudent(w http.ResponseWriter, r *http.Request) {
 }
 
 
-func (h *StudentHandler) CreateStudent(w http.ResponseWriter, r *http.Request) {
-	var student models.Student
+func (h *StudentHandler) CreateStudent(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	var request struct {
+		Name  string `json:"Name"`
+		Age   *int   `json:"Age"`
+		Grade string `json:"Grade"`
+	}
 
-	err := json.NewDecoder(r.Body).Decode(&student)
+	err := json.NewDecoder(r.Body).Decode(&request)
 
 	if err != nil {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
+	}
+
+	if strings.TrimSpace(request.Name) == "" {
+		http.Error(w, "name is required", http.StatusBadRequest)
+		return
+	}
+
+	if request.Age == nil {
+		http.Error(w, "age is required", http.StatusBadRequest)
+		return
+	}
+
+	if *request.Age < 1 || *request.Age > 100 {
+		http.Error(w, "age must be between 1 and 100", http.StatusBadRequest)
+		return
+	}
+
+	if strings.TrimSpace(request.Grade) == "" {
+		http.Error(w, "grade is required", http.StatusBadRequest)
+		return
+	}
+
+	student := models.Student{
+		Name:  request.Name,
+		Age:   *request.Age,
+		Grade: request.Grade,
 	}
 
 	success := h.Service.AddStudent(&student)
