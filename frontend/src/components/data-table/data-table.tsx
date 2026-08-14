@@ -34,6 +34,7 @@ import { X } from 'lucide-react';
 import { EmptyState } from '@/components/empty-state';
 import { DataTablePagination } from '@/components/data-table/data-table-pagination';
 import { cn } from '@/lib/utils';
+import DataTableSkeleton from './data-table-skeleton';
 
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
@@ -156,53 +157,60 @@ export function DataTable<TData extends RowData>({
         </div>
       </div>
       <div className={cn('rounded-md border overflow-x-auto', className)}>
-        <Table
-          className={cn(table.getRowModel().rows.length === 0 ? 'h-50' : '')}
-        >
-          <TableHeader className="sticky top-0 bg-muted z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className="font-medium! text-[13px]!"
-                    >
-                      {header.isPlaceholder ? null : (
-                        <table.FlexRender header={header} />
-                      )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="text-[13.3px]!">
-                      <table.FlexRender cell={cell} />
-                    </TableCell>
-                  ))}
+        {isLoading ? (
+          <DataTableSkeleton
+            columns={columns.length}
+            rows={pagination?.pageSize}
+          />
+        ) : (
+          <Table
+            className={cn(table.getRowModel().rows.length === 0 ? 'h-50' : '')}
+          >
+            <TableHeader className="sticky top-0 bg-muted z-10">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="font-medium! text-[13px]!"
+                      >
+                        {header.isPlaceholder ? null : (
+                          <table.FlexRender header={header} />
+                        )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  <EmptyState title="No students found" description="" />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="text-[13.3px]!">
+                        <table.FlexRender cell={cell} />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    <EmptyState title="No students found" description="" />
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
       </div>
       {isShowPagination && (
         <div className="flex items-center justify-end space-x-2 py-4">
