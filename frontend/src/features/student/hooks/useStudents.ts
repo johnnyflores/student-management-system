@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   createStudent,
   deleteStudent,
@@ -67,10 +67,10 @@ export default function useStudents(initialLimit = 10) {
     enabled: searchId !== null,
   });
 
-  const searchStudent = (id: number) => {
+  const searchStudent = useCallback((id: number) => {
     setSearchName('');
     setSearchId(id);
-  };
+  }, []);
 
   const nameSearchQuery = useQuery({
     queryKey: ['students', 'search', debouncedSearchName],

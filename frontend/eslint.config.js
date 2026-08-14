@@ -24,7 +24,7 @@ export default defineConfig([
         'warn',
         {
           allowConstantExport: true,
-          allowExportNames: ['buttonVariants'],
+          allowExportNames: ['buttonVariants', 'useFormField'],
         },
       ],
     },

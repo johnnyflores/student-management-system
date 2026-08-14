@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import useStudents from '@/features/student/hooks/useStudents';
 import ConfirmDialog from '@/components/dialogs/confirm-dialog';
+import useEditStudentDrawer from '@/features/student/hooks/useEditStudentDrawer';
 
 const Actions = ({ row }: { row: { original: { ID: number } } }) => {
   const { removeStudent } = useStudents();
@@ -20,9 +21,7 @@ const Actions = ({ row }: { row: { original: { ID: number } } }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const handleEdit = () => {
-    //TODO: Implement edit functionality
-  };
+  const { onOpenDrawer } = useEditStudentDrawer();
 
   const handleDelete = async () => {
     try {
@@ -48,7 +47,7 @@ const Actions = ({ row }: { row: { original: { ID: number } } }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleEdit}>
+          <DropdownMenuItem onClick={() => onOpenDrawer(studentId)}>
             <Pencil className="mr-1 h-4 w-4" />
             Edit
           </DropdownMenuItem>

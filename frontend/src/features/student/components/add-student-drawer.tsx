@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Drawer,
   DrawerClose,
@@ -9,15 +10,16 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { PlusIcon, XIcon } from 'lucide-react';
-import { useState } from 'react';
+import StudentForm from '@/features/student/components/student-form';
 
 const AddStudentDrawer = () => {
   const [open, setOpen] = useState(false);
-  const handleOpenChange = (isOpen: boolean) => {
-    setOpen(isOpen);
+
+  const onCloseDrawer = () => {
+    setOpen(false);
   };
   return (
-    <Drawer direction="right" open={open} onOpenChange={handleOpenChange}>
+    <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="cursor-pointer! text-white!">
           <PlusIcon className="h-4 w-4" />
@@ -38,10 +40,7 @@ const AddStudentDrawer = () => {
             <XIcon className="h-5 w-5 cursor-pointer!" />
           </DrawerClose>
         </DrawerHeader>
-        <div className="p-4">
-          {/* TODO: Implement the form submission logic and handle the addition of a
-          new student. */}
-        </div>
+        <StudentForm onCloseDrawer={onCloseDrawer} />
       </DrawerContent>
     </Drawer>
   );
