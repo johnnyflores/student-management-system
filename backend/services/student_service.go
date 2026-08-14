@@ -11,15 +11,18 @@ type StudentService struct {
 	Repository storage.StudentRepository
 }
 
-func (s *StudentService) AddStudent(student models.Student) bool {
+func (s *StudentService) AddStudent(student *models.Student) bool {
+	maxID := 100
 
 	for _, existingStudent := range s.Students {
-		if existingStudent.ID == student.ID {
-			return false
+		if existingStudent.ID > maxID {
+			maxID = existingStudent.ID
 		}
 	}
 
-	s.Students = append(s.Students, student)
+	student.ID = maxID + 1
+
+	s.Students = append(s.Students, *student)
 
 	return true
 }

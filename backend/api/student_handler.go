@@ -112,9 +112,7 @@ func (h *StudentHandler) GetStudent(w http.ResponseWriter, r *http.Request) {
 
 
 func (h *StudentHandler) CreateStudent(w http.ResponseWriter, r *http.Request) {
-
 	var student models.Student
-
 
 	err := json.NewDecoder(r.Body).Decode(&student)
 
@@ -123,19 +121,19 @@ func (h *StudentHandler) CreateStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
-	success := h.Service.AddStudent(student)
-
+	success := h.Service.AddStudent(&student)
 
 	if !success {
-		http.Error(w, "student ID already exists", http.StatusConflict)
+		http.Error(w, "could not create student", http.StatusInternalServerError)
 		return
 	}
 
+	if err := h.Service.Save(); err != nil {
+		http.Error(w, "failed to save student", http.StatusInternalServerError)
+		return
+	}
 
-	h.Service.Save()
-
-
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 
 	json.NewEncoder(w).Encode(student)

@@ -60,26 +60,22 @@ func Start(service *services.StudentService) {
 }
 
 func addStudent(service *services.StudentService) {
-
-	id := utils.ReadPositiveInt("Enter student ID: ")
-
-	student := models.Student{
-		ID: id,
-	}
+	student := models.Student{}
 
 	student.Name = utils.ReadString("Enter name: ")
 	student.Age = utils.ReadAge("Enter age: ")
 	student.Grade = utils.ReadGrade("Enter grade: ")
 
-	if service.AddStudent(student) {
-
-		service.Save()
+	if service.AddStudent(&student) {
+		if err := service.Save(); err != nil {
+			fmt.Println("Error saving data:", err)
+			return
+		}
 
 		fmt.Println("Student added successfully!")
-
+		fmt.Println("Generated student ID:", student.ID)
 	} else {
-
-		fmt.Println("Student ID already exists")
+		fmt.Println("Failed to add student")
 	}
 }
 

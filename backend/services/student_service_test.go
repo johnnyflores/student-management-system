@@ -13,13 +13,12 @@ func TestAddStudent(t *testing.T) {
 		service := StudentService{}
 
 		student := models.Student{
-			ID:    101,
 			Name:  "Alice",
 			Age:   20,
 			Grade: "A",
 		}
 
-		result := service.AddStudent(student)
+		result := service.AddStudent(&student)
 
 		if !result {
 			t.Errorf("expected student to be added")
@@ -31,8 +30,7 @@ func TestAddStudent(t *testing.T) {
 	})
 }
 
-func TestAddDuplicateStudent(t *testing.T) {
-
+func TestAddStudentGeneratesNextID(t *testing.T) {
 	service := StudentService{
 		Students: []models.Student{
 			{
@@ -44,17 +42,24 @@ func TestAddDuplicateStudent(t *testing.T) {
 		},
 	}
 
-	result := service.AddStudent(
-		models.Student{
-			ID:    101,
-			Name:  "Bob",
-			Age:   22,
-			Grade: "B",
-		},
-	)
+	student := models.Student{
+		Name:  "Bob",
+		Age:   22,
+		Grade: "B",
+	}
 
-	if result {
-		t.Errorf("expected duplicate ID to fail")
+	result := service.AddStudent(&student)
+
+	if !result {
+		t.Errorf("expected student to be added")
+	}
+
+	if student.ID != 102 {
+		t.Errorf("expected generated ID 102, got %d", student.ID)
+	}
+
+	if len(service.Students) != 2 {
+		t.Errorf("expected 2 students, got %d", len(service.Students))
 	}
 }
 
