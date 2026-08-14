@@ -6,8 +6,15 @@ export const studentSchema = z.object({
     .number({
       error: 'Age is required',
     })
-    .int({ message: 'Age must be a whole number' })
-    .min(1, { message: 'Age must be greater than 0' }),
+    .int({
+      message: 'Age must be a whole number',
+    })
+    .min(1, {
+      message: 'Age must be between 1 and 100',
+    })
+    .max(100, {
+      message: 'Age must be between 1 and 100',
+    }),
   Grade: z.string().min(1, { message: 'Grade is required' }),
 });
 
