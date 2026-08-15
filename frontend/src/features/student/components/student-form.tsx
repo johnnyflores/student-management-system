@@ -85,7 +85,6 @@ const StudentForm = (props: {
   };
   return (
     <div className="relative pb-10 pt-5 px-2.5">
-      <h2>{isEdit ? 'Edit Student' : 'Add Student'}</h2>
       <Form {...form}>
         <form className="space-y-6 px-4" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="space-y-6">

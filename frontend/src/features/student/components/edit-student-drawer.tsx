@@ -12,10 +12,12 @@ const EditStudentDrawer = () => {
   const { open, studentId, onCloseDrawer } = useEditStudentDrawer();
   return (
     <Drawer open={open} onOpenChange={onCloseDrawer} direction="right">
-      <DrawerContent>
+      <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader>
-          <DrawerTitle>Edit Student</DrawerTitle>
-          <DrawerDescription>
+          <DrawerTitle className="text-xl font-semibold">
+            Edit Student
+          </DrawerTitle>
+          <DrawerDescription className="text-sm text-muted-foreground">
             Use the form below to edit the student details.
           </DrawerDescription>
         </DrawerHeader>

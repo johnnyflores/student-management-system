@@ -28,15 +28,15 @@ const AddStudentDrawer = () => {
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader className="relative">
-          <div className="p-4">
-            <DrawerTitle className="text-lg font-semibold">
+          <div>
+            <DrawerTitle className="text-xl font-semibold">
               Add Student
             </DrawerTitle>
             <DrawerDescription className="text-sm text-muted-foreground">
               Fill in the details below to add a new student to the system.
             </DrawerDescription>
           </div>
-          <DrawerClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <DrawerClose className="absolute right-4 top-4">
             <XIcon className="h-5 w-5 cursor-pointer!" />
           </DrawerClose>
         </DrawerHeader>
