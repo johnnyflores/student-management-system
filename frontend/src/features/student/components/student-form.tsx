@@ -18,6 +18,7 @@ import {
   studentSchema,
   type studentSchemaType,
 } from '@/features/student/schema/student-schema';
+import { toast } from 'sonner';
 
 const StudentForm = (props: {
   isEdit?: boolean;
@@ -63,25 +64,34 @@ const StudentForm = (props: {
   }, [isEdit, searchedStudent, form]);
 
   const onSubmit = async (values: studentSchemaType) => {
-    if (isEdit && studentId) {
-      await updateStudent({
-        id: Number(studentId),
-        student: {
-          ID: Number(studentId),
+    try {
+      if (isEdit && studentId) {
+        await updateStudent({
+          id: Number(studentId),
+          student: {
+            ID: Number(studentId),
+            Name: values.Name,
+            Age: values.Age,
+            Grade: values.Grade,
+          },
+        });
+        toast.success('Student updated successfully');
+      } else {
+        await addStudent({
           Name: values.Name,
           Age: values.Age,
           Grade: values.Grade,
-        },
-      });
-    } else {
-      await addStudent({
-        Name: values.Name,
-        Age: values.Age,
-        Grade: values.Grade,
-      });
+        });
+        toast.success('Student added successfully');
+      }
+      onCloseDrawer?.();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.'
+      );
     }
-
-    onCloseDrawer?.();
   };
   return (
     <div className="relative pb-10 pt-5 px-2.5">
