@@ -93,6 +93,9 @@ func RegisterRoutes(
 
 		switch r.Method {
 
+		case http.MethodGet:
+			courseHandler.ViewCourseStudents(w, r)
+
 		case http.MethodPost:
 			courseHandler.AssignStudent(w, r)
 

@@ -271,3 +271,42 @@ func (h *CourseHandler) RemoveStudent(
 	json.NewEncoder(w).Encode(course)
 }
 
+func (h *CourseHandler) ViewCourseStudents(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	courseID, err := strconv.Atoi(r.URL.Query().Get("course_id"))
+
+	if err != nil || courseID < 1 {
+		http.Error(
+			w,
+			"invalid course_id",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	students, err := h.Service.GetCourseStudents(courseID)
+
+	if err != nil {
+		if errors.Is(err, services.ErrCourseNotFound) {
+			http.Error(
+				w,
+				"course not found",
+				http.StatusNotFound,
+			)
+			return
+		}
+
+		http.Error(
+			w,
+			"could not get course students",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(students)
+}

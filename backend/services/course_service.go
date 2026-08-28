@@ -41,6 +41,27 @@ func (c *CourseService) GetCourses() []models.Course {
 	return c.Courses
 }
 
+func (c *CourseService) GetCourseStudents(courseID int) ([]models.Student, error) {
+	course := c.SearchCourse(courseID)
+
+	if course == nil {
+		return nil, ErrCourseNotFound
+	}
+
+	var students []models.Student
+
+	for _, studentID := range course.Students {
+		student := c.StudentService.SearchStudent(studentID)
+
+		if student != nil {
+			students = append(students, *student)
+		}
+	}
+
+	return students, nil
+}
+
+
 func (c *CourseService) SearchCourse(id int) *models.Course {
 	for i := range c.Courses {
 		if c.Courses[i].ID == id {
