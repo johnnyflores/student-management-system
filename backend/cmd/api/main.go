@@ -10,17 +10,26 @@ import (
 )
 
 func main() {
-	service, err := app.NewStudentService()
+	studentService, err := app.NewStudentService()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	handler := api.StudentHandler{
-		Service: service,
+	studentHandler := api.StudentHandler{
+		Service: studentService,
+	}
+
+	courseService, err := app.NewCourseService(studentService)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	courseHandler := api.CourseHandler{
+		Service: courseService,
 	}
 
 	mux := http.NewServeMux()
-	api.RegisterRoutes(mux, &handler)
+	api.RegisterRoutes(mux, &studentHandler, &courseHandler)
 
 	fmt.Println("API running on :8080")
 

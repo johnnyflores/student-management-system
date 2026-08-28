@@ -1,19 +1,28 @@
 package main
 
 import (
+	"log"
+
 	"student-management-system/cli"
 	"student-management-system/internal/app"
 )
 
-
 func main() {
 
-	service, err := app.NewStudentService()
+	// Create student service
+	studentService, err := app.NewStudentService()
 
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
+	// Create course service
+	courseService, err := app.NewCourseService(studentService)
 
-	cli.Start(service)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Start CLI
+	cli.Start(studentService, courseService)
 }

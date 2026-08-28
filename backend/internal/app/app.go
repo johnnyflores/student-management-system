@@ -28,3 +28,25 @@ func NewStudentService() (*services.StudentService, error) {
 
 	return service, nil
 }
+
+func NewCourseService(
+	studentService *services.StudentService,
+) (*services.CourseService, error) {
+	repository := storage.JSONCourseStorage{
+		FileName: "data/courses.json",
+	}
+
+	courses, err := repository.Load()
+
+	if err != nil {
+		return nil, err
+	}
+
+	service := &services.CourseService{
+		Courses:        courses,
+		Repository:     repository,
+		StudentService: studentService,
+	}
+
+	return service, nil
+}
