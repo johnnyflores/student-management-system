@@ -1,306 +1,170 @@
 # Student Management System
 
-A full-stack student management application built with **Go** on the backend and **React + TypeScript** on the frontend.
+A full-stack student and course management application built with Go on the backend and React + TypeScript on the frontend.
 
-The application provides a REST API for managing students and a modern web interface for creating, searching, updating, and deleting student records.
+The project now includes:
+
+- a REST API for students and courses
+- an interactive CLI for terminal-based management
+- a browser UI with dashboard, student, and course pages
 
 ## Features
 
-### Backend (Go)
+### Backend
 
-- REST API using `net/http`
-- Student CRUD operations:
-  - Create student
-  - Get all students
-  - Search student by ID
-  - Update student
-  - Delete student
+- REST API built with `net/http`
+- Student management: create, list, search, update, and delete
+- Course management: create, list, inspect, assign students, and remove students
+- Pagination and search support for the students endpoint
+- JSON file persistence for students and courses
+- Layered design with handlers, services, and storage repositories
+- CORS enabled for the frontend
+- Unit tests for storage and service behavior
 
-- Service layer architecture
-- Repository pattern for storage abstraction
-- JSON file persistence
-- Unit tests with Go testing package
-- Mock repository testing
-- CORS support for frontend communication
+### Frontend
 
-### Frontend (React)
-
-- Built with React + TypeScript + Vite
-- Component-based architecture
+- React, TypeScript, and Vite
 - TanStack Query for server state management
-- Student CRUD interface
-- Search functionality
-- Form handling for create/update
-- Loading and error states
-- Reusable components
+- Dashboard, students, and courses pages
+- Student details route
+- Drawer-based create and edit flows
+- Loading, empty, and error states
+
+### CLI
+
+- Interactive terminal menu for student and course management
+- Uses the same service layer as the API
+- Persists changes back to the JSON data files
+
+## Requirements
+
+- Go 1.25+
+- Node.js 18+
+- npm
 
 ## Project Structure
 
 ```text
 student-management-system/
-
 ├── backend/
-│
-│   ├── cmd/
-│   │   ├── api/
-│   │   │   └── main.go              # REST API application
-│   │   │
-│   │   └── cli/
-│   │       └── main.go              # CLI application
-│   │
-│   ├── internal/
-│   │   └── app/
-│   │       └── app.go               # Dependency setup
-│   │
 │   ├── api/
-│   │   ├── routes.go
-│   │   └── student_handler.go       # HTTP handlers
-│   │
 │   ├── cli/
-│   │   └── menu.go                  # Terminal interface
-│   │
-│   ├── services/
-│   │   ├── student_service.go       # Business logic
-│   │   └── *_test.go
-│   │
-│   ├── storage/
-│   │   ├── student_repository.go
-│   │   ├── json_storage.go
-│   │   └── *_test.go
-│   │
-│   ├── models/
-│   │   └── student.go
-│   │
-│   ├── utils/
-│   │   └── input.go
-│   │
+│   ├── cmd/
 │   ├── data/
-│   │   └── students.json
-│   │
+│   ├── internal/
+│   ├── models/
+│   ├── services/
+│   ├── storage/
+│   ├── utils/
 │   └── go.mod
-│
-├── frontend/
-│   ├── src/
-│   ├── package.json
-│   └── vite.config.ts
-│
-└── .github/
-    └── workflows/
-        └── go-test.yml
+└── frontend/
+    ├── src/
+    ├── e2e/
+    ├── public/
+    └── package.json
 ```
 
-## Backend Architecture
+## Backend
 
-The backend follows a layered architecture:
-
-```
-HTTP Request
-
-      |
-      v
-
-Handler
-
-      |
-      v
-
-Service
-
-      |
-      v
-
-Repository / Storage
-```
-
-Responsibilities:
-
-- **Handler**: Handles HTTP requests and responses
-- **Service**: Contains business logic
-- **Repository/Storage**: Handles data persistence
-
-## Frontend Architecture
-
-The frontend uses TanStack Query for API state management:
-
-```
-React Component
-
-        |
-
-        v
-
-Custom Hook
-
-        |
-
-        v
-
-TanStack Query
-
-        |
-
-        v
-
-API Service
-
-        |
-
-        v
-
-Go REST API
-```
-
-## Requirements
-
-Install:
-
-- Go 1.22+
-- Node.js 18+
-- npm
-
-## Running the Backend
-
-Start the REST API:
+Start the API:
 
 ```bash
 cd backend
 go run ./cmd/api
 ```
 
-The API will start:
+The API listens on `http://localhost:8080`.
 
-```
-http://localhost:8080
-```
+Start the CLI:
 
-## API Endpoints
-
-### Get all students
-
-```
-GET /students
+```bash
+cd backend
+go run ./cmd/cli
 ```
 
-### Create student
+### API Routes
 
-```
-POST /students
-```
+Students:
 
-Example:
+- `GET /students?page=1&limit=10&name=alice` - list or search students
+- `POST /students` - create a student
+- `GET /student?id=101` - get one student
+- `PUT /student?id=101` - update a student
+- `DELETE /student?id=101` - delete a student
+
+Courses:
+
+- `GET /courses` - list all courses
+- `POST /courses` - create a course
+- `GET /course?id=201` - get one course
+- `GET /courses/students?course_id=201` - view enrolled students
+- `POST /courses/students?course_id=201&student_id=101` - assign a student to a course
+- `DELETE /courses/students?course_id=201&student_id=101` - remove a student from a course
+
+### Example Requests
+
+Create a student:
 
 ```json
 {
-  "ID": 101,
   "Name": "Alice",
   "Age": 20,
   "Grade": "A"
 }
 ```
 
-### Search student
+Create a course:
 
-```
-GET /student?id=101
-```
-
-### Update student
-
-```
-PUT /student?id=101
+```json
+{
+  "Name": "Mathematics",
+  "Teacher": "Dr. Smith"
+}
 ```
 
-### Delete student
-
-```
-DELETE /student?id=101
-```
-
-## Running the Frontend
-
-Go to the frontend directory:
-
-```bash
-cd frontend
-```
+## Frontend
 
 Install dependencies:
 
 ```bash
+cd frontend
 npm install
 ```
 
-Start development server:
+Run the development server:
 
 ```bash
 npm run dev
 ```
 
-Frontend runs by default:
+The app is available at `http://localhost:5173`.
 
-```
-http://localhost:5173
-```
+Frontend routes:
 
-## Testing Backend
+- `/` dashboard
+- `/students` students list
+- `/courses` courses list
+- `/students/:id` student details
 
-Run all tests:
+## Testing
+
+Backend tests:
 
 ```bash
 cd backend
 go test ./...
 ```
 
-Run tests with coverage:
+Frontend tests:
 
 ```bash
-cd backend
-go test -cover ./...
+cd frontend
+npm run test:run
 ```
 
-Example:
-
-```
-services coverage: 95%+
-storage coverage: 80%+
-```
-
-## Frontend Dependencies
-
-Main libraries:
-
-- React
-- TypeScript
-- Vite
-- TanStack Query
-- React Query Devtools
-
-Install TanStack Query:
+Frontend end-to-end tests:
 
 ```bash
-npm install @tanstack/react-query
+cd frontend
+npm run e2e
 ```
-
-## Future Improvements
-
-Possible future enhancements:
-
-- User authentication with JWT
-- PostgreSQL database support
-- Docker Compose setup
-- React Router navigation
-- Pagination
-- Advanced filtering
-- Role-based permissions
-- Deployment pipeline
-
-## Development Notes
-
-This project was created to practice:
-
-- Go REST API development
-- Clean architecture principles
-- Unit testing
-- Frontend/backend communication
-- React state management
-- Modern full-stack application structure
