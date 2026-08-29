@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import CourseStudentsTable from '@/features/course/components/courseStudentsTable';
+import BackButton from '@/components/BackButton';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -27,6 +28,13 @@ const CourseDetails = () => {
       title="Course Details"
       subtitle="View course details"
       addMarginTop
+      rightAction={
+        <BackButton
+          to="/courses"
+          label="Back to Courses"
+          className="cursor-pointer"
+        />
+      }
     >
       {!course ? (
         <Card>
