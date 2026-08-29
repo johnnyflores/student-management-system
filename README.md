@@ -47,20 +47,30 @@ The project now includes:
 ```text
 student-management-system/
 ├── backend/
-│   ├── api/
-│   ├── cli/
-│   ├── cmd/
-│   ├── data/
-│   ├── internal/
-│   ├── models/
-│   ├── services/
-│   ├── storage/
-│   ├── utils/
+│   ├── api/              # HTTP/API handlers
+│   ├── cli/              # CLI commands
+│   ├── cmd/              # Application entry points
+│   ├── data/             # Seed/sample data
+│   ├── internal/         # Internal application packages
+│   ├── models/           # Domain models
+│   ├── services/         # Business logic
+│   ├── storage/          # Data persistence
+│   ├── utils/            # Shared backend utilities
 │   └── go.mod
+│
 └── frontend/
     ├── src/
-    ├── e2e/
-    ├── public/
+    │   ├── components/   # Shared and reusable UI components
+    │   ├── features/     # Feature-specific functionality
+    │   ├── hooks/        # Shared React hooks
+    │   ├── layout/       # Application layouts
+    │   ├── lib/          # Libraries and shared utilities
+    │   ├── pages/        # Route-level pages
+    │   ├── routes/       # Application routing configuration
+    │   └── test/         # Frontend testing utilities and setup
+    │
+    ├── e2e/              # End-to-end tests
+    ├── public/           # Static assets
     └── package.json
 ```
 
