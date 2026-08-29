@@ -1,4 +1,9 @@
-import { MoreHorizontal, UserRoundArrowLeft, Users } from 'lucide-react';
+import {
+  EyeIcon,
+  MoreHorizontal,
+  UserRoundArrowLeft,
+  Users,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import useAssignStudentDrawer from '@/features/course/hooks/useAssignStudentDrawer';
 import useEnrolledStudentDrawer from '@/features/course/hooks/useEnrolledStudentDrawer';
+import { Link } from 'react-router-dom';
 
 const Actions = ({ row }: { row: { original: { ID: number } } }) => {
   const courseId = row.original.ID;
@@ -36,6 +42,12 @@ const Actions = ({ row }: { row: { original: { ID: number } } }) => {
         <DropdownMenuItem onClick={() => openEnrolledStudentDrawer(courseId)}>
           <Users className="mr-1 h-4 w-4" />
           Enrolled Students
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to={`/courses/${courseId}`} className="flex items-center">
+            <EyeIcon className="mr-1 h-4 w-4" />
+            View Details
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -3,6 +3,7 @@ import Dashboard from '@/pages/dashboard';
 import Students from '@/pages/students';
 import StudentDetails from '@/features/student/components/StudentDetails';
 import Courses from '@/pages/courses';
+import CourseDetails from '@/features/course/components/courseDetails';
 
 export const routesPaths = [
   {
@@ -20,5 +21,9 @@ export const routesPaths = [
   {
     path: ROUTES.STUDENT_DETAILS(':id'),
     element: <StudentDetails />,
+  },
+  {
+    path: ROUTES.COURSE_DETAILS(':id'),
+    element: <CourseDetails />,
   },
 ];
