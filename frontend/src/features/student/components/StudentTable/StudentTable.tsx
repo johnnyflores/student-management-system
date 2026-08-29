@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { columns } from '@/features/student/components/student-table/column';
+import { columns } from '@/features/student/components/StudentTable/Columns';
 import useStudents from '@/features/student/hooks/useStudents';
-
-import { DataTable } from '@/components/data-table/data-table';
+import { DataTable } from '@/components/DataTable/DataTable';
 
 const StudentTable = (props: {
   pageSize?: number;

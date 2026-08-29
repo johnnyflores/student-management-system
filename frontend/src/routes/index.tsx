@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routesPaths } from '@/routes/common/routes';
-import AppLayout from '@/layout/app-layout';
+import AppLayout from '@/layout/AppLayout';
 import NotFound from '@/pages/NotFound';
 
 function AppRoutes() {

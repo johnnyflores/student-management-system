@@ -6,7 +6,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import useEditStudentDrawer from '@/features/student/hooks/useEditStudentDrawer';
-import StudentForm from '@/features/student/components/student-form';
+import StudentForm from '@/features/student/components/StudentForm';
 
 const EditStudentDrawer = () => {
   const { open, studentId, onCloseDrawer } = useEditStudentDrawer();

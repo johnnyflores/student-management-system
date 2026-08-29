@@ -2,8 +2,8 @@
 
 import { createColumnHelper } from '@tanstack/react-table';
 import type { Course } from '@/features/course/types/course';
-import type { DataTableFeatures } from '@/components/data-table/data-table-features';
-import Actions from '@/features/course/components/course-table/actions';
+import type { DataTableFeatures } from '@/components/DataTable/DataTableFeatures';
+import Actions from '@/features/course/components/CourseTable/Actions';
 
 const columnHelper = createColumnHelper<DataTableFeatures, Course>();
 

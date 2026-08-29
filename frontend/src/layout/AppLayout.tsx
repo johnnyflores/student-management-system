@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import EditStudentDrawer from '@/features/student/components/edit-student-drawer';
-import AssignCourseDrawer from '@/features/course/components/course-drawer/assign-course-drawer';
-import EnrolledStudentDrawer from '@/features/course/components/course-drawer/enrolled-student-drawer';
+import EditStudentDrawer from '@/features/student/components/EditStudentDrawer';
+import AssignCourseDrawer from '@/features/course/components/CourseDrawer/AssignCourseDrawer';
+import EnrolledStudentDrawer from '@/features/course/components/CourseDrawer/EnrolledStudentDrawer';
 
 const AppLayout = () => {
   return (

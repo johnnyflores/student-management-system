@@ -3,7 +3,7 @@ import Dashboard from '@/pages/dashboard';
 import Students from '@/pages/students';
 import StudentDetails from '@/features/student/components/StudentDetails';
 import Courses from '@/pages/courses';
-import CourseDetails from '@/features/course/components/courseDetails';
+import CourseDetails from '@/features/course/components/CourseDetails';
 
 export const routesPaths = [
   {

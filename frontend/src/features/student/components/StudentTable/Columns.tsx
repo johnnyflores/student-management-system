@@ -1,9 +1,9 @@
 'use client';
 
 import { createColumnHelper } from '@tanstack/react-table';
-import type { DataTableFeatures } from '@/components/data-table/data-table-features';
+import type { DataTableFeatures } from '@/components/DataTable/DataTableFeatures';
 import type { Student } from '@/features/student/types/student';
-import Actions from '@/features/student/components/student-table/actions';
+import Actions from '@/features/student/components/StudentTable/Actions';
 
 const columnHelper = createColumnHelper<DataTableFeatures, Student>();
 

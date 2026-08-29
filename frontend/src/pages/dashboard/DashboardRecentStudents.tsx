@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ROUTES } from '@/routes/common/routePath';
-import StudentTable from '@/features/student/components/student-table';
+import StudentTable from '@/features/student/components/StudentTable';
 
 const DashboardRecentStudents = () => {
   return (

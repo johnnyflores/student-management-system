@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import useEnrolledStudentDrawer from '@/features/course/hooks/useEnrolledStudentDrawer';
-import EnrolledStudentForm from '@/features/course/components/course-form/enrolled-student-form';
+import EnrolledStudentForm from '@/features/course/components/CourseForm/EnrolledStudentForm';
 
 const EnrolledStudentDrawer = () => {
   const { open, courseId, onCloseDrawer } = useEnrolledStudentDrawer();

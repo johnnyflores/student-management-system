@@ -8,7 +8,7 @@ import {
   DrawerTitle,
 } from '@/components/ui/drawer';
 import useAssignStudentDrawer from '@/features/course/hooks/useAssignStudentDrawer';
-import AssignStudentForm from '@/features/course/components/course-form/assign-student-form';
+import AssignStudentForm from '@/features/course/components/CourseForm/AssignStudentForm';
 import useCourses from '@/features/course/hooks/useCourses';
 
 const AssignCourseDrawer = () => {

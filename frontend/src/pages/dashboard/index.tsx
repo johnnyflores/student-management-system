@@ -1,5 +1,5 @@
 import PageLayout from '@/components/PageLayout';
-import DashboardRecentStudents from '@/pages/dashboard/dashboard-recent-students';
+import DashboardRecentStudents from '@/pages/dashboard/DashboardRecentStudents';
 
 const Dashboard = () => {
   return (

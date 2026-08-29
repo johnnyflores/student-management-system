@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import useStudents from '@/features/student/hooks/useStudents';
-import ConfirmDialog from '@/components/dialogs/confirm-dialog';
+import ConfirmDialog from '@/components/Dialogs/ConfirmDialog';
 import useEditStudentDrawer from '@/features/student/hooks/useEditStudentDrawer';
 
 const Actions = ({ row }: { row: { original: { ID: number } } }) => {

@@ -10,7 +10,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer';
-import CourseForm from '@/features/course/components/course-form/course-form';
+import CourseForm from '@/features/course/components/CourseForm/CourseForm';
 
 const AddCourseDrawer = () => {
   const [open, setOpen] = useState(false);

@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
 import { PlusIcon, XIcon } from 'lucide-react';
-import StudentForm from '@/features/student/components/student-form';
+import StudentForm from '@/features/student/components/StudentForm';
 
 const AddStudentDrawer = () => {
   const [open, setOpen] = useState(false);

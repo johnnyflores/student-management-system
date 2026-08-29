@@ -1,103 +1,177 @@
-import { useState } from 'react';
-import type { Student } from '../types/student';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Loader } from 'lucide-react';
+import useStudents from '@/features/student/hooks/useStudents';
 
-interface StudentFormProps {
-  onSubmit: (student: Student) => void;
-  student?: Student;
-  loading?: boolean;
-}
+import {
+  studentSchema,
+  type studentSchemaType,
+} from '@/features/student/schema/student-schema';
+import { toast } from 'sonner';
 
-const emptyStudent: Student = {
-  ID: 0,
-  Name: '',
-  Age: 0,
-  Grade: '',
-};
+const StudentForm = (props: {
+  isEdit?: boolean;
+  studentId?: string;
+  onCloseDrawer?: () => void;
+}) => {
+  const { isEdit = false, studentId, onCloseDrawer } = props;
 
-export default function StudentForm({
-  onSubmit,
-  student: editingStudent,
-  loading,
-}: StudentFormProps) {
-  const [student, setStudent] = useState<Student>(
-    editingStudent ?? emptyStudent
-  );
+  const {
+    addStudent,
+    updateStudent,
+    createLoading,
+    updateLoading,
+    loading,
+    searchedStudent,
+    searchStudent,
+    searchLoading,
+  } = useStudents();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
+  const form = useForm<studentSchemaType>({
+    resolver: zodResolver(studentSchema),
+    defaultValues: {
+      Name: '',
+      Age: 0,
+      Grade: '',
+    },
+  });
 
-    setStudent({
-      ...student,
-      [name]: name === 'ID' || name === 'Age' ? Number(value) : value,
-    });
-  };
+  useEffect(() => {
+    if (isEdit && studentId) {
+      searchStudent(Number(studentId));
+    }
+  }, [isEdit, studentId, searchStudent]);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (isEdit && searchedStudent) {
+      form.reset({
+        Name: searchedStudent.Name,
+        Age: searchedStudent.Age,
+        Grade: searchedStudent.Grade,
+      });
+    }
+  }, [isEdit, searchedStudent, form]);
 
-    onSubmit(student);
-
-    if (!editingStudent) {
-      setStudent(emptyStudent);
+  const onSubmit = async (values: studentSchemaType) => {
+    try {
+      if (isEdit && studentId) {
+        await updateStudent({
+          id: Number(studentId),
+          student: {
+            ID: Number(studentId),
+            Name: values.Name,
+            Age: values.Age,
+            Grade: values.Grade,
+          },
+        });
+        toast.success('Student updated successfully');
+      } else {
+        await addStudent({
+          Name: values.Name,
+          Age: values.Age,
+          Grade: values.Grade,
+        });
+        toast.success('Student added successfully');
+      }
+      onCloseDrawer?.();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : 'Something went wrong. Please try again.'
+      );
     }
   };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>{editingStudent ? 'Edit Student' : 'Add Student'}</h2>
-
-      <div>
-        <label>ID:</label>
-
-        <input
-          type="number"
-          name="ID"
-          value={student.ID}
-          onChange={handleChange}
-          disabled={!!editingStudent}
-        />
-      </div>
-
-      <div>
-        <label>Name:</label>
-
-        <input
-          type="text"
-          name="Name"
-          value={student.Name}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div>
-        <label>Age:</label>
-
-        <input
-          type="number"
-          name="Age"
-          value={student.Age}
-          onChange={handleChange}
-        />
-      </div>
-
-      <div>
-        <label>Grade:</label>
-
-        <input
-          type="text"
-          name="Grade"
-          value={student.Grade}
-          onChange={handleChange}
-        />
-      </div>
-
-      <button type="submit" disabled={loading} className="text-purple-600">
-        {loading
-          ? 'Saving...'
-          : editingStudent
-            ? 'Update Student'
-            : 'Add Student'}
-      </button>
-    </form>
+    <div className="relative pb-10 pt-5 px-2.5">
+      <Form {...form}>
+        <form className="space-y-6 px-4" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="space-y-6">
+            {isEdit && (
+              <FormItem>
+                <FormLabel>ID</FormLabel>
+                <FormControl>
+                  <Input value={studentId ?? ''} disabled />
+                </FormControl>
+              </FormItem>
+            )}
+            <FormField
+              control={form.control}
+              name="Name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Age"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Age</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Age"
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Grade"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Grade</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Grade" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={createLoading || updateLoading}
+            >
+              {createLoading || updateLoading ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : null}
+              {isEdit ? 'Update' : 'Save'}
+            </Button>
+          </div>
+          {(loading || searchLoading) && (
+            <div className="absolute top-0 left-0 right-0 bottom-0 bg-white/70 dark:bg-background/70 z-50 flex justify-center">
+              <Loader className="h-8 w-8 animate-spin" />
+            </div>
+          )}
+        </form>
+      </Form>
+    </div>
   );
-}
+};
+
+export default StudentForm;

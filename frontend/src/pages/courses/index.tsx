@@ -1,7 +1,7 @@
 import PageLayout from '@/components/PageLayout';
 import { Card, CardContent } from '@/components/ui/card';
-import CourseTable from '@/features/course/components/course-table';
-import AddCourseDrawer from '@/features/course/components/course-drawer/add-course-drawer';
+import CourseTable from '@/features/course/components/CourseTable/CourseTable';
+import AddCourseDrawer from '@/features/course/components/CourseDrawer/AddCourseDrawer';
 
 const Courses = () => {
   return (

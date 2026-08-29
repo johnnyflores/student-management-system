@@ -3,12 +3,12 @@ import { BookOpen, Hash, UserRound, Users } from 'lucide-react';
 import useCourses from '@/features/course/hooks/useCourses';
 import useCourseStudents from '@/features/course/hooks/useCourseStudents';
 import PageLayout from '@/components/PageLayout';
-import CourseInfoItem from '@/features/course/components/courseInfoItem';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import CourseStudentsTable from '@/features/course/components/courseStudentsTable';
+import CourseStudentsTable from '@/features/course/components/CourseStudentsTable';
 import BackButton from '@/components/BackButton';
+import InfoItem from '@/components/InfoItem';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -87,22 +87,18 @@ const CourseDetails = () => {
             <Separator />
             <CardContent className="pt-6">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <CourseInfoItem
-                  icon={Hash}
-                  label="Course ID"
-                  value={course.ID}
-                />
-                <CourseInfoItem
+                <InfoItem icon={Hash} label="Course ID" value={course.ID} />
+                <InfoItem
                   icon={BookOpen}
                   label="Course Name"
                   value={course.Name}
                 />
-                <CourseInfoItem
+                <InfoItem
                   icon={UserRound}
                   label="Teacher"
                   value={course.Teacher}
                 />
-                <CourseInfoItem
+                <InfoItem
                   icon={Users}
                   label="Students"
                   value={students.length}

@@ -28,13 +28,13 @@ import {
 import {
   features,
   type DataTableFeatures,
-} from '@/components/data-table/data-table-features';
+} from '@/components/DataTable/DataTableFeatures';
 import { useState } from 'react';
 import { X } from 'lucide-react';
-import { EmptyState } from '@/components/empty-state';
-import { DataTablePagination } from '@/components/data-table/data-table-pagination';
+import { EmptyState } from '@/components/EmptyState';
+import { DataTablePagination } from '@/components/DataTable/DataTablePagination';
 import { cn } from '@/lib/utils';
-import DataTableSkeleton from './data-table-skeleton';
+import DataTableSkeleton from '@/components/DataTable/DataTableSkeleton';
 
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];

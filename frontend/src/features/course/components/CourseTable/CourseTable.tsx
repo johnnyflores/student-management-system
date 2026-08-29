@@ -1,5 +1,5 @@
-import { DataTable } from '@/components/data-table/data-table';
-import { columns } from '@/features/course/components/course-table/column';
+import { DataTable } from '@/components/DataTable/DataTable';
+import { columns } from '@/features/course/components/CourseTable/Columns';
 import useCourses from '@/features/course/hooks/useCourses';
 
 const CourseTable = () => {
