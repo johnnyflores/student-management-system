@@ -1,7 +1,7 @@
-import useCourseDrawer from '@/features/course/hooks/useCourseDrawer';
+import useQueryDrawer from '@/hooks/useQueryDrawer';
 
 const useAssignStudentDrawer = () => {
-  return useCourseDrawer({ openKey: 'assign', courseIdKey: 'assignCourseId' });
+  return useQueryDrawer({ openKey: 'assign', idKey: 'assignCourseId' });
 };
 
 export default useAssignStudentDrawer;

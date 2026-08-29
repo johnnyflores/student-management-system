@@ -12,7 +12,7 @@ import AssignStudentForm from '@/features/course/components/CourseForm/AssignStu
 import useCourses from '@/features/course/hooks/useCourses';
 
 const AssignCourseDrawer = () => {
-  const { open, courseId, onCloseDrawer } = useAssignStudentDrawer();
+  const { open, id: courseId, onCloseDrawer } = useAssignStudentDrawer();
   const { courses } = useCourses();
 
   if (!courseId) {

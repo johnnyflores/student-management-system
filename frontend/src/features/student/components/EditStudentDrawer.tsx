@@ -9,7 +9,7 @@ import useEditStudentDrawer from '@/features/student/hooks/useEditStudentDrawer'
 import StudentForm from '@/features/student/components/StudentForm';
 
 const EditStudentDrawer = () => {
-  const { open, studentId, onCloseDrawer } = useEditStudentDrawer();
+  const { open, id: studentId, onCloseDrawer } = useEditStudentDrawer();
   return (
     <Drawer open={open} onOpenChange={onCloseDrawer} direction="right">
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">

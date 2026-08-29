@@ -11,7 +11,7 @@ import useEnrolledStudentDrawer from '@/features/course/hooks/useEnrolledStudent
 import EnrolledStudentForm from '@/features/course/components/CourseForm/EnrolledStudentForm';
 
 const EnrolledStudentDrawer = () => {
-  const { open, courseId, onCloseDrawer } = useEnrolledStudentDrawer();
+  const { open, id: courseId, onCloseDrawer } = useEnrolledStudentDrawer();
 
   return (
     <Drawer open={open} onOpenChange={onCloseDrawer} direction="right">

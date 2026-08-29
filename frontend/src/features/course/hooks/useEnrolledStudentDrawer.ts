@@ -1,9 +1,9 @@
-import useCourseDrawer from '@/features/course/hooks/useCourseDrawer';
+import useQueryDrawer from '@/hooks/useQueryDrawer';
 
 const useEnrolledStudentDrawer = () => {
-  return useCourseDrawer({
+  return useQueryDrawer({
     openKey: 'enrolled',
-    courseIdKey: 'enrolledCourseId',
+    idKey: 'enrolledCourseId',
   });
 };
 

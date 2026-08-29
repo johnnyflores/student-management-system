@@ -1,31 +1,10 @@
-import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs';
+import useQueryDrawer from '@/hooks/useQueryDrawer';
+
 const useEditStudentDrawer = () => {
-  const [open, setOpen] = useQueryState(
-    'edit',
-    parseAsBoolean.withDefault(false)
-  );
-
-  const [studentId, setStudentId] = useQueryState(
-    'studentId',
-    parseAsString.withDefault('')
-  );
-
-  const onOpenDrawer = (studentId: number) => {
-    setStudentId(studentId.toString());
-    setOpen(true);
-  };
-
-  const onCloseDrawer = () => {
-    setStudentId('');
-    setOpen(false);
-  };
-
-  return {
-    open,
-    studentId,
-    onOpenDrawer,
-    onCloseDrawer,
-  };
+  return useQueryDrawer({
+    openKey: 'edit',
+    idKey: 'studentId',
+  });
 };
 
 export default useEditStudentDrawer;
