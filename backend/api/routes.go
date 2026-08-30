@@ -8,9 +8,9 @@ func RegisterRoutes(
 	mux *http.ServeMux,
 	studentHandler *StudentHandler,
 	courseHandler *CourseHandler,
+	teacherHandler *TeacherHandler,
 ) {
 
-	// Student routes
 	mux.HandleFunc("/students", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
@@ -52,7 +52,6 @@ func RegisterRoutes(
 		}
 	})
 
-	// Course routes
 	mux.HandleFunc("/courses", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
@@ -88,7 +87,6 @@ func RegisterRoutes(
 		}
 	})
 
-	// Assign a student to a course
 	mux.HandleFunc("/courses/students", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
@@ -110,4 +108,46 @@ func RegisterRoutes(
 			)
 		}
 	})
+
+	mux.HandleFunc("/teachers", func(w http.ResponseWriter, r *http.Request) {
+
+		switch r.Method {
+
+		case http.MethodGet:
+			teacherHandler.GetTeachers(w, r)
+
+		case http.MethodPost:
+			teacherHandler.CreateTeacher(w, r)
+
+		default:
+			http.Error(
+				w,
+				"Method not allowed",
+				http.StatusMethodNotAllowed,
+			)
+		}
+	})
+
+	mux.HandleFunc("/teacher", func(w http.ResponseWriter, r *http.Request) {
+
+		switch r.Method {
+
+		case http.MethodGet:
+			teacherHandler.GetTeacher(w, r)
+
+		case http.MethodPut:
+			teacherHandler.UpdateTeacher(w, r)
+
+		case http.MethodDelete:
+			teacherHandler.DeleteTeacher(w, r)
+
+		default:
+			http.Error(
+				w,
+				"Method not allowed",
+				http.StatusMethodNotAllowed,
+			)
+		}
+	})
+
 }

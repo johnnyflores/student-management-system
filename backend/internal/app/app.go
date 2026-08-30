@@ -5,13 +5,11 @@ import (
 	"student-management-system/storage"
 )
 
-
 func NewStudentService() (*services.StudentService, error) {
 
 	repository := storage.JSONStorage{
 		FileName: "data/students.json",
 	}
-
 
 	students, err := repository.Load()
 
@@ -19,18 +17,17 @@ func NewStudentService() (*services.StudentService, error) {
 		return nil, err
 	}
 
-
 	service := &services.StudentService{
-		Students:    students,
+		Students:   students,
 		Repository: repository,
 	}
-
 
 	return service, nil
 }
 
 func NewCourseService(
 	studentService *services.StudentService,
+	teacherService *services.TeacherService,
 ) (*services.CourseService, error) {
 	repository := storage.JSONCourseStorage{
 		FileName: "data/courses.json",
@@ -46,6 +43,26 @@ func NewCourseService(
 		Courses:        courses,
 		Repository:     repository,
 		StudentService: studentService,
+		TeacherService: teacherService,
+	}
+
+	return service, nil
+}
+
+func NewTeacherService() (*services.TeacherService, error) {
+	repository := storage.JSONTeacherStorage{
+		FileName: "data/teachers.json",
+	}
+
+	teachers, err := repository.Load()
+
+	if err != nil {
+		return nil, err
+	}
+
+	service := &services.TeacherService{
+		Teachers:   teachers,
+		Repository: repository,
 	}
 
 	return service, nil

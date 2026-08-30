@@ -9,20 +9,30 @@ import (
 
 func main() {
 
-	// Create student service
 	studentService, err := app.NewStudentService()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Create course service
-	courseService, err := app.NewCourseService(studentService)
+	teacherService, err := app.NewTeacherService()
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Start CLI
-	cli.Start(studentService, courseService)
+	courseService, err := app.NewCourseService(
+		studentService,
+		teacherService,
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	cli.Start(
+		studentService,
+		teacherService,
+		courseService,
+	)
 }

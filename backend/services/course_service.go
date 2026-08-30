@@ -11,6 +11,7 @@ type CourseService struct {
 	Courses        []models.Course
 	Repository     storage.CourseRepository
 	StudentService *StudentService
+	TeacherService *TeacherService
 }
 
 var (
@@ -60,7 +61,6 @@ func (c *CourseService) GetCourseStudents(courseID int) ([]models.Student, error
 
 	return students, nil
 }
-
 
 func (c *CourseService) SearchCourse(id int) *models.Course {
 	for i := range c.Courses {
@@ -138,7 +138,6 @@ func (c *CourseService) AssignStudent(
 
 	return nil
 }
-
 
 func (c *CourseService) RemoveStudent(courseID int, studentID int) error {
 	for i := range c.Courses {

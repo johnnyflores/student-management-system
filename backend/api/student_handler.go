@@ -14,7 +14,6 @@ type StudentHandler struct {
 	Service *services.StudentService
 }
 
-
 func (h *StudentHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 
 	page := 1
@@ -87,7 +86,6 @@ func (h *StudentHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
-
 func (h *StudentHandler) GetStudent(w http.ResponseWriter, r *http.Request) {
 
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
@@ -97,20 +95,16 @@ func (h *StudentHandler) GetStudent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	student := h.Service.SearchStudent(id)
-
 
 	if student == nil {
 		http.Error(w, "student not found", http.StatusNotFound)
 		return
 	}
 
-
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(student)
 }
-
 
 func (h *StudentHandler) CreateStudent(
 	w http.ResponseWriter,
@@ -185,7 +179,6 @@ func (h *StudentHandler) UpdateStudent(
 		return
 	}
 
-
 	var student models.Student
 
 	err = json.NewDecoder(r.Body).Decode(&student)
@@ -195,7 +188,6 @@ func (h *StudentHandler) UpdateStudent(
 		return
 	}
 
-
 	success := h.Service.UpdateStudent(id, student)
 
 	if !success {
@@ -203,9 +195,7 @@ func (h *StudentHandler) UpdateStudent(
 		return
 	}
 
-
 	h.Service.Save()
-
 
 	updatedStudent := h.Service.SearchStudent(id)
 
@@ -226,7 +216,6 @@ func (h *StudentHandler) DeleteStudent(
 		return
 	}
 
-
 	success := h.Service.DeleteStudent(id)
 
 	if !success {
@@ -234,9 +223,7 @@ func (h *StudentHandler) DeleteStudent(
 		return
 	}
 
-
 	h.Service.Save()
-
 
 	w.WriteHeader(http.StatusNoContent)
 }

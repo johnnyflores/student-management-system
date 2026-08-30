@@ -20,30 +20,63 @@ func (h *CourseHandler) CreateCourse(
 	r *http.Request,
 ) {
 	var request struct {
-		Name    string `json:"Name"`
-		Teacher string `json:"Teacher"`
+		Name      string `json:"Name"`
+		TeacherID int    `json:"TeacherID"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
 
 	if err != nil {
-		http.Error(w, "invalid request", http.StatusBadRequest)
+		http.Error(
+			w,
+			"invalid request",
+			http.StatusBadRequest,
+		)
 		return
 	}
 
 	if strings.TrimSpace(request.Name) == "" {
-		http.Error(w, "course name is required", http.StatusBadRequest)
+		http.Error(
+			w,
+			"course name is required",
+			http.StatusBadRequest,
+		)
 		return
 	}
 
-	if strings.TrimSpace(request.Teacher) == "" {
-		http.Error(w, "teacher is required", http.StatusBadRequest)
+	if request.TeacherID < 1 {
+		http.Error(
+			w,
+			"teacher_id is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+	
+	if h.Service.TeacherService == nil {
+		http.Error(
+			w,
+			"teacher service unavailable",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	teacher := h.Service.TeacherService.SearchTeacher(request.TeacherID)
+
+	if teacher == nil {
+		http.Error(
+			w,
+			"teacher not found",
+			http.StatusNotFound,
+		)
 		return
 	}
 
 	course := models.Course{
-		Name:    strings.TrimSpace(request.Name),
-		Teacher: strings.TrimSpace(request.Teacher),
+		Name:     strings.TrimSpace(request.Name),
+		Teacher:  request.TeacherID,
+		Students: []int{},
 	}
 
 	success := h.Service.AddCourse(&course)
