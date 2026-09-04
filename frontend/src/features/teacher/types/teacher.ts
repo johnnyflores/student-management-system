@@ -4,7 +4,7 @@ export interface Teacher {
   Speciality: string;
 }
 
-export interface TeacherInput {
+export interface CreateTeacher {
   Name: string;
   Speciality: string;
 }
