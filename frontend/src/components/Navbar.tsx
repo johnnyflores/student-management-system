@@ -24,6 +24,10 @@ export default function Navbar() {
       href: ROUTES.COURSES,
       label: 'Courses',
     },
+    {
+      href: ROUTES.TEACHERS,
+      label: 'Teachers',
+    },
   ];
   return (
     <>
