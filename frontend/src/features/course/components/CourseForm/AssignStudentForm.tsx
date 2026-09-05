@@ -39,7 +39,7 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
   const { students: enrolledStudents, assignStudent } = useCourseStudents(
     courseId ? parseInt(courseId) : 0
   );
-  const { students: allStudents, loading: isLoadingStudents } = useStudents();
+  const { students: allStudents, isLoading: isLoadingStudents } = useStudents();
   const enrolledStudentIds = new Set(
     enrolledStudents.map((student) => student.ID)
   );
