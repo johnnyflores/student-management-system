@@ -1,7 +1,7 @@
 import { columns } from '@/features/student/components/StudentTable/Columns';
 import useStudents from '@/features/student/hooks/useStudents';
 import { DataTable } from '@/components/DataTable/DataTable';
-import useDebouncedSearch from '@/hooks/useDebounceSearch';
+import { useSearch } from '@/hooks/useSearch';
 
 const StudentTable = (props: {
   pageSize?: number;
@@ -18,16 +18,7 @@ const StudentTable = (props: {
     setLimit,
   } = useStudents(props.pageSize ?? 10);
 
-  const { setSearchTerm, debouncedTerm } = useDebouncedSearch('', {
-    delay: 500,
-  });
-
-  const searchTerm = debouncedTerm.toLowerCase().trim();
-
-  const data = students.filter((student) => {
-    const searchableText = Object.values(student).join(' ').toLowerCase();
-    return searchableText.includes(searchTerm);
-  });
+  const { data, setSearchTerm } = useSearch(students);
 
   const pagination = {
     totalItems: total,

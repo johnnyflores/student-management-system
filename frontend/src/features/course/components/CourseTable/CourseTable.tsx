@@ -1,21 +1,13 @@
 import { DataTable } from '@/components/DataTable/DataTable';
 import { columns } from '@/features/course/components/CourseTable/Columns';
 import useCourses from '@/features/course/hooks/useCourses';
-import useDebouncedSearch from '@/hooks/useDebounceSearch';
+
+import { useSearch } from '@/hooks/useSearch';
 
 const CourseTable = () => {
   const { courses, isLoading, isError, error } = useCourses();
 
-  const { setSearchTerm, debouncedTerm } = useDebouncedSearch('', {
-    delay: 500,
-  });
-
-  const searchTerm = debouncedTerm.toLowerCase().trim();
-
-  const data = courses.filter((course) => {
-    const searchableText = Object.values(course).join(' ').toLowerCase();
-    return searchableText.includes(searchTerm);
-  });
+  const { data, setSearchTerm } = useSearch(courses);
 
   if (isError) {
     return <div>Error: {error?.message}</div>;

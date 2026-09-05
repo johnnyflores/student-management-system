@@ -1,21 +1,12 @@
 import { DataTable } from '@/components/DataTable/DataTable';
 import { columns } from '@/features/teacher/components/TeacherTable/Columns';
 import { useTeachers } from '@/features/teacher/hooks/useTeachers';
-import useDebouncedSearch from '@/hooks/useDebounceSearch';
+import { useSearch } from '@/hooks/useSearch';
 
 const TeacherTable = () => {
   const { teachers, isLoading, isError, error } = useTeachers();
 
-  const { setSearchTerm, debouncedTerm } = useDebouncedSearch('', {
-    delay: 500,
-  });
-
-  const searchTerm = debouncedTerm.toLowerCase().trim();
-
-  const data = teachers.filter((teacher) => {
-    const searchableText = Object.values(teacher).join(' ').toLowerCase();
-    return searchableText.includes(searchTerm);
-  });
+  const { data, setSearchTerm } = useSearch(teachers);
 
   if (isError) {
     return <div>Error: {error?.message ?? 'Unknown error'}</div>;
