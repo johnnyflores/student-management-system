@@ -4,21 +4,16 @@ import {
   createStudent,
   deleteStudent,
   getStudents,
-  searchStudentsByName,
   updateStudent,
 } from '@/features/student/services/studentApi';
 
 import type { Student } from '@/features/student/types/student';
 import { getStudent } from '@/features/student/services/studentApi';
-import useDebouncedSearch from '@/features/student/hooks/useDebouncedSearch';
 
 export default function useStudents(initialLimit = 10) {
   const queryClient = useQueryClient();
 
   const [searchId, setSearchId] = useState<number | null>(null);
-  const [searchName, setSearchName] = useState('');
-
-  const debouncedSearchName = useDebouncedSearch(searchName, 500);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
@@ -28,7 +23,7 @@ export default function useStudents(initialLimit = 10) {
     queryFn: () => getStudents(page, limit),
   });
 
-  const createMutation = useMutation({
+  const createStudentMutation = useMutation({
     mutationFn: createStudent,
 
     onSuccess: () => {
@@ -38,7 +33,7 @@ export default function useStudents(initialLimit = 10) {
     },
   });
 
-  const updateMutation = useMutation({
+  const updateStudentMutation = useMutation({
     mutationFn: ({ id, student }: { id: number; student: Student }) =>
       updateStudent(id, student),
 
@@ -49,7 +44,7 @@ export default function useStudents(initialLimit = 10) {
     },
   });
 
-  const deleteMutation = useMutation({
+  const deleteStudentMutation = useMutation({
     mutationFn: deleteStudent,
 
     onSuccess: () => {
@@ -68,30 +63,19 @@ export default function useStudents(initialLimit = 10) {
   });
 
   const searchStudent = useCallback((id: number) => {
-    setSearchName('');
     setSearchId(id);
   }, []);
 
-  const nameSearchQuery = useQuery({
-    queryKey: ['students', 'search', debouncedSearchName],
-    queryFn: () => searchStudentsByName(debouncedSearchName),
-    enabled: debouncedSearchName.trim().length > 0,
-  });
-
-  const searchStudentsByNameHandler = (name: string) => {
-    setSearchName(name);
-    setSearchId(null);
-    setPage(1);
-  };
-
   const clearSearch = () => {
     setSearchId(null);
-    setSearchName('');
     setPage(1);
   };
 
   return {
     students: studentsQuery.data?.students ?? [],
+    isLoading: studentsQuery.isLoading,
+    isError: studentsQuery.isError,
+    error: studentsQuery.error,
 
     page,
     limit,
@@ -100,27 +84,23 @@ export default function useStudents(initialLimit = 10) {
     setPage,
     setLimit,
 
-    loading: studentsQuery.isLoading,
-    error: studentsQuery.error,
+    addStudent: createStudentMutation.mutateAsync,
+    isCreating: createStudentMutation.isPending,
+    createError: createStudentMutation.error,
 
-    addStudent: createMutation.mutateAsync,
-    updateStudent: updateMutation.mutateAsync,
-    removeStudent: deleteMutation.mutateAsync,
+    updateStudent: updateStudentMutation.mutateAsync,
+    isUpdating: updateStudentMutation.isPending,
+    updateError: updateStudentMutation.error,
+
+    removeStudent: deleteStudentMutation.mutateAsync,
+    isDeleting: deleteStudentMutation.isPending,
+    deleteError: deleteStudentMutation.error,
 
     searchedStudent: searchQuery.data,
-    searchLoading: searchQuery.isLoading,
+    isSearching: searchQuery.isLoading,
     searchError: searchQuery.error,
     searchStudent,
 
-    searchedStudents: nameSearchQuery.data ?? [],
-    nameSearchLoading: nameSearchQuery.isLoading,
-    nameSearchError: nameSearchQuery.error,
-    searchStudentsByName: searchStudentsByNameHandler,
-
     clearSearch,
-
-    createLoading: createMutation.isPending,
-    updateLoading: updateMutation.isPending,
-    deleteLoading: deleteMutation.isPending,
   };
 }

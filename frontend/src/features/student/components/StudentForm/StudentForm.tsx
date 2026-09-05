@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import {
   Form,
   FormControl,
@@ -13,12 +14,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import useStudents from '@/features/student/hooks/useStudents';
-
 import {
   studentSchema,
   type studentSchemaType,
-} from '@/features/student/schema/student-schema';
-import { toast } from 'sonner';
+} from '@/features/student/schemas/student.schema';
 
 const StudentForm = (props: {
   isEdit?: boolean;
@@ -30,12 +29,12 @@ const StudentForm = (props: {
   const {
     addStudent,
     updateStudent,
-    createLoading,
-    updateLoading,
-    loading,
+    isCreating,
+    isUpdating,
+    isLoading,
     searchedStudent,
     searchStudent,
-    searchLoading,
+    isSearching,
   } = useStudents();
 
   const form = useForm<studentSchemaType>({
@@ -155,15 +154,15 @@ const StudentForm = (props: {
             <Button
               type="submit"
               className="w-full"
-              disabled={createLoading || updateLoading}
+              disabled={isCreating || isUpdating}
             >
-              {createLoading || updateLoading ? (
+              {isCreating || isUpdating ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : null}
               {isEdit ? 'Update' : 'Save'}
             </Button>
           </div>
-          {(loading || searchLoading) && (
+          {(isLoading || isSearching) && (
             <div className="absolute top-0 left-0 right-0 bottom-0 bg-white/70 dark:bg-background/70 z-50 flex justify-center">
               <Loader className="h-8 w-8 animate-spin" />
             </div>

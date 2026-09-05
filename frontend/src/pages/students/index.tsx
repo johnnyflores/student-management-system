@@ -1,6 +1,6 @@
 import PageLayout from '@/components/PageLayout';
 import { Card, CardContent } from '@/components/ui/card';
-import AddStudentDrawer from '@/features/student/components/AddStudentDrawer';
+import AddStudentDrawer from '@/features/student/components/StudentDrawer/AddStudentDrawer';
 import StudentTable from '@/features/student/components/StudentTable';
 
 const Students = () => {
@@ -9,11 +9,7 @@ const Students = () => {
       title="All Students"
       subtitle="View and manage all students"
       addMarginTop
-      rightAction={
-        <div className="flex items-center gap-2">
-          <AddStudentDrawer />
-        </div>
-      }
+      rightAction={<AddStudentDrawer />}
     >
       <Card className="border-0 shadow-none">
         <CardContent>

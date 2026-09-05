@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { columns } from '@/features/student/components/StudentTable/Columns';
 import useStudents from '@/features/student/hooks/useStudents';
 import { DataTable } from '@/components/DataTable/DataTable';
+import useDebouncedSearch from '@/hooks/useDebounceSearch';
 
 const StudentTable = (props: {
   pageSize?: number;
@@ -9,26 +9,25 @@ const StudentTable = (props: {
 }) => {
   const {
     students,
-    searchStudentsByName,
     page,
     limit,
     total,
     totalPages,
-    loading,
+    isLoading,
     setPage,
     setLimit,
   } = useStudents(props.pageSize ?? 10);
 
-  const [searchText, setSearchText] = useState('');
+  const { setSearchTerm, debouncedTerm } = useDebouncedSearch('', {
+    delay: 500,
+  });
 
-  const searchStudentsByNameHandler = (name: string) => {
-    setSearchText(name);
-    searchStudentsByName(name);
-  };
+  const searchTerm = debouncedTerm.toLowerCase().trim();
 
-  const filteredStudents = students.filter((student) =>
-    student.Name.toLowerCase().includes(searchText.toLowerCase())
-  );
+  const data = students.filter((student) => {
+    const searchableText = Object.values(student).join(' ').toLowerCase();
+    return searchableText.includes(searchTerm);
+  });
 
   const pagination = {
     totalItems: total,
@@ -46,14 +45,18 @@ const StudentTable = (props: {
     setPage(1);
   };
 
+  const handleSearch = (value: string) => {
+    setSearchTerm(value);
+  };
+
   return (
     <div className="flex flex-col gap-4">
       <DataTable
-        data={filteredStudents}
-        searchPlaceholder="Search students..."
-        isLoading={loading}
+        data={data}
+        searchPlaceholder="Search ..."
+        isLoading={isLoading}
         columns={columns}
-        onSearch={searchStudentsByNameHandler}
+        onSearch={handleSearch}
         isShowPagination={props.isShowPagination}
         pagination={pagination}
         pageSizeOptions={[3, 6, 9, 20, 50]}

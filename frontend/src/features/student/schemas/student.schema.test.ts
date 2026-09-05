@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { studentSchema } from './student-schema';
+import { studentSchema } from '@/features/student/schemas/student.schema';
 
 describe('studentSchema', () => {
   it('accepts a valid student', () => {
