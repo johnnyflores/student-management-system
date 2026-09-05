@@ -1,7 +1,6 @@
-'use client';
-
-import * as React from 'react';
+import { useState } from 'react';
 import {
+  flexRender,
   useTable,
   type ColumnDef,
   type ColumnFiltersState,
@@ -25,12 +24,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Search, X } from 'lucide-react';
 import {
   features,
   type DataTableFeatures,
 } from '@/components/DataTable/DataTableFeatures';
-import { useState } from 'react';
-import { X } from 'lucide-react';
 import { EmptyState } from '@/components/EmptyState';
 import { DataTablePagination } from '@/components/DataTable/DataTablePagination';
 import { cn } from '@/lib/utils';
@@ -43,6 +41,7 @@ interface DataTableProps<TData extends RowData> {
   searchPlaceholder?: string;
   showSearch?: boolean;
   className?: string;
+  selection?: boolean;
   onSearch?: (term: string) => void;
   isLoading?: boolean;
   isShowPagination?: boolean;
@@ -62,6 +61,7 @@ export function DataTable<TData extends RowData>({
   searchPlaceholder,
   className,
   showSearch = true,
+  selection = true,
   isLoading = false,
   isShowPagination = true,
   pagination,
@@ -71,13 +71,12 @@ export function DataTable<TData extends RowData>({
   onSearch,
 }: DataTableProps<TData>) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] =
-    React.useState<ColumnVisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+    useState<ColumnVisibilityState>({});
+
+  const [rowSelection, setRowSelection] = useState({});
   const table = useTable({
     features,
     data,
@@ -86,12 +85,12 @@ export function DataTable<TData extends RowData>({
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
+      rowSelection: selection ? rowSelection : {},
     },
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
+    onRowSelectionChange: selection ? setRowSelection : undefined,
   });
 
   const handleSearch = (value: string) => {
@@ -102,6 +101,7 @@ export function DataTable<TData extends RowData>({
   const handleClear = () => {
     setSearchTerm('');
     onSearch?.('');
+    setRowSelection({});
   };
 
   return (
@@ -109,22 +109,25 @@ export function DataTable<TData extends RowData>({
       <div className="flex flex-wrap justify-between items-center gap-2 pb-4">
         <div className="flex items-center gap-2 flex-wrap flex-1">
           {showSearch && (
-            <Input
-              placeholder={searchPlaceholder}
-              value={searchTerm}
-              disabled={isLoading}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="max-w-sm"
-            />
+            <div className="relative w-full max-w-sm">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder={searchPlaceholder}
+                value={searchTerm}
+                disabled={isLoading}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-8"
+              />
+            </div>
           )}
-          {searchTerm && (
+          {(searchTerm || Object.keys(rowSelection).length > 0) && (
             <Button
               variant="ghost"
               disabled={isLoading}
               onClick={handleClear}
               className="h-8 px-2"
             >
-              <X className="mr-2 h-4 w-4" />
+              <X className="mr-1 h-4 w-4" />
               Reset
             </Button>
           )}
@@ -175,8 +178,9 @@ export function DataTable<TData extends RowData>({
                         key={header.id}
                         className="font-medium! text-[13px]!"
                       >
-                        {header.isPlaceholder ? null : (
-                          <table.FlexRender header={header} />
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
                       </TableHead>
                     );
@@ -193,7 +197,10 @@ export function DataTable<TData extends RowData>({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id} className="text-[13.3px]!">
-                        <table.FlexRender cell={cell} />
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
@@ -204,7 +211,7 @@ export function DataTable<TData extends RowData>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    <EmptyState title="No students found" description="" />
+                    <EmptyState title="No data found" description="" />
                   </TableCell>
                 </TableRow>
               )}
