@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {
   courseSchema,
   type courseSchemaType,
-} from '@/features/course/schema/course-schema';
+} from '@/features/course/schemas/course.schema';
 import {
   Form,
   FormControl,
@@ -17,6 +17,14 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTeachers } from '@/features/teacher/hooks/useTeachers';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 type CourseFormProps = {
   onCloseDrawer?: () => void;
@@ -26,11 +34,13 @@ const CourseForm = (props: CourseFormProps) => {
   const { onCloseDrawer } = props;
   const { createCourse, isCreating } = useCourses();
 
+  const { teachers, isLoading: isLoadingTeachers } = useTeachers();
+
   const form = useForm<courseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
       Name: '',
-      Teacher: '',
+      TeacherID: 0,
     },
   });
 
@@ -38,9 +48,10 @@ const CourseForm = (props: CourseFormProps) => {
     try {
       await createCourse({
         Name: values.Name,
-        Teacher: values.Teacher,
+        TeacherID: values.TeacherID,
       });
       toast.success('Course created successfully');
+      onCloseDrawer?.();
     } catch (error) {
       toast.error(
         error instanceof Error
@@ -48,8 +59,8 @@ const CourseForm = (props: CourseFormProps) => {
           : 'Something went wrong. Please try again.'
       );
     }
-    onCloseDrawer?.();
   };
+
   return (
     <div className="relative pb-10 pt-5 px-2.5">
       <Form {...form}>
@@ -70,13 +81,36 @@ const CourseForm = (props: CourseFormProps) => {
             />
             <FormField
               control={form.control}
-              name="Teacher"
+              name="TeacherID"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Teacher Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Teacher Name" {...field} />
-                  </FormControl>
+                  {isLoadingTeachers ? (
+                    <p className="text-sm text-muted-foreground">
+                      Loading teachers...
+                    </p>
+                  ) : (
+                    <Select
+                      onValueChange={(value) => field.onChange(Number(value))}
+                      value={field.value ? String(field.value) : ''}
+                    >
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a teacher" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {teachers.map((teacher) => (
+                          <SelectItem
+                            key={teacher.ID}
+                            value={String(teacher.ID)}
+                          >
+                            {teacher.Name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
@@ -84,7 +118,7 @@ const CourseForm = (props: CourseFormProps) => {
           </div>
           <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
             <Button type="submit" className="w-full" disabled={isCreating}>
-              {isCreating ? <Loader className="h-4 w-4 animate-spin" /> : null}
+              {isCreating && <Loader className="h-4 w-4 animate-spin" />}
               {isCreating ? 'Creating...' : 'Create Course'}
             </Button>
           </div>

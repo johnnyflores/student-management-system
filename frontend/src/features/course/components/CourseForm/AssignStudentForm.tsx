@@ -21,8 +21,8 @@ import useStudents from '@/features/student/hooks/useStudents';
 import useCourseStudents from '@/features/course/hooks/useCourseStudents';
 import {
   assignStudentSchema,
-  type assignStudentSchemaType,
-} from '@/features/course/schema/assign-student-schema';
+  type AssignStudentSchemaType,
+} from '@/features/course/schemas/assignStudent.schema';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
 
@@ -48,16 +48,16 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
     (student) => !enrolledStudentIds.has(student.ID)
   );
 
-  const form = useForm<assignStudentSchemaType>({
+  const form = useForm<AssignStudentSchemaType>({
     resolver: zodResolver(assignStudentSchema),
     defaultValues: {
-      Student: 0,
+      StudentID: 0,
     },
   });
 
-  const onSubmit = async (values: assignStudentSchemaType) => {
+  const onSubmit = async (values: AssignStudentSchemaType) => {
     try {
-      await assignStudent(values.Student, {
+      await assignStudent(values.StudentID, {
         onSuccess: () => {
           toast.success('Student assigned successfully');
           onCloseDrawer?.();
@@ -97,7 +97,7 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
             </FormItem>
             <FormField
               control={form.control}
-              name="Student"
+              name="StudentID"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Select Student</FormLabel>

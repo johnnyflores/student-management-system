@@ -61,11 +61,11 @@ export default function useCourses() {
     isError: courseQuery.isError,
     error: courseQuery.error,
 
-    createCourse: createCourseMutation.mutate,
+    createCourse: createCourseMutation.mutateAsync,
     isCreating: createCourseMutation.isPending,
     createError: createCourseMutation.error,
 
-    assignStudent: assignStudentMutation.mutate,
+    assignStudent: assignStudentMutation.mutateAsync,
     isAssigning: assignStudentMutation.isPending,
     assignError: assignStudentMutation.error,
 

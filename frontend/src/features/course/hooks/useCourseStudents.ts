@@ -50,11 +50,11 @@ export default function useCourseStudents(courseId: number) {
     isError: studentsQuery.isError,
     error: studentsQuery.error,
 
-    assignStudent: assignMutation.mutate,
+    assignStudent: assignMutation.mutateAsync,
     isAssigning: assignMutation.isPending,
     assignError: assignMutation.error,
 
-    removeStudent: removeMutation.mutate,
+    removeStudent: removeMutation.mutateAsync,
     isRemoving: removeMutation.isPending,
     removeError: removeMutation.error,
   };
