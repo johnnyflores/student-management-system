@@ -5,10 +5,12 @@ import type {
 } from '@/features/student/types/student';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
 
 export async function getStudents(
-  page: number = 1,
-  limit: number = 10
+  page: number = DEFAULT_PAGE,
+  limit: number = DEFAULT_PAGE_SIZE
 ): Promise<PaginatedStudents> {
   const response = await fetch(
     `${API_URL}/students?page=${page}&limit=${limit}`

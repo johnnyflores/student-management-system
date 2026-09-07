@@ -3,6 +3,8 @@ import useStudents from '@/features/student/hooks/useStudents';
 import { DataTable } from '@/components/DataTable/DataTable';
 import { useSearch } from '@/hooks/useSearch';
 
+const DEFAULT_PAGE_SIZE = 3;
+
 const StudentTable = (props: {
   pageSize?: number;
   isShowPagination?: boolean;
@@ -16,7 +18,7 @@ const StudentTable = (props: {
     isLoading,
     setPage,
     setLimit,
-  } = useStudents(props.pageSize ?? 10);
+  } = useStudents(props.pageSize ?? DEFAULT_PAGE_SIZE);
 
   const { data, setSearchTerm } = useSearch(students);
 
@@ -26,6 +28,14 @@ const StudentTable = (props: {
     pageNumber: page,
     pageSize: limit,
   };
+
+  const pageSizeOptions = [
+    ...Array.from(
+      { length: Math.floor(total / DEFAULT_PAGE_SIZE) },
+      (_, i) => (i + 1) * DEFAULT_PAGE_SIZE
+    ),
+    ...(total % DEFAULT_PAGE_SIZE !== 0 ? [total] : []),
+  ].filter((value, index, array) => array.indexOf(value) === index);
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
@@ -50,7 +60,7 @@ const StudentTable = (props: {
         onSearch={handleSearch}
         isShowPagination={props.isShowPagination}
         pagination={pagination}
-        pageSizeOptions={[3, 6, 9, 20, 50]}
+        pageSizeOptions={pageSizeOptions}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
       />
