@@ -176,3 +176,47 @@ func (c *CourseService) Load() error {
 
 	return nil
 }
+
+func (s *CourseService) GetCoursesPaginated(
+	page int,
+	limit int,
+) models.PaginatedCourses {
+
+	if page < 1 {
+		page = 1
+	}
+
+	if limit < 1 {
+		limit = 10
+	}
+
+	total := len(s.Courses)
+
+	totalPages := (total + limit -1) / limit
+
+	start := (page -1) * limit
+
+	if start >= total {
+		return models.PaginatedCourses{
+			Courses: []models.Course{},
+			Page: page,
+			Limit: limit,
+			Total: total,
+			TotalPages: totalPages,
+		}
+	}
+
+	end := start + limit
+
+	if end > total {
+		end = total
+	}
+
+	return models.PaginatedCourses{
+		Courses: s.Courses[start:end],
+		Page: page,
+		Limit: limit,
+		Total: total,
+		TotalPages: totalPages,
+	}
+}

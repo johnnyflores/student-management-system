@@ -105,15 +105,76 @@ func (h *CourseHandler) CreateCourse(
 	json.NewEncoder(w).Encode(course)
 }
 
-func (h *CourseHandler) GetCourses(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	courses := h.Service.GetCourses()
+func (h *CourseHandler) GetCourses(w http.ResponseWriter, r *http.Request) {
+
+	page := 1
+	limit := 10
+
+	pageParam := r.URL.Query().Get("page")
+	limitParam := r.URL.Query().Get("limit")
+	name := r.URL.Query().Get("name")
+
+	var err error
+
+	if pageParam != "" {
+		page, err = strconv.Atoi(pageParam)
+
+		if err != nil || page < 1 {
+			http.Error(w, "invalid page", http.StatusBadRequest)
+			return
+		}
+	}
+
+	if limitParam != "" {
+		limit, err = strconv.Atoi(limitParam)
+
+		if err != nil || limit < 1 {
+			http.Error(w, "invalid limit", http.StatusBadRequest)
+			return
+		}
+	}
+
+	var result models.PaginatedCourses
+
+	if name != "" {
+		courses := h.Service.SearchCoursesByName(name)
+
+		total := len(courses)
+		totalPages := (total + limit - 1) / limit
+
+		start := (page - 1) * limit
+
+		if start >= total {
+			result = models.PaginatedCourses{
+				Courses:   []models.Course{},
+				Page:       page,
+				Limit:      limit,
+				Total:      total,
+				TotalPages: totalPages,
+			}
+		} else {
+			end := start + limit
+
+			if end > total {
+				end = total
+			}
+
+			result = models.PaginatedCourses{
+				Courses:   courses[start:end],
+				Page:       page,
+				Limit:      limit,
+				Total:      total,
+				TotalPages: totalPages,
+			}
+		}
+
+	} else {
+		result = h.Service.GetCoursesPaginated(page, limit)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(courses)
+	json.NewEncoder(w).Encode(result)
 }
 
 func (h *CourseHandler) GetCourse(
