@@ -18,3 +18,11 @@ export interface CourseWithStudents {
   TeacherID: number;
   Students: Student[];
 }
+
+export interface PaginatedCourses {
+  courses: Course[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}

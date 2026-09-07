@@ -1,10 +1,21 @@
-import type { Course, CreateCourse } from '@/features/course/types/course';
+import type {
+  Course,
+  CreateCourse,
+  PaginatedCourses,
+} from '@/features/course/types/course';
 import type { Student } from '@/features/student/types/student';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
 
-export async function getCourses(): Promise<Course[]> {
-  const response = await fetch(`${API_URL}/courses`);
+export async function getCourses(
+  page: number = DEFAULT_PAGE,
+  limit: number = DEFAULT_PAGE_SIZE
+): Promise<PaginatedCourses> {
+  const response = await fetch(
+    `${API_URL}/courses?page=${page}&limit=${limit}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch courses');

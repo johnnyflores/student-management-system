@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   assignStudent,
@@ -6,12 +7,15 @@ import {
   removeStudent,
 } from '@/features/course/services/courseApi';
 
-export default function useCourses() {
+export default function useCourses(initialLimit = 10) {
   const queryClient = useQueryClient();
 
-  const courseQuery = useQuery({
-    queryKey: ['courses'],
-    queryFn: getCourses,
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(initialLimit);
+
+  const coursesQuery = useQuery({
+    queryKey: ['courses', page, limit],
+    queryFn: () => getCourses(page, limit),
   });
 
   const createCourseMutation = useMutation({
@@ -56,10 +60,10 @@ export default function useCourses() {
   });
 
   return {
-    courses: courseQuery.data ?? [],
-    isLoading: courseQuery.isLoading,
-    isError: courseQuery.isError,
-    error: courseQuery.error,
+    courses: coursesQuery.data?.courses ?? [],
+    isLoading: coursesQuery.isLoading,
+    isError: coursesQuery.isError,
+    error: coursesQuery.error,
 
     createCourse: createCourseMutation.mutateAsync,
     isCreating: createCourseMutation.isPending,
@@ -72,5 +76,12 @@ export default function useCourses() {
     removeStudent: removeStudentMutation.mutateAsync,
     isRemoving: removeStudentMutation.isPending,
     removeError: removeStudentMutation.error,
+
+    page,
+    limit,
+    total: coursesQuery.data?.total ?? 0,
+    totalPages: coursesQuery.data?.totalPages ?? 0,
+    setPage,
+    setLimit,
   };
 }
