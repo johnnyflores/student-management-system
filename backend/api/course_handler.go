@@ -9,6 +9,7 @@ import (
 
 	"student-management-system/models"
 	"student-management-system/services"
+	"student-management-system/utils"
 )
 
 type CourseHandler struct {
@@ -134,40 +135,11 @@ func (h *CourseHandler) GetCourses(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var result models.PaginatedCourses
+	var result models.Paginated[models.Course]
 
 	if name != "" {
 		courses := h.Service.SearchCoursesByName(name)
-
-		total := len(courses)
-		totalPages := (total + limit - 1) / limit
-
-		start := (page - 1) * limit
-
-		if start >= total {
-			result = models.PaginatedCourses{
-				Courses:   []models.Course{},
-				Page:       page,
-				Limit:      limit,
-				Total:      total,
-				TotalPages: totalPages,
-			}
-		} else {
-			end := start + limit
-
-			if end > total {
-				end = total
-			}
-
-			result = models.PaginatedCourses{
-				Courses:   courses[start:end],
-				Page:       page,
-				Limit:      limit,
-				Total:      total,
-				TotalPages: totalPages,
-			}
-		}
-
+		result = utils.Paginate(courses, page, limit)
 	} else {
 		result = h.Service.GetCoursesPaginated(page, limit)
 	}

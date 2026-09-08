@@ -4,6 +4,7 @@ import (
 	"strings"
 	"student-management-system/models"
 	"student-management-system/storage"
+	"student-management-system/utils"
 )
 
 type StudentService struct {
@@ -111,43 +112,6 @@ func (s *StudentService) Save() error {
 func (s *StudentService) GetStudentsPaginated(
 	page int,
 	limit int,
-) models.PaginatedStudents {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if limit < 1 {
-		limit = 10
-	}
-
-	total := len(s.Students)
-
-	totalPages := (total + limit - 1) / limit
-
-	start := (page - 1) * limit
-
-	if start >= total {
-		return models.PaginatedStudents{
-			Students:   []models.Student{},
-			Page:       page,
-			Limit:      limit,
-			Total:      total,
-			TotalPages: totalPages,
-		}
-	}
-
-	end := start + limit
-
-	if end > total {
-		end = total
-	}
-
-	return models.PaginatedStudents{
-		Students:   s.Students[start:end],
-		Page:       page,
-		Limit:      limit,
-		Total:      total,
-		TotalPages: totalPages,
-	}
+) models.Paginated[models.Student] {
+	return utils.Paginate(s.Students, page, limit)
 }

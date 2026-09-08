@@ -5,6 +5,7 @@ import (
 	"strings"
 	"student-management-system/models"
 	"student-management-system/storage"
+	"student-management-system/utils"
 )
 
 type CourseService struct {
@@ -180,43 +181,6 @@ func (c *CourseService) Load() error {
 func (s *CourseService) GetCoursesPaginated(
 	page int,
 	limit int,
-) models.PaginatedCourses {
-
-	if page < 1 {
-		page = 1
-	}
-
-	if limit < 1 {
-		limit = 10
-	}
-
-	total := len(s.Courses)
-
-	totalPages := (total + limit -1) / limit
-
-	start := (page -1) * limit
-
-	if start >= total {
-		return models.PaginatedCourses{
-			Courses: []models.Course{},
-			Page: page,
-			Limit: limit,
-			Total: total,
-			TotalPages: totalPages,
-		}
-	}
-
-	end := start + limit
-
-	if end > total {
-		end = total
-	}
-
-	return models.PaginatedCourses{
-		Courses: s.Courses[start:end],
-		Page: page,
-		Limit: limit,
-		Total: total,
-		TotalPages: totalPages,
-	}
+) models.Paginated[models.Course] {
+	return utils.Paginate(s.Courses, page, limit)
 }

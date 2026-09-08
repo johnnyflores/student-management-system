@@ -8,6 +8,7 @@ import (
 
 	"student-management-system/models"
 	"student-management-system/services"
+	"student-management-system/utils"
 )
 
 type StudentHandler struct {
@@ -15,7 +16,6 @@ type StudentHandler struct {
 }
 
 func (h *StudentHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
-
 	page := 1
 	limit := 10
 
@@ -43,40 +43,11 @@ func (h *StudentHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var result models.PaginatedStudents
+	var result models.Paginated[models.Student]
 
 	if name != "" {
 		students := h.Service.SearchStudentsByName(name)
-
-		total := len(students)
-		totalPages := (total + limit - 1) / limit
-
-		start := (page - 1) * limit
-
-		if start >= total {
-			result = models.PaginatedStudents{
-				Students:   []models.Student{},
-				Page:       page,
-				Limit:      limit,
-				Total:      total,
-				TotalPages: totalPages,
-			}
-		} else {
-			end := start + limit
-
-			if end > total {
-				end = total
-			}
-
-			result = models.PaginatedStudents{
-				Students:   students[start:end],
-				Page:       page,
-				Limit:      limit,
-				Total:      total,
-				TotalPages: totalPages,
-			}
-		}
-
+		result = utils.Paginate(students, page, limit)
 	} else {
 		result = h.Service.GetStudentsPaginated(page, limit)
 	}
