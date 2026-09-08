@@ -12,7 +12,7 @@ export interface CreateStudent {
 }
 
 export interface PaginatedStudents {
-  students: Student[];
+  items: Student[];
   page: number;
   limit: number;
   total: number;

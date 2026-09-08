@@ -72,7 +72,7 @@ export default function useStudents(initialLimit = 10) {
   };
 
   return {
-    students: studentsQuery.data?.students ?? [],
+    students: studentsQuery.data?.items ?? [],
     isLoading: studentsQuery.isLoading,
     isError: studentsQuery.isError,
     error: studentsQuery.error,

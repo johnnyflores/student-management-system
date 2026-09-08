@@ -20,7 +20,7 @@ export interface CourseWithStudents {
 }
 
 export interface PaginatedCourses {
-  courses: Course[];
+  items: Course[];
   page: number;
   limit: number;
   total: number;

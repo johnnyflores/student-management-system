@@ -60,7 +60,7 @@ export default function useCourses(initialLimit = 10) {
   });
 
   return {
-    courses: coursesQuery.data?.courses ?? [],
+    courses: coursesQuery.data?.items ?? [],
     isLoading: coursesQuery.isLoading,
     isError: coursesQuery.isError,
     error: coursesQuery.error,
