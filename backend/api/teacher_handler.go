@@ -8,29 +8,53 @@ import (
 
 	"student-management-system/models"
 	"student-management-system/services"
+	"student-management-system/utils"
 )
 
 type TeacherHandler struct {
 	Service *services.TeacherService
 }
 
-func (h *TeacherHandler) GetTeachers(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
+func (h *TeacherHandler) GetTeachers(w http.ResponseWriter, r *http.Request) {
+	page := 1
+	limit := 10
+
+	pageParam := r.URL.Query().Get("page")
+	limitParam := r.URL.Query().Get("limit")
 	name := r.URL.Query().Get("name")
 
-	var teachers []models.Teacher
+	var err error
+
+	if pageParam != "" {
+		page, err = strconv.Atoi(pageParam)
+
+		if err != nil || page < 1 {
+			http.Error(w, "invalid page", http.StatusBadRequest)
+			return
+		}
+	}
+
+	if limitParam != "" {
+		limit, err = strconv.Atoi(limitParam)
+
+		if err != nil || limit < 1 {
+			http.Error(w, "invalid limit", http.StatusBadRequest)
+			return
+		}
+	}
+
+	var result models.Paginated[models.Teacher]
 
 	if name != "" {
-		teachers = h.Service.SearchTeachersByName(name)
+		teachers := h.Service.SearchTeachersByName(name)
+		result = utils.Paginate(teachers, page, limit)
 	} else {
-		teachers = h.Service.GetTeachers()
+		result = h.Service.GetTeachersPaginated(page, limit)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 
-	json.NewEncoder(w).Encode(teachers)
+	json.NewEncoder(w).Encode(result)
 }
 
 func (h *TeacherHandler) GetTeacher(

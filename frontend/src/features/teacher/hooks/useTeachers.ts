@@ -9,13 +9,16 @@ import {
 } from '@/features/teacher/services/teacherApi';
 import type { CreateTeacher } from '@/features/teacher/types/teacher';
 
-export function useTeachers() {
+export function useTeachers(initialLimit = 10) {
   const queryClient = useQueryClient();
   const [searchId, setSearchId] = useState<number | null>(null);
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(initialLimit);
+
   const teacherQuery = useQuery({
-    queryKey: ['teachers'],
-    queryFn: getTeachers,
+    queryKey: ['teachers', page, limit],
+    queryFn: () => getTeachers(page, limit),
   });
 
   const createTeacherMutation = useMutation({
@@ -60,10 +63,17 @@ export function useTeachers() {
   }, []);
 
   return {
-    teachers: teacherQuery.data ?? [],
+    teachers: teacherQuery.data?.items ?? [],
     isLoading: teacherQuery.isLoading,
     isError: teacherQuery.isError,
     error: teacherQuery.error,
+
+    page,
+    limit,
+    total: teacherQuery.data?.total ?? 0,
+    totalPages: teacherQuery.data?.totalPages ?? 0,
+    setPage,
+    setLimit,
 
     createTeacher: createTeacherMutation.mutateAsync,
     isCreating: createTeacherMutation.isPending,

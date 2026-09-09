@@ -1,9 +1,19 @@
-import type { Teacher } from '@/features/teacher/types/teacher';
+import type {
+  Teacher,
+  PaginatedTeachers,
+} from '@/features/teacher/types/teacher';
 
 const API_URL = import.meta.env.VITE_API_URL;
+const DEFAULT_PAGE = 1;
+const DEFAULT_PAGE_SIZE = 10;
 
-export async function getTeachers(): Promise<Teacher[]> {
-  const response = await fetch(`${API_URL}/teachers`);
+export async function getTeachers(
+  page: number = DEFAULT_PAGE,
+  limit: number = DEFAULT_PAGE_SIZE
+): Promise<PaginatedTeachers> {
+  const response = await fetch(
+    `${API_URL}/teachers?page=${page}&limit=${limit}`
+  );
 
   if (!response.ok) {
     throw new Error('Failed to fetch teachers');

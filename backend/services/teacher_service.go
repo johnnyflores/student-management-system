@@ -5,6 +5,7 @@ import (
 
 	"student-management-system/models"
 	"student-management-system/storage"
+	"student-management-system/utils"
 )
 
 type TeacherService struct {
@@ -107,4 +108,11 @@ func (t *TeacherService) Load() error {
 	t.Teachers = teachers
 
 	return nil
+}
+
+func (t *TeacherService) GetTeachersPaginated(
+	page int,
+	limit int,
+) models.Paginated[models.Teacher] {
+	return utils.Paginate(t.Teachers, page, limit)
 }
