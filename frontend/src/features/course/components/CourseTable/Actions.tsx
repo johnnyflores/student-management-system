@@ -15,8 +15,8 @@ import useAssignStudentDrawer from '@/features/course/hooks/useAssignStudentDraw
 import useEnrolledStudentDrawer from '@/features/course/hooks/useEnrolledStudentDrawer';
 import { Link } from 'react-router-dom';
 
-const Actions = ({ row }: { row: { original: { ID: number } } }) => {
-  const courseId = row.original.ID;
+const Actions = ({ row }: { row: { original: { id: number } } }) => {
+  const courseId = row.original.id;
 
   const { onOpenDrawer: openAssignStudentDrawer } = useAssignStudentDrawer();
 

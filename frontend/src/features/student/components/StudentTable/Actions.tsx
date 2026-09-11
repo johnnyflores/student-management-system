@@ -14,9 +14,9 @@ import useStudents from '@/features/student/hooks/useStudents';
 import ConfirmDialog from '@/components/Dialogs/ConfirmDialog';
 import useEditStudentDrawer from '@/features/student/hooks/useEditStudentDrawer';
 
-const Actions = ({ row }: { row: { original: { ID: number } } }) => {
+const Actions = ({ row }: { row: { original: { id: number } } }) => {
   const { removeStudent } = useStudents();
-  const studentId = row.original.ID;
+  const studentId = row.original.id;
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);

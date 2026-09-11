@@ -4,9 +4,9 @@ import { studentSchema } from '@/features/student/schemas/student.schema';
 describe('studentSchema', () => {
   it('accepts a valid student', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 25,
-      Grade: 'A',
+      name: 'John',
+      age: 25,
+      grade: 'A',
     });
 
     expect(result.success).toBe(true);
@@ -14,9 +14,9 @@ describe('studentSchema', () => {
 
   it('rejects an empty name', () => {
     const result = studentSchema.safeParse({
-      Name: '',
-      Age: 25,
-      Grade: 'A',
+      name: '',
+      age: 25,
+      grade: 'A',
     });
 
     expect(result.success).toBe(false);
@@ -24,9 +24,9 @@ describe('studentSchema', () => {
 
   it('rejects age 0', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 0,
-      Grade: 'A',
+      name: 'John',
+      age: 0,
+      grade: 'A',
     });
 
     expect(result.success).toBe(false);
@@ -34,9 +34,9 @@ describe('studentSchema', () => {
 
   it('rejects age greater than 100', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 101,
-      Grade: 'A',
+      name: 'John',
+      age: 101,
+      grade: 'A',
     });
 
     expect(result.success).toBe(false);
@@ -44,9 +44,9 @@ describe('studentSchema', () => {
 
   it('accepts age 1', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 1,
-      Grade: 'A',
+      name: 'John',
+      age: 1,
+      grade: 'A',
     });
 
     expect(result.success).toBe(true);
@@ -54,9 +54,9 @@ describe('studentSchema', () => {
 
   it('accepts age 100', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 100,
-      Grade: 'A',
+      name: 'John',
+      age: 100,
+      grade: 'A',
     });
 
     expect(result.success).toBe(true);
@@ -64,9 +64,9 @@ describe('studentSchema', () => {
 
   it('rejects a decimal age', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 25.5,
-      Grade: 'A',
+      name: 'John',
+      age: 25.5,
+      grade: 'A',
     });
 
     expect(result.success).toBe(false);
@@ -74,9 +74,9 @@ describe('studentSchema', () => {
 
   it('rejects an empty grade', () => {
     const result = studentSchema.safeParse({
-      Name: 'John',
-      Age: 25,
-      Grade: '',
+      name: 'John',
+      age: 25,
+      grade: '',
     });
 
     expect(result.success).toBe(false);

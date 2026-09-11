@@ -1,8 +1,8 @@
 import z from 'zod';
 
 export const studentSchema = z.object({
-  Name: z.string().min(1, { message: 'Name is required' }),
-  Age: z
+  name: z.string().min(1, { message: 'Name is required' }),
+  age: z
     .number({
       error: 'Age is required',
     })
@@ -15,7 +15,7 @@ export const studentSchema = z.object({
     .max(100, {
       message: 'Age must be between 1 and 100',
     }),
-  Grade: z.string().min(1, { message: 'Grade is required' }),
+  grade: z.string().min(1, { message: 'Grade is required' }),
 });
 
 export type studentSchemaType = z.infer<typeof studentSchema>;

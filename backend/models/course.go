@@ -1,8 +1,8 @@
 package models
 
 type Course struct {
-	ID       int    `json:"ID"`
-	Name     string `json:"Name"`
-	Teacher  int    `json:"Teacher"`
-	Students []int  `json:"Students"`
+	ID         int    `json:"id"`
+	Name       string `json:"name"`
+	TeacherID  int    `json:"teacherId"`
+	StudentIDs []int  `json:"studentIds"`
 }

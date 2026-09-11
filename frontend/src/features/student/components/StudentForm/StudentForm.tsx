@@ -40,9 +40,9 @@ const StudentForm = (props: {
   const form = useForm<studentSchemaType>({
     resolver: zodResolver(studentSchema),
     defaultValues: {
-      Name: '',
-      Age: 0,
-      Grade: '',
+      name: '',
+      age: 0,
+      grade: '',
     },
   });
 
@@ -55,9 +55,9 @@ const StudentForm = (props: {
   useEffect(() => {
     if (isEdit && searchedStudent) {
       form.reset({
-        Name: searchedStudent.Name,
-        Age: searchedStudent.Age,
-        Grade: searchedStudent.Grade,
+        name: searchedStudent.name,
+        age: searchedStudent.age,
+        grade: searchedStudent.grade,
       });
     }
   }, [isEdit, searchedStudent, form]);
@@ -68,18 +68,18 @@ const StudentForm = (props: {
         await updateStudent({
           id: Number(studentId),
           student: {
-            ID: Number(studentId),
-            Name: values.Name,
-            Age: values.Age,
-            Grade: values.Grade,
+            id: Number(studentId),
+            name: values.name,
+            age: values.age,
+            grade: values.grade,
           },
         });
         toast.success('Student updated successfully');
       } else {
         await addStudent({
-          Name: values.Name,
-          Age: values.Age,
-          Grade: values.Grade,
+          name: values.name,
+          age: values.age,
+          grade: values.grade,
         });
         toast.success('Student added successfully');
       }
@@ -107,7 +107,7 @@ const StudentForm = (props: {
             )}
             <FormField
               control={form.control}
-              name="Name"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Name</FormLabel>
@@ -120,7 +120,7 @@ const StudentForm = (props: {
             />
             <FormField
               control={form.control}
-              name="Age"
+              name="age"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Age</FormLabel>
@@ -138,7 +138,7 @@ const StudentForm = (props: {
             />
             <FormField
               control={form.control}
-              name="Grade"
+              name="grade"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Grade</FormLabel>

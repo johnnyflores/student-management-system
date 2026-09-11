@@ -1,10 +1,10 @@
 import type { Student } from '@/features/student/types/student';
 
 export interface Course {
-  ID: number;
-  Name: string;
-  TeacherID: number;
-  Students: number[];
+  id: number;
+  name: string;
+  teacherId: number;
+  studentIds: number[];
 }
 
 export interface CreateCourse {
@@ -13,10 +13,10 @@ export interface CreateCourse {
 }
 
 export interface CourseWithStudents {
-  ID: number;
-  Name: string;
-  TeacherID: number;
-  Students: Student[];
+  id: number;
+  name: string;
+  teacherId: number;
+  studentIds: Student[];
 }
 
 export interface PaginatedCourses {

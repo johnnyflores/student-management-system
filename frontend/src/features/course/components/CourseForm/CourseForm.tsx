@@ -102,10 +102,10 @@ const CourseForm = (props: CourseFormProps) => {
                       <SelectContent>
                         {teachers.map((teacher) => (
                           <SelectItem
-                            key={teacher.ID}
-                            value={String(teacher.ID)}
+                            key={teacher.id}
+                            value={String(teacher.id)}
                           >
-                            {teacher.Name}
+                            {teacher.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

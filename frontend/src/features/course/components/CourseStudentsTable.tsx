@@ -120,21 +120,21 @@ const CourseStudentsTable = ({
                 </TableHeader>
                 <TableBody>
                   {students.map((student) => (
-                    <TableRow key={student.ID}>
+                    <TableRow key={student.id}>
                       <TableCell className="font-medium">
-                        {student.ID}
+                        {student.id}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
                             <UserRound className="size-4 text-primary" />
                           </div>
-                          <span>{student.Name}</span>
+                          <span>{student.name}</span>
                         </div>
                       </TableCell>
-                      <TableCell>{student.Age}</TableCell>
+                      <TableCell>{student.age}</TableCell>
                       <TableCell>
-                        <Badge variant="outline">{student.Grade}</Badge>
+                        <Badge variant="outline">{student.grade}</Badge>
                       </TableCell>
                     </TableRow>
                   ))}

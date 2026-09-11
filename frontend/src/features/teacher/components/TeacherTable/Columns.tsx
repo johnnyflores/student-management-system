@@ -8,15 +8,15 @@ import type { Teacher } from '@/features/teacher/types/teacher';
 const columnHelper = createColumnHelper<DataTableFeatures, Teacher>();
 
 export const columns = columnHelper.columns([
-  columnHelper.accessor('ID', {
+  columnHelper.accessor('id', {
     header: 'ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Name', {
+  columnHelper.accessor('name', {
     header: 'Name',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Speciality', {
+  columnHelper.accessor('speciality', {
     header: 'Speciality',
     cell: (info) => info.getValue(),
   }),

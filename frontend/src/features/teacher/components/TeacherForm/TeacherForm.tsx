@@ -39,8 +39,8 @@ const TeacherForm = (props: {
   const form = useForm<TeacherSchemaType>({
     resolver: zodResolver(teacherSchema),
     defaultValues: {
-      Name: '',
-      Speciality: '',
+      name: '',
+      speciality: '',
     },
   });
 
@@ -53,8 +53,8 @@ const TeacherForm = (props: {
   useEffect(() => {
     if (isEdit && searchResult) {
       form.reset({
-        Name: searchResult.Name,
-        Speciality: searchResult.Speciality,
+        name: searchResult.name,
+        speciality: searchResult.speciality,
       });
     }
   }, [isEdit, searchResult, form]);
@@ -65,15 +65,15 @@ const TeacherForm = (props: {
         await updateTeacher({
           id: Number(teacherId),
           teacher: {
-            Name: values.Name,
-            Speciality: values.Speciality,
+            name: values.name,
+            speciality: values.speciality,
           },
         });
         toast.success('Teacher updated successfully');
       } else {
         await createTeacher({
-          Name: values.Name,
-          Speciality: values.Speciality,
+          name: values.name,
+          speciality: values.speciality,
         });
         toast.success('Teacher created successfully');
       }
@@ -102,7 +102,7 @@ const TeacherForm = (props: {
             )}
             <FormField
               control={form.control}
-              name="Name"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Teacher Name</FormLabel>
@@ -115,7 +115,7 @@ const TeacherForm = (props: {
             />
             <FormField
               control={form.control}
-              name="Speciality"
+              name="speciality"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Speciality</FormLabel>

@@ -19,7 +19,7 @@ const AssignCourseDrawer = () => {
     return null;
   }
 
-  const course = courses.find((course) => course.ID === parseInt(courseId));
+  const course = courses.find((course) => course.id === parseInt(courseId));
 
   if (!course) {
     return null;
@@ -41,8 +41,8 @@ const AssignCourseDrawer = () => {
         </DrawerHeader>
         <AssignStudentForm
           courseId={courseId}
-          courseName={course.Name}
-          teacher={course.Teacher}
+          courseName={course.name}
+          teacherId={course.teacherId}
           onCloseDrawer={onCloseDrawer}
         />
       </DrawerContent>

@@ -40,7 +40,7 @@ beforeEach(() => {
   vi.clearAllMocks();
 
   vi.mocked(getStudents).mockResolvedValue({
-    students: [],
+    items: [],
     page: 1,
     limit: 10,
     total: 0,
@@ -71,10 +71,10 @@ describe('useStudents', () => {
 
   it('Search for a student by ID', async () => {
     vi.mocked(getStudent).mockResolvedValue({
-      ID: 101,
-      Name: 'Bob Tom',
-      Age: 21,
-      Grade: 'Science',
+      id: 101,
+      name: 'Bob Tom',
+      age: 21,
+      grade: 'Science',
     });
 
     const { result } = renderHook(() => useStudents(), {
@@ -91,23 +91,23 @@ describe('useStudents', () => {
 
     await waitFor(() => {
       expect(result.current.searchedStudent).toEqual({
-        ID: 101,
-        Name: 'Bob Tom',
-        Age: 21,
-        Grade: 'Science',
+        id: 101,
+        name: 'Bob Tom',
+        age: 21,
+        grade: 'Science',
       });
     });
   });
 
   it('Add a student', async () => {
     const student = {
-      Name: 'John',
-      Age: 25,
-      Grade: 'A',
+      name: 'John',
+      age: 25,
+      grade: 'A',
     };
 
     vi.mocked(createStudent).mockResolvedValue({
-      ID: 109,
+      id: 109,
       ...student,
     });
 
@@ -128,10 +128,10 @@ describe('useStudents', () => {
 
   it('Update a student', async () => {
     const student = {
-      ID: 101,
-      Name: 'Bob Updated',
-      Age: 22,
-      Grade: 'A',
+      id: 101,
+      name: 'Bob Updated',
+      age: 22,
+      grade: 'A',
     };
 
     vi.mocked(updateStudent).mockResolvedValue(student);

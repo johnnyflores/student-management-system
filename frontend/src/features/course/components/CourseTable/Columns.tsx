@@ -8,22 +8,22 @@ import Actions from '@/features/course/components/CourseTable/Actions';
 const columnHelper = createColumnHelper<DataTableFeatures, Course>();
 
 export const columns = columnHelper.columns([
-  columnHelper.accessor('ID', {
+  columnHelper.accessor('id', {
     header: 'ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Name', {
+  columnHelper.accessor('name', {
     header: 'Name',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Teacher', {
-    header: 'Teacher',
+  columnHelper.accessor('teacherId', {
+    header: 'Teacher ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Students', {
+  columnHelper.accessor('studentIds', {
     header: 'Students ID',
     cell: (info) =>
-      info.getValue().length
+      info.getValue()?.length
         ? info.getValue().join(', ')
         : 'No students enrolled',
   }),

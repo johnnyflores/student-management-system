@@ -29,23 +29,23 @@ import { Loader } from 'lucide-react';
 type AssignStudentFormProps = {
   courseId?: string;
   courseName?: string;
-  teacher?: string;
+  teacherId?: number;
   onCloseDrawer?: () => void;
 };
 
 const AssignStudentForm = (props: AssignStudentFormProps) => {
-  const { courseId, courseName, teacher, onCloseDrawer } = props;
+  const { courseId, courseName, teacherId, onCloseDrawer } = props;
 
   const { students: enrolledStudents, assignStudent } = useCourseStudents(
     courseId ? parseInt(courseId) : 0
   );
   const { students: allStudents, isLoading: isLoadingStudents } = useStudents();
   const enrolledStudentIds = new Set(
-    enrolledStudents.map((student) => student.ID)
+    enrolledStudents.map((student) => student.id)
   );
 
   const availableStudents = allStudents.filter(
-    (student) => !enrolledStudentIds.has(student.ID)
+    (student) => !enrolledStudentIds.has(student.id)
   );
 
   const form = useForm<AssignStudentSchemaType>({
@@ -92,7 +92,7 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
             <FormItem>
               <FormLabel>Teacher</FormLabel>
               <FormControl>
-                <Input value={teacher ?? ''} disabled />
+                <Input value={teacherId ?? ''} disabled />
               </FormControl>
             </FormItem>
             <FormField
@@ -118,10 +118,10 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
                       <SelectContent>
                         {availableStudents.map((student) => (
                           <SelectItem
-                            key={student.ID}
-                            value={String(student.ID)}
+                            key={student.id}
+                            value={String(student.id)}
                           >
-                            {student.Name}
+                            {student.name}
                           </SelectItem>
                         ))}
                       </SelectContent>

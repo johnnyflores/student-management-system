@@ -34,7 +34,7 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
   const [studentToRemove, setStudentToRemove] = useState<number | null>(null);
 
   const student = enrolledStudents.find(
-    (student) => student.ID === studentToRemove
+    (student) => student.id === studentToRemove
   );
 
   const handleRemove = () => {
@@ -64,24 +64,24 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
     <>
       <div className="space-y-4 px-6 pb-10 pt-5">
         {enrolledStudents.map((student) => (
-          <div key={student.ID} className="flex items-end gap-3">
+          <div key={student.id} className="flex items-end gap-3">
             <div className="flex-1 space-y-2">
               <label
-                htmlFor={`student-${student.ID}`}
+                htmlFor={`student-${student.id}`}
                 className="text-sm font-medium"
               >
                 Student Name
               </label>
               <Input
-                id={`student-${student.ID}`}
-                value={student.Name ?? ''}
+                id={`student-${student.id}`}
+                value={student.name ?? ''}
                 disabled
               />
             </div>
             <Button
               type="button"
               variant="destructive"
-              onClick={() => setStudentToRemove(student.ID)}
+              onClick={() => setStudentToRemove(student.id)}
               disabled={isRemoving}
             >
               Remove
@@ -102,7 +102,7 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
             <AlertDialogTitle>Remove enrolled student?</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to remove{' '}
-              <strong>{student?.Name ?? 'this student'}</strong> from this
+              <strong>{student?.name ?? 'this student'}</strong> from this
               course? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>

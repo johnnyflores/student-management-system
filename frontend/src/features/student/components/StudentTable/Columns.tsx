@@ -8,15 +8,15 @@ import Actions from '@/features/student/components/StudentTable/Actions';
 const columnHelper = createColumnHelper<DataTableFeatures, Student>();
 
 export const columns = columnHelper.columns([
-  columnHelper.accessor('ID', {
+  columnHelper.accessor('id', {
     header: 'ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Name', {
+  columnHelper.accessor('name', {
     header: 'Name',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('Grade', {
+  columnHelper.accessor('grade', {
     header: 'Grade',
     cell: (info) => info.getValue(),
   }),

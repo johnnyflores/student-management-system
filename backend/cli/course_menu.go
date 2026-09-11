@@ -90,7 +90,7 @@ func addCourse(service *services.CourseService) {
 		return
 	}
 
-	course.Teacher = teacherID
+	course.TeacherID = teacherID
 
 	if service.AddCourse(&course) {
 
@@ -121,8 +121,8 @@ func viewCourses(service *services.CourseService) {
 		fmt.Println("----------------")
 		fmt.Println("ID:", course.ID)
 		fmt.Println("Name:", course.Name)
-		fmt.Println("Teacher:", course.Teacher)
-		fmt.Println("Students:", len(course.Students))
+		fmt.Println("Teacher ID:", course.TeacherID)
+		fmt.Println("Students:", len(course.StudentIDs))
 	}
 }
 
@@ -210,16 +210,16 @@ func viewCourseStudents(service *services.CourseService) {
 
 	fmt.Println("\nCourse ID:", course.ID)
 	fmt.Println("Course Name:", course.Name)
-	fmt.Println("Teacher:", course.Teacher)
+	fmt.Println("Teacher ID:", course.TeacherID)
 
-	if len(course.Students) == 0 {
+	if len(course.StudentIDs) == 0 {
 		fmt.Println("No students enrolled in this course")
 		return
 	}
 
 	fmt.Println("\n--- Enrolled Students ---")
 
-	for _, studentID := range course.Students {
+	for _, studentID := range course.StudentIDs {
 
 		student := service.StudentService.SearchStudent(studentID)
 

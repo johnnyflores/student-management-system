@@ -68,17 +68,17 @@ const StudentDetails = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold tracking-tight">
-                      {student.Name}
+                      {student.name}
                     </h2>
                     <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                       <Hash className="size-4" />
-                      <span>Student ID: {student.ID}</span>
+                      <span>Student ID: {student.id}</span>
                     </div>
                   </div>
                 </div>
                 <Badge variant="secondary" className="w-fit gap-1.5">
                   <GraduationCap className="size-3.5" />
-                  Grade {student.Grade}
+                  Grade {student.grade}
                 </Badge>
               </div>
             </CardContent>
@@ -96,17 +96,17 @@ const StudentDetails = () => {
             <Separator />
             <CardContent className="pt-6">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <InfoItem icon={Hash} label="Student ID" value={student.ID} />
+                <InfoItem icon={Hash} label="Student ID" value={student.id} />
                 <InfoItem
                   icon={UserRound}
                   label="Student Name"
-                  value={student.Name}
+                  value={student.name}
                 />
-                <InfoItem icon={CalendarDays} label="Age" value={student.Age} />
+                <InfoItem icon={CalendarDays} label="Age" value={student.age} />
                 <InfoItem
                   icon={GraduationCap}
                   label="Grade"
-                  value={student.Grade}
+                  value={student.grade}
                 />
               </div>
             </CardContent>

@@ -53,7 +53,7 @@ func (h *CourseHandler) CreateCourse(
 		)
 		return
 	}
-	
+
 	if h.Service.TeacherService == nil {
 		http.Error(
 			w,
@@ -75,9 +75,9 @@ func (h *CourseHandler) CreateCourse(
 	}
 
 	course := models.Course{
-		Name:     strings.TrimSpace(request.Name),
-		Teacher:  request.TeacherID,
-		Students: []int{},
+		Name:       strings.TrimSpace(request.Name),
+		TeacherID:  request.TeacherID,
+		StudentIDs: []int{},
 	}
 
 	success := h.Service.AddCourse(&course)

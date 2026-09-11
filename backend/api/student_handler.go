@@ -150,13 +150,23 @@ func (h *StudentHandler) UpdateStudent(
 		return
 	}
 
-	var student models.Student
+	var request struct {
+		Name  string `json:"Name"`
+		Age   int    `json:"Age"`
+		Grade string `json:"Grade"`
+	}
 
-	err = json.NewDecoder(r.Body).Decode(&student)
+	err = json.NewDecoder(r.Body).Decode(&request)
 
 	if err != nil {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
+	}
+
+	student := models.Student{
+		Name:  request.Name,
+		Age:   request.Age,
+		Grade: request.Grade,
 	}
 
 	success := h.Service.UpdateStudent(id, student)

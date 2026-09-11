@@ -1,14 +1,14 @@
 export interface Student {
-  ID: number;
-  Name: string;
-  Age: number;
-  Grade: string;
+  id: number;
+  name: string;
+  age: number;
+  grade: string;
 }
 
 export interface CreateStudent {
-  Name: string;
-  Age: number;
-  Grade: string;
+  name: string;
+  age: number;
+  grade: string;
 }
 
 export interface PaginatedStudents {

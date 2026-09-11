@@ -15,7 +15,7 @@ const CourseDetails = () => {
 
   const { courses } = useCourses();
 
-  const course = courses.find((course) => course.ID.toString() === id);
+  const course = courses.find((course) => course.id.toString() === id);
 
   const {
     students,
@@ -59,11 +59,11 @@ const CourseDetails = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold tracking-tight">
-                      {course.Name}
+                      {course.name}
                     </h2>
                     <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                       <Hash className="size-4" />
-                      <span>Course ID: {course.ID}</span>
+                      <span>Course ID: {course.id}</span>
                     </div>
                   </div>
                 </div>
@@ -87,16 +87,16 @@ const CourseDetails = () => {
             <Separator />
             <CardContent className="pt-6">
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <InfoItem icon={Hash} label="Course ID" value={course.ID} />
+                <InfoItem icon={Hash} label="Course ID" value={course.id} />
                 <InfoItem
                   icon={BookOpen}
                   label="Course Name"
-                  value={course.Name}
+                  value={course.name}
                 />
                 <InfoItem
                   icon={UserRound}
                   label="Teacher"
-                  value={course.Teacher}
+                  value={course.teacherId}
                 />
                 <InfoItem
                   icon={Users}

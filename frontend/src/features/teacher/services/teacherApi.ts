@@ -1,5 +1,6 @@
 import type {
   Teacher,
+  CreateTeacher,
   PaginatedTeachers,
 } from '@/features/teacher/types/teacher';
 
@@ -32,9 +33,7 @@ export async function getTeacher(id: number): Promise<Teacher> {
   return response.json();
 }
 
-export async function createTeacher(
-  teacher: Omit<Teacher, 'ID'>
-): Promise<Teacher> {
+export async function createTeacher(teacher: CreateTeacher): Promise<Teacher> {
   const response = await fetch(`${API_URL}/teachers`, {
     method: 'POST',
     headers: {
@@ -52,7 +51,7 @@ export async function createTeacher(
 
 export async function updateTeacher(
   id: number,
-  teacher: Omit<Teacher, 'ID'>
+  teacher: CreateTeacher
 ): Promise<Teacher> {
   const response = await fetch(`${API_URL}/teacher?id=${id}`, {
     method: 'PUT',

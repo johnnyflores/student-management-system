@@ -23,12 +23,12 @@ beforeEach(() => {
 describe('getStudents', () => {
   it('fetches students with pagination', async () => {
     const responseData = {
-      students: [
+      items: [
         {
-          ID: 101,
-          Name: 'Bob Tom',
-          Age: 21,
-          Grade: 'Science',
+          id: 101,
+          name: 'Bob Tom',
+          age: 21,
+          grade: 'Science',
         },
       ],
       page: 1,
@@ -61,10 +61,10 @@ describe('getStudents', () => {
 describe('getStudent', () => {
   it('fetches a student by ID', async () => {
     const student: Student = {
-      ID: 101,
-      Name: 'Bob Tom',
-      Age: 21,
-      Grade: 'Science',
+      id: 101,
+      name: 'Bob Tom',
+      age: 21,
+      grade: 'Science',
     };
 
     vi.mocked(fetch).mockResolvedValue({
@@ -92,10 +92,10 @@ describe('searchStudentsByName', () => {
   it('searches students by name', async () => {
     const students: Student[] = [
       {
-        ID: 101,
-        Name: 'Bob Tom',
-        Age: 21,
-        Grade: 'Science',
+        id: 101,
+        name: 'Bob Tom',
+        age: 21,
+        grade: 'Science',
       },
     ];
 
@@ -125,13 +125,13 @@ describe('searchStudentsByName', () => {
 describe('createStudent', () => {
   it('creates a student without an ID', async () => {
     const student: CreateStudent = {
-      Name: 'Donald',
-      Age: 30,
-      Grade: 'AI',
+      name: 'Donald',
+      age: 30,
+      grade: 'AI',
     };
 
     const createdStudent: Student = {
-      ID: 109,
+      id: 109,
       ...student,
     };
 
@@ -159,9 +159,9 @@ describe('createStudent', () => {
     } as Response);
 
     const student: CreateStudent = {
-      Name: 'John',
-      Age: 25,
-      Grade: 'A',
+      name: 'John',
+      age: 25,
+      grade: 'A',
     };
 
     await expect(createStudent(student)).rejects.toThrow(
@@ -173,10 +173,10 @@ describe('createStudent', () => {
 describe('updateStudent', () => {
   it('updates a student', async () => {
     const student: Student = {
-      ID: 101,
-      Name: 'Bob Updated',
-      Age: 22,
-      Grade: 'A',
+      id: 101,
+      name: 'Bob Updated',
+      age: 22,
+      grade: 'A',
     };
 
     vi.mocked(fetch).mockResolvedValue({
@@ -203,10 +203,10 @@ describe('updateStudent', () => {
     } as Response);
 
     const student: Student = {
-      ID: 101,
-      Name: 'John',
-      Age: 25,
-      Grade: 'A',
+      id: 101,
+      name: 'John',
+      age: 25,
+      grade: 'A',
     };
 
     await expect(updateStudent(101, student)).rejects.toThrow(

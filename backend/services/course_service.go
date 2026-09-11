@@ -32,7 +32,7 @@ func (c *CourseService) AddCourse(course *models.Course) bool {
 	}
 
 	course.ID = maxID + 1
-	course.Students = []int{}
+	course.StudentIDs = []int{}
 
 	c.Courses = append(c.Courses, *course)
 
@@ -52,7 +52,7 @@ func (c *CourseService) GetCourseStudents(courseID int) ([]models.Student, error
 
 	var students []models.Student
 
-	for _, studentID := range course.Students {
+	for _, studentID := range course.StudentIDs {
 		student := c.StudentService.SearchStudent(studentID)
 
 		if student != nil {
@@ -125,15 +125,15 @@ func (c *CourseService) AssignStudent(
 	}
 
 	// Prevent duplicate enrollment
-	for _, id := range c.Courses[courseIndex].Students {
+	for _, id := range c.Courses[courseIndex].StudentIDs {
 		if id == studentID {
 			return ErrAlreadyEnrolled
 		}
 	}
 
 	// Assign student
-	c.Courses[courseIndex].Students = append(
-		c.Courses[courseIndex].Students,
+	c.Courses[courseIndex].StudentIDs = append(
+		c.Courses[courseIndex].StudentIDs,
 		studentID,
 	)
 
@@ -144,12 +144,12 @@ func (c *CourseService) RemoveStudent(courseID int, studentID int) error {
 	for i := range c.Courses {
 		if c.Courses[i].ID == courseID {
 
-			for j, id := range c.Courses[i].Students {
+			for j, id := range c.Courses[i].StudentIDs {
 				if id == studentID {
 
-					c.Courses[i].Students = append(
-						c.Courses[i].Students[:j],
-						c.Courses[i].Students[j+1:]...,
+					c.Courses[i].StudentIDs = append(
+						c.Courses[i].StudentIDs[:j],
+						c.Courses[i].StudentIDs[j+1:]...,
 					)
 
 					return nil

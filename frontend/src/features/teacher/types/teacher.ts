@@ -1,12 +1,12 @@
 export interface Teacher {
-  ID: number;
-  Name: string;
-  Speciality: string;
+  id: number;
+  name: string;
+  speciality: string;
 }
 
 export interface CreateTeacher {
-  Name: string;
-  Speciality: string;
+  name: string;
+  speciality: string;
 }
 
 export interface PaginatedTeachers {
