@@ -3,9 +3,11 @@ export interface Student {
   name: string;
   age: number;
   grade: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
-export interface CreateStudent {
+export interface StudentRequest {
   name: string;
   age: number;
   grade: string;

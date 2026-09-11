@@ -68,7 +68,6 @@ const StudentForm = (props: {
         await updateStudent({
           id: Number(studentId),
           student: {
-            id: Number(studentId),
             name: values.name,
             age: values.age,
             grade: values.grade,

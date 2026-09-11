@@ -7,7 +7,7 @@ import {
   updateStudent,
 } from '@/features/student/services/studentApi';
 
-import type { Student } from '@/features/student/types/student';
+import type { StudentRequest } from '@/features/student/types/student';
 import { getStudent } from '@/features/student/services/studentApi';
 
 export default function useStudents(initialLimit = 10) {
@@ -34,7 +34,7 @@ export default function useStudents(initialLimit = 10) {
   });
 
   const updateStudentMutation = useMutation({
-    mutationFn: ({ id, student }: { id: number; student: Student }) =>
+    mutationFn: ({ id, student }: { id: number; student: StudentRequest }) =>
       updateStudent(id, student),
 
     onSuccess: () => {

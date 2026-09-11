@@ -2,6 +2,8 @@ package services
 
 import (
 	"strings"
+	"time"
+
 	"student-management-system/models"
 	"student-management-system/storage"
 	"student-management-system/utils"
@@ -22,6 +24,10 @@ func (s *StudentService) AddStudent(student *models.Student) bool {
 	}
 
 	student.ID = maxID + 1
+
+	now := time.Now()
+	student.CreatedAt = now
+	student.UpdatedAt = now
 
 	s.Students = append(s.Students, *student)
 
@@ -77,6 +83,7 @@ func (s *StudentService) UpdateStudent(id int, updatedStudent models.Student) bo
 			s.Students[i].Name = updatedStudent.Name
 			s.Students[i].Age = updatedStudent.Age
 			s.Students[i].Grade = updatedStudent.Grade
+			s.Students[i].UpdatedAt = time.Now()
 
 			return true
 		}

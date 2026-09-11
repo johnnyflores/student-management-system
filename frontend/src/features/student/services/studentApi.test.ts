@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { CreateStudent, Student } from '@/features/student/types/student';
+import type { Student, StudentRequest } from '@/features/student/types/student';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -65,6 +65,8 @@ describe('getStudent', () => {
       name: 'Bob Tom',
       age: 21,
       grade: 'Science',
+      createdAt: '2024-06-01T00:00:00Z',
+      updatedAt: '2024-06-01T00:00:00Z',
     };
 
     vi.mocked(fetch).mockResolvedValue({
@@ -96,6 +98,8 @@ describe('searchStudentsByName', () => {
         name: 'Bob Tom',
         age: 21,
         grade: 'Science',
+        createdAt: '2024-06-01T00:00:00Z',
+        updatedAt: '2024-06-01T00:00:00Z',
       },
     ];
 
@@ -124,7 +128,7 @@ describe('searchStudentsByName', () => {
 
 describe('createStudent', () => {
   it('creates a student without an ID', async () => {
-    const student: CreateStudent = {
+    const student: StudentRequest = {
       name: 'Donald',
       age: 30,
       grade: 'AI',
@@ -132,7 +136,11 @@ describe('createStudent', () => {
 
     const createdStudent: Student = {
       id: 109,
-      ...student,
+      name: 'Donald',
+      age: 30,
+      grade: 'AI',
+      createdAt: '2024-06-01T00:00:00Z',
+      updatedAt: '2024-06-01T00:00:00Z',
     };
 
     vi.mocked(fetch).mockResolvedValue({
@@ -158,7 +166,7 @@ describe('createStudent', () => {
       ok: false,
     } as Response);
 
-    const student: CreateStudent = {
+    const student: StudentRequest = {
       name: 'John',
       age: 25,
       grade: 'A',
@@ -177,6 +185,8 @@ describe('updateStudent', () => {
       name: 'Bob Updated',
       age: 22,
       grade: 'A',
+      createdAt: '2024-06-01T00:00:00Z',
+      updatedAt: '2024-06-01T00:00:00Z',
     };
 
     vi.mocked(fetch).mockResolvedValue({
@@ -207,6 +217,8 @@ describe('updateStudent', () => {
       name: 'John',
       age: 25,
       grade: 'A',
+      createdAt: '2024-06-01T00:00:00Z',
+      updatedAt: '2024-06-01T00:00:00Z',
     };
 
     await expect(updateStudent(101, student)).rejects.toThrow(

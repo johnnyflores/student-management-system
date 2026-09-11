@@ -75,6 +75,8 @@ describe('useStudents', () => {
       name: 'Bob Tom',
       age: 21,
       grade: 'Science',
+      createdAt: '2024-06-05',
+      updatedAt: '2024-06-05',
     });
 
     const { result } = renderHook(() => useStudents(), {
@@ -95,6 +97,8 @@ describe('useStudents', () => {
         name: 'Bob Tom',
         age: 21,
         grade: 'Science',
+        createdAt: '2024-06-05',
+        updatedAt: '2024-06-05',
       });
     });
   });
@@ -104,6 +108,8 @@ describe('useStudents', () => {
       name: 'John',
       age: 25,
       grade: 'A',
+      createdAt: '2024-06-05',
+      updatedAt: '2024-06-05',
     };
 
     vi.mocked(createStudent).mockResolvedValue({
@@ -132,6 +138,8 @@ describe('useStudents', () => {
       name: 'Bob Updated',
       age: 22,
       grade: 'A',
+      createdAt: '2024-06-05',
+      updatedAt: '2024-06-05',
     };
 
     vi.mocked(updateStudent).mockResolvedValue(student);

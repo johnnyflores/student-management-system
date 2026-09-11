@@ -1,5 +1,5 @@
 'use client';
-
+import { formatDate } from '@/utils/formatDate';
 import { createColumnHelper } from '@tanstack/react-table';
 import type { DataTableFeatures } from '@/components/DataTable/DataTableFeatures';
 import type { Student } from '@/features/student/types/student';
@@ -20,6 +20,15 @@ export const columns = columnHelper.columns([
     header: 'Grade',
     cell: (info) => info.getValue(),
   }),
+  columnHelper.accessor('createdAt', {
+    header: 'Created At',
+    cell: (info) => formatDate(info.getValue()),
+  }),
+  columnHelper.accessor('updatedAt', {
+    header: 'Updated At',
+    cell: (info) => formatDate(info.getValue()),
+  }),
+
   columnHelper.display({
     id: 'actions',
     cell: ({ row }) => <Actions row={row} />,
