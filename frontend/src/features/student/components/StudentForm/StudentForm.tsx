@@ -15,9 +15,19 @@ import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import useStudents from '@/features/student/hooks/useStudents';
 import {
+  gradeLevels,
   studentSchema,
-  type studentSchemaType,
+  studentStatuses,
+  type StudentSchemaType,
 } from '@/features/student/schemas/student.schema';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { toApiDate, toInputDate } from '@/utils/date';
 
 const StudentForm = (props: {
   isEdit?: boolean;
@@ -37,12 +47,16 @@ const StudentForm = (props: {
     isSearching,
   } = useStudents();
 
-  const form = useForm<studentSchemaType>({
+  const form = useForm<StudentSchemaType>({
     resolver: zodResolver(studentSchema),
     defaultValues: {
-      name: '',
-      age: 0,
-      grade: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      dateOfBirth: '',
+      grade: '1',
+      status: 'active',
     },
   });
 
@@ -55,29 +69,41 @@ const StudentForm = (props: {
   useEffect(() => {
     if (isEdit && searchedStudent) {
       form.reset({
-        name: searchedStudent.name,
-        age: searchedStudent.age,
+        firstName: searchedStudent.firstName,
+        lastName: searchedStudent.lastName,
+        email: searchedStudent.email,
+        phone: searchedStudent.phone,
+        dateOfBirth: toInputDate(searchedStudent.dateOfBirth),
         grade: searchedStudent.grade,
+        status: searchedStudent.status,
       });
     }
   }, [isEdit, searchedStudent, form]);
 
-  const onSubmit = async (values: studentSchemaType) => {
+  const onSubmit = async (values: StudentSchemaType) => {
     try {
-      if (isEdit && studentId) {
+      const dateOfBirth = toApiDate(values.dateOfBirth);
+      if (isEdit && studentId && searchedStudent) {
         await updateStudent({
           id: Number(studentId),
           student: {
-            name: values.name,
-            age: values.age,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            phone: values.phone,
+            dateOfBirth,
             grade: values.grade,
+            status: values.status,
           },
         });
         toast.success('Student updated successfully');
       } else {
         await addStudent({
-          name: values.name,
-          age: values.age,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          phone: values.phone,
+          dateOfBirth,
           grade: values.grade,
         });
         toast.success('Student added successfully');
@@ -106,12 +132,12 @@ const StudentForm = (props: {
             )}
             <FormField
               control={form.control}
-              name="name"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal!">Name</FormLabel>
+                  <FormLabel className="font-normal!">First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Name" {...field} />
+                    <Input placeholder="First Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,17 +145,51 @@ const StudentForm = (props: {
             />
             <FormField
               control={form.control}
-              name="age"
+              name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal!">Age</FormLabel>
+                  <FormLabel className="font-normal!">Last Name</FormLabel>
                   <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="Age"
-                      value={field.value}
-                      onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                    />
+                    <Input placeholder="Last Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Email</FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Phone</FormLabel>
+                  <FormControl>
+                    <Input type="tel" placeholder="Phone" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="dateOfBirth"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="font-normal!">Date of Birth</FormLabel>
+                  <FormControl>
+                    <Input type="date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,12 +202,51 @@ const StudentForm = (props: {
                 <FormItem>
                   <FormLabel className="font-normal!">Grade</FormLabel>
                   <FormControl>
-                    <Input placeholder="Grade" {...field} />
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a grade" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {gradeLevels.map((grade) => (
+                          <SelectItem key={grade} value={grade}>
+                            Grade {grade}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {isEdit && (
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-normal!">Status</FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select a status" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {studentStatuses.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status.charAt(0).toUpperCase() + status.slice(1)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
           </div>
           <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
             <Button
@@ -158,6 +257,7 @@ const StudentForm = (props: {
               {isCreating || isUpdating ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : null}
+
               {isEdit ? 'Update' : 'Save'}
             </Button>
           </div>

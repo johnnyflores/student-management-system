@@ -13,6 +13,7 @@ import useStudent from '@/features/student/hooks/useStudent';
 import PageLayout from '@/components/PageLayout';
 import BackButton from '@/components/BackButton';
 import InfoItem from '@/components/InfoItem';
+import { calculateAge } from '@/utils/calculateAge';
 
 const StudentDetails = () => {
   const { id } = useParams();
@@ -68,7 +69,7 @@ const StudentDetails = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold tracking-tight">
-                      {student.name}
+                      {student.firstName} {student.lastName}
                     </h2>
                     <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                       <Hash className="size-4" />
@@ -100,9 +101,13 @@ const StudentDetails = () => {
                 <InfoItem
                   icon={UserRound}
                   label="Student Name"
-                  value={student.name}
+                  value={`${student.firstName} ${student.lastName}`}
                 />
-                <InfoItem icon={CalendarDays} label="Age" value={student.age} />
+                <InfoItem
+                  icon={CalendarDays}
+                  label="Age"
+                  value={calculateAge(student.dateOfBirth)}
+                />
                 <InfoItem
                   icon={GraduationCap}
                   label="Grade"

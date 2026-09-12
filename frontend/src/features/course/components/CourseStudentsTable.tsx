@@ -19,6 +19,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
+import { calculateAge } from '@/utils/calculateAge';
 
 interface CourseStudentsTableProps {
   students: Student[];
@@ -129,10 +130,12 @@ const CourseStudentsTable = ({
                           <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10">
                             <UserRound className="size-4 text-primary" />
                           </div>
-                          <span>{student.name}</span>
+                          <span>
+                            {student.firstName} {student.lastName}
+                          </span>
                         </div>
                       </TableCell>
-                      <TableCell>{student.age}</TableCell>
+                      <TableCell>{calculateAge(student.dateOfBirth)}</TableCell>
                       <TableCell>
                         <Badge variant="outline">{student.grade}</Badge>
                       </TableCell>

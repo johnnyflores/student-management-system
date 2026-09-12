@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"time"
 
 	"student-management-system/models"
 	"student-management-system/services"
@@ -82,42 +83,63 @@ func (h *StudentHandler) CreateStudent(
 	r *http.Request,
 ) {
 	var request struct {
-		Name  string `json:"Name"`
-		Age   *int   `json:"Age"`
-		Grade string `json:"Grade"`
+		FirstName   string               `json:"firstName"`
+		LastName    string               `json:"lastName"`
+		Email       string               `json:"email"`
+		Phone       string               `json:"phone"`
+		DateOfBirth *time.Time           `json:"dateOfBirth"`
+		Grade       models.GradeLevel    `json:"grade"`
+		Status      models.StudentStatus `json:"status"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
-
 	if err != nil {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
 	}
 
-	if strings.TrimSpace(request.Name) == "" {
-		http.Error(w, "name is required", http.StatusBadRequest)
+	if strings.TrimSpace(request.FirstName) == "" {
+		http.Error(w, "firstName is required", http.StatusBadRequest)
 		return
 	}
 
-	if request.Age == nil {
-		http.Error(w, "age is required", http.StatusBadRequest)
+	if strings.TrimSpace(request.LastName) == "" {
+		http.Error(w, "lastName is required", http.StatusBadRequest)
 		return
 	}
 
-	if *request.Age < 1 || *request.Age > 100 {
-		http.Error(w, "age must be between 1 and 100", http.StatusBadRequest)
+	if strings.TrimSpace(request.Email) == "" {
+		http.Error(w, "email is required", http.StatusBadRequest)
 		return
 	}
 
-	if strings.TrimSpace(request.Grade) == "" {
-		http.Error(w, "grade is required", http.StatusBadRequest)
+	if request.DateOfBirth == nil {
+		http.Error(w, "dateOfBirth is required", http.StatusBadRequest)
+		return
+	}
+
+	if !request.Grade.IsValid() {
+		http.Error(w, "invalid grade", http.StatusBadRequest)
+		return
+	}
+
+	if request.Status == "" {
+		request.Status = models.StudentActive
+	}
+
+	if !request.Status.IsValid() {
+		http.Error(w, "invalid student status", http.StatusBadRequest)
 		return
 	}
 
 	student := models.Student{
-		Name:  request.Name,
-		Age:   *request.Age,
-		Grade: request.Grade,
+		FirstName:   strings.TrimSpace(request.FirstName),
+		LastName:    strings.TrimSpace(request.LastName),
+		Email:       strings.TrimSpace(request.Email),
+		Phone:       strings.TrimSpace(request.Phone),
+		DateOfBirth: *request.DateOfBirth,
+		Grade:       request.Grade,
+		Status:      request.Status,
 	}
 
 	success := h.Service.AddStudent(&student)
@@ -142,31 +164,67 @@ func (h *StudentHandler) UpdateStudent(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-
 	if err != nil {
 		http.Error(w, "invalid id", http.StatusBadRequest)
 		return
 	}
 
 	var request struct {
-		Name  string `json:"Name"`
-		Age   int    `json:"Age"`
-		Grade string `json:"Grade"`
+		FirstName   string               `json:"firstName"`
+		LastName    string               `json:"lastName"`
+		Email       string               `json:"email"`
+		Phone       string               `json:"phone"`
+		DateOfBirth *time.Time           `json:"dateOfBirth"`
+		Grade       models.GradeLevel    `json:"grade"`
+		Status      models.StudentStatus `json:"status"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&request)
-
 	if err != nil {
 		http.Error(w, "invalid request", http.StatusBadRequest)
 		return
 	}
 
+	if strings.TrimSpace(request.FirstName) == "" {
+		http.Error(w, "firstName is required", http.StatusBadRequest)
+		return
+	}
+
+	if strings.TrimSpace(request.LastName) == "" {
+		http.Error(w, "lastName is required", http.StatusBadRequest)
+		return
+	}
+
+	if strings.TrimSpace(request.Email) == "" {
+		http.Error(w, "email is required", http.StatusBadRequest)
+		return
+	}
+
+	if request.DateOfBirth == nil {
+		http.Error(w, "dateOfBirth is required", http.StatusBadRequest)
+		return
+	}
+
+	if !request.Grade.IsValid() {
+		http.Error(w, "invalid grade", http.StatusBadRequest)
+		return
+	}
+
+	if !request.Status.IsValid() {
+		http.Error(w, "invalid student status", http.StatusBadRequest)
+		return
+	}
+
 	student := models.Student{
-		Name:  request.Name,
-		Age:   request.Age,
-		Grade: request.Grade,
+		ID:          id,
+		FirstName:   strings.TrimSpace(request.FirstName),
+		LastName:    strings.TrimSpace(request.LastName),
+		Email:       strings.TrimSpace(request.Email),
+		Phone:       strings.TrimSpace(request.Phone),
+		DateOfBirth: *request.DateOfBirth,
+		Grade:       request.Grade,
+		Status:      request.Status,
 	}
 
 	success := h.Service.UpdateStudent(id, student)
@@ -176,12 +234,14 @@ func (h *StudentHandler) UpdateStudent(
 		return
 	}
 
-	h.Service.Save()
+	if err := h.Service.Save(); err != nil {
+		http.Error(w, "failed to save student", http.StatusInternalServerError)
+		return
+	}
 
 	updatedStudent := h.Service.SearchStudent(id)
 
 	w.Header().Set("Content-Type", "application/json")
-
 	json.NewEncoder(w).Encode(updatedStudent)
 }
 

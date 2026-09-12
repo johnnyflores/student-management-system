@@ -1,16 +1,38 @@
+export type GradeLevel =
+  '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+
+export type StudentStatus = 'active' | 'inactive' | 'graduated';
+
 export interface Student {
   id: number;
-  name: string;
-  age: number;
-  grade: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  grade: GradeLevel;
+  status: StudentStatus;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface StudentRequest {
-  name: string;
-  age: number;
-  grade: string;
+export interface CreateStudentRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  grade: GradeLevel;
+}
+
+export interface UpdateStudentRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  grade: GradeLevel;
+  status: StudentStatus;
 }
 
 export interface PaginatedStudents {

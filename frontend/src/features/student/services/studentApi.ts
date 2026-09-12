@@ -1,7 +1,8 @@
 import type {
   Student,
-  StudentRequest,
   PaginatedStudents,
+  UpdateStudentRequest,
+  CreateStudentRequest,
 } from '@/features/student/types/student';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -45,7 +46,9 @@ export async function searchStudentsByName(name: string): Promise<Student[]> {
   return response.json();
 }
 
-export async function createStudent(student: StudentRequest): Promise<Student> {
+export async function createStudent(
+  student: CreateStudentRequest
+): Promise<Student> {
   const response = await fetch(`${API_URL}/students`, {
     method: 'POST',
     headers: {
@@ -63,7 +66,7 @@ export async function createStudent(student: StudentRequest): Promise<Student> {
 
 export async function updateStudent(
   id: number,
-  student: StudentRequest
+  student: UpdateStudentRequest
 ): Promise<Student> {
   const response = await fetch(`${API_URL}/student?id=${id}`, {
     method: 'PUT',

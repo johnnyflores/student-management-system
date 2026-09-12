@@ -1,21 +1,37 @@
-import z from 'zod';
+import { z } from 'zod';
+
+export const gradeLevels = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12',
+] as const;
+
+export const studentStatuses = ['active', 'inactive', 'graduated'] as const;
 
 export const studentSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  age: z
-    .number({
-      error: 'Age is required',
-    })
-    .int({
-      message: 'Age must be a whole number',
-    })
-    .min(1, {
-      message: 'Age must be between 1 and 100',
-    })
-    .max(100, {
-      message: 'Age must be between 1 and 100',
-    }),
-  grade: z.string().min(1, { message: 'Grade is required' }),
+  firstName: z.string().trim().min(1, { message: 'First name is required' }),
+  lastName: z.string().trim().min(1, { message: 'Last name is required' }),
+  email: z
+    .string()
+    .trim()
+    .email({ message: 'Please enter a valid email address' }),
+  phone: z.string().trim().min(1, { message: 'Phone is required' }),
+  dateOfBirth: z.string().min(1, { message: 'Date of birth is required' }),
+  grade: z.enum(gradeLevels, {
+    message: 'Grade is required',
+  }),
+  status: z.enum(studentStatuses, {
+    message: 'Status is required',
+  }),
 });
 
-export type studentSchemaType = z.infer<typeof studentSchema>;
+export type StudentSchemaType = z.infer<typeof studentSchema>;

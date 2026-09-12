@@ -64,9 +64,11 @@ func (s *StudentService) SearchStudentsByName(name string) []models.Student {
 	var results []models.Student
 
 	for _, student := range s.Students {
-		studentName := strings.ToLower(student.Name)
+		fullName := strings.ToLower(
+			strings.TrimSpace(student.FirstName + " " + student.LastName),
+		)
 
-		if strings.Contains(studentName, searchName) {
+		if strings.Contains(fullName, searchName) {
 			results = append(results, student)
 		}
 	}
@@ -75,14 +77,15 @@ func (s *StudentService) SearchStudentsByName(name string) []models.Student {
 }
 
 func (s *StudentService) UpdateStudent(id int, updatedStudent models.Student) bool {
-
 	for i := range s.Students {
-
 		if s.Students[i].ID == id {
-
-			s.Students[i].Name = updatedStudent.Name
-			s.Students[i].Age = updatedStudent.Age
+			s.Students[i].FirstName = updatedStudent.FirstName
+			s.Students[i].LastName = updatedStudent.LastName
+			s.Students[i].Email = updatedStudent.Email
+			s.Students[i].Phone = updatedStudent.Phone
+			s.Students[i].DateOfBirth = updatedStudent.DateOfBirth
 			s.Students[i].Grade = updatedStudent.Grade
+			s.Students[i].Status = updatedStudent.Status
 			s.Students[i].UpdatedAt = time.Now()
 
 			return true

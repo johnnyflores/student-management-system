@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import type { Student, StudentRequest } from '@/features/student/types/student';
+import type {
+  Student,
+  CreateStudentRequest,
+  UpdateStudentRequest,
+} from '@/features/student/types/student';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -26,9 +30,15 @@ describe('getStudents', () => {
       items: [
         {
           id: 101,
-          name: 'Bob Tom',
-          age: 21,
-          grade: 'Science',
+          firstName: 'Bob',
+          lastName: 'Tom',
+          email: 'bob.tom@example.com',
+          phone: '5141234567',
+          dateOfBirth: '2003-01-01T00:00:00Z',
+          grade: '5',
+          status: 'active',
+          createdAt: '2024-06-05T00:00:00Z',
+          updatedAt: '2024-06-05T00:00:00Z',
         },
       ],
       page: 1,
@@ -62,9 +72,13 @@ describe('getStudent', () => {
   it('fetches a student by ID', async () => {
     const student: Student = {
       id: 101,
-      name: 'Bob Tom',
-      age: 21,
-      grade: 'Science',
+      firstName: 'Bob',
+      lastName: 'Tom',
+      email: 'bob.tom@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2003-01-01T00:00:00Z',
+      grade: '5',
+      status: 'active',
       createdAt: '2024-06-01T00:00:00Z',
       updatedAt: '2024-06-01T00:00:00Z',
     };
@@ -95,9 +109,13 @@ describe('searchStudentsByName', () => {
     const students: Student[] = [
       {
         id: 101,
-        name: 'Bob Tom',
-        age: 21,
-        grade: 'Science',
+        firstName: 'Bob',
+        lastName: 'Tom',
+        email: 'bob.tom@example.com',
+        phone: '5141234567',
+        dateOfBirth: '2003-01-01T00:00:00Z',
+        grade: '5',
+        status: 'active',
         createdAt: '2024-06-01T00:00:00Z',
         updatedAt: '2024-06-01T00:00:00Z',
       },
@@ -128,17 +146,19 @@ describe('searchStudentsByName', () => {
 
 describe('createStudent', () => {
   it('creates a student without an ID', async () => {
-    const student: StudentRequest = {
-      name: 'Donald',
-      age: 30,
-      grade: 'AI',
+    const student: CreateStudentRequest = {
+      firstName: 'Donald',
+      lastName: 'Trump',
+      email: 'donald.trump@example.com',
+      phone: '5141234567',
+      dateOfBirth: '1996-01-01T00:00:00Z',
+      grade: '5',
     };
 
     const createdStudent: Student = {
       id: 109,
-      name: 'Donald',
-      age: 30,
-      grade: 'AI',
+      ...student,
+      status: 'active',
       createdAt: '2024-06-01T00:00:00Z',
       updatedAt: '2024-06-01T00:00:00Z',
     };
@@ -166,10 +186,13 @@ describe('createStudent', () => {
       ok: false,
     } as Response);
 
-    const student: StudentRequest = {
-      name: 'John',
-      age: 25,
-      grade: 'A',
+    const student: CreateStudentRequest = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01T00:00:00Z',
+      grade: '5',
     };
 
     await expect(createStudent(student)).rejects.toThrow(
@@ -180,18 +203,26 @@ describe('createStudent', () => {
 
 describe('updateStudent', () => {
   it('updates a student', async () => {
-    const student: Student = {
+    const student: UpdateStudentRequest = {
+      firstName: 'Bob',
+      lastName: 'Updated',
+      email: 'bob.updated@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2003-01-01T00:00:00Z',
+      grade: '5',
+      status: 'active',
+    };
+
+    const updatedStudent: Student = {
       id: 101,
-      name: 'Bob Updated',
-      age: 22,
-      grade: 'A',
+      ...student,
       createdAt: '2024-06-01T00:00:00Z',
       updatedAt: '2024-06-01T00:00:00Z',
     };
 
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
-      json: async () => student,
+      json: async () => updatedStudent,
     } as Response);
 
     const result = await updateStudent(101, student);
@@ -204,7 +235,7 @@ describe('updateStudent', () => {
       body: JSON.stringify(student),
     });
 
-    expect(result).toEqual(student);
+    expect(result).toEqual(updatedStudent);
   });
 
   it('throws when updating a student fails', async () => {
@@ -212,13 +243,14 @@ describe('updateStudent', () => {
       ok: false,
     } as Response);
 
-    const student: Student = {
-      id: 101,
-      name: 'John',
-      age: 25,
-      grade: 'A',
-      createdAt: '2024-06-01T00:00:00Z',
-      updatedAt: '2024-06-01T00:00:00Z',
+    const student: UpdateStudentRequest = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01T00:00:00Z',
+      grade: '5',
+      status: 'active',
     };
 
     await expect(updateStudent(101, student)).rejects.toThrow(

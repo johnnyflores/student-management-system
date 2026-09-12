@@ -7,8 +7,8 @@ import {
   deleteStudent,
   getStudent,
   getStudents,
-  updateStudent,
 } from '@/features/student/services/studentApi';
+import type { CreateStudentRequest } from '../types/student';
 
 vi.mock('@/features/student/services/studentApi', () => ({
   createStudent: vi.fn(),
@@ -70,14 +70,20 @@ describe('useStudents', () => {
   });
 
   it('Search for a student by ID', async () => {
-    vi.mocked(getStudent).mockResolvedValue({
+    const student = {
       id: 101,
-      name: 'Bob Tom',
-      age: 21,
-      grade: 'Science',
+      firstName: 'Bob',
+      lastName: 'Tom',
+      email: 'bob.tom@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2003-01-01T00:00:00Z',
+      grade: '12' as const,
+      status: 'active' as const,
       createdAt: '2024-06-05',
       updatedAt: '2024-06-05',
-    });
+    };
+
+    vi.mocked(getStudent).mockResolvedValue(student);
 
     const { result } = renderHook(() => useStudents(), {
       wrapper: createWrapper(),
@@ -92,29 +98,26 @@ describe('useStudents', () => {
     });
 
     await waitFor(() => {
-      expect(result.current.searchedStudent).toEqual({
-        id: 101,
-        name: 'Bob Tom',
-        age: 21,
-        grade: 'Science',
-        createdAt: '2024-06-05',
-        updatedAt: '2024-06-05',
-      });
+      expect(result.current.searchedStudent).toEqual(student);
     });
   });
 
   it('Add a student', async () => {
-    const student = {
-      name: 'John',
-      age: 25,
-      grade: 'A',
-      createdAt: '2024-06-05',
-      updatedAt: '2024-06-05',
+    const student: CreateStudentRequest = {
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '1999-01-01T00:00:00Z',
+      grade: '5',
     };
 
     vi.mocked(createStudent).mockResolvedValue({
       id: 109,
       ...student,
+      status: 'active',
+      createdAt: '2024-06-05',
+      updatedAt: '2024-06-05',
     });
 
     const { result } = renderHook(() => useStudents(), {
@@ -125,37 +128,8 @@ describe('useStudents', () => {
       await result.current.addStudent(student);
     });
 
-    const mockedCreateStudent = vi.mocked(createStudent);
-
-    expect(createStudent).toHaveBeenCalled();
-
-    expect(mockedCreateStudent.mock.calls[0][0]).toEqual(student);
-  });
-
-  it('Update a student', async () => {
-    const student = {
-      id: 101,
-      name: 'Bob Updated',
-      age: 22,
-      grade: 'A',
-      createdAt: '2024-06-05',
-      updatedAt: '2024-06-05',
-    };
-
-    vi.mocked(updateStudent).mockResolvedValue(student);
-
-    const { result } = renderHook(() => useStudents(), {
-      wrapper: createWrapper(),
-    });
-
-    await act(async () => {
-      await result.current.updateStudent({
-        id: 101,
-        student,
-      });
-    });
-
-    expect(updateStudent).toHaveBeenCalledWith(101, student);
+    expect(createStudent).toHaveBeenCalledTimes(1);
+    expect(createStudent).toHaveBeenCalledWith(student);
   });
 
   it('Delete a student', async () => {

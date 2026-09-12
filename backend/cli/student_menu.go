@@ -54,9 +54,13 @@ func studentMenu(service *services.StudentService) {
 func addStudent(service *services.StudentService) {
 	student := models.Student{}
 
-	student.Name = utils.ReadString("Enter name: ")
-	student.Age = utils.ReadAge("Enter age: ")
-	student.Grade = utils.ReadGrade("Enter grade: ")
+	student.FirstName = utils.ReadString("Enter first name: ")
+	student.LastName = utils.ReadString("Enter last name: ")
+	student.Email = utils.ReadString("Enter email: ")
+	student.Phone = utils.ReadString("Enter phone: ")
+	student.DateOfBirth = utils.ReadDate("Enter date of birth (YYYY-MM-DD): ")
+	student.Grade = utils.ReadGradeLevel("Enter grade (1-12): ")
+	student.Status = models.StudentActive
 
 	if service.AddStudent(&student) {
 		if err := service.Save(); err != nil {
@@ -72,7 +76,6 @@ func addStudent(service *services.StudentService) {
 }
 
 func viewStudents(service *services.StudentService) {
-
 	students := service.GetStudents()
 
 	if len(students) == 0 {
@@ -81,12 +84,12 @@ func viewStudents(service *services.StudentService) {
 	}
 
 	for _, student := range students {
-
 		fmt.Println("----------------")
 		fmt.Println("ID:", student.ID)
-		fmt.Println("Name:", student.Name)
-		fmt.Println("Age:", student.Age)
+		fmt.Printf("Name: %s %s\n", student.FirstName, student.LastName)
+		fmt.Println("Email:", student.Email)
 		fmt.Println("Grade:", student.Grade)
+		fmt.Println("Status:", student.Status)
 	}
 }
 
@@ -134,23 +137,26 @@ func searchStudent(service *services.StudentService) {
 }
 
 func updateStudent(service *services.StudentService) {
-
 	id := utils.ReadPositiveInt("Enter student ID to update: ")
 
 	var student models.Student
 
-	student.Name = utils.ReadString("Enter new name: ")
-	student.Age = utils.ReadAge("Enter new age: ")
-	student.Grade = utils.ReadGrade("Enter new grade: ")
+	student.FirstName = utils.ReadString("Enter first name: ")
+	student.LastName = utils.ReadString("Enter last name: ")
+	student.Email = utils.ReadString("Enter email: ")
+	student.Phone = utils.ReadString("Enter phone: ")
+	student.DateOfBirth = utils.ReadDate("Enter date of birth: ")
+	student.Grade = utils.ReadGradeLevel("Enter grade (1-12): ")
+	student.Status = utils.ReadStudentStatus("Enter status (active/inactive/graduated): ")
 
 	if service.UpdateStudent(id, student) {
-
-		service.Save()
+		if err := service.Save(); err != nil {
+			fmt.Println("Failed to save student:", err)
+			return
+		}
 
 		fmt.Println("Student updated successfully!")
-
 	} else {
-
 		fmt.Println("Student not found")
 	}
 }
@@ -174,7 +180,12 @@ func deleteStudent(service *services.StudentService) {
 func printStudent(student models.Student) {
 	fmt.Println("----------------")
 	fmt.Println("ID:", student.ID)
-	fmt.Println("Name:", student.Name)
-	fmt.Println("Age:", student.Age)
+	fmt.Printf("Name: %s %s\n", student.FirstName, student.LastName)
+	fmt.Println("Email:", student.Email)
+	fmt.Println("Phone:", student.Phone)
+	fmt.Println("Date of Birth:", student.DateOfBirth.Format("2006-01-02"))
 	fmt.Println("Grade:", student.Grade)
+	fmt.Println("Status:", student.Status)
+	fmt.Println("Created At:", student.CreatedAt.Format("2006-01-02 15:04:05"))
+	fmt.Println("Updated At:", student.UpdatedAt.Format("2006-01-02 15:04:05"))
 }

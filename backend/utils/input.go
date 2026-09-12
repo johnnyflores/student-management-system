@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"student-management-system/models"
+	"time"
 )
 
 var Reader = bufio.NewReader(os.Stdin)
@@ -93,5 +95,71 @@ func ReadAge(message string) int {
 		}
 
 		fmt.Println("Age must be between 1 and 100")
+	}
+}
+
+func ReadDate(prompt string) time.Time {
+	for {
+		fmt.Print(prompt)
+
+		input, err := Reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("Invalid input. Please try again.")
+			continue
+		}
+
+		input = strings.TrimSpace(input)
+
+		date, err := time.Parse("2006-01-02", input)
+		if err != nil {
+			fmt.Println("Invalid date. Use YYYY-MM-DD.")
+			continue
+		}
+
+		return date
+	}
+}
+
+func ReadGradeLevel(prompt string) models.GradeLevel {
+	for {
+		fmt.Print(prompt)
+
+		input, err := Reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("Invalid input. Please try again.")
+			continue
+		}
+
+		input = strings.TrimSpace(input)
+
+		grade := models.GradeLevel(input)
+
+		if grade.IsValid() {
+			return grade
+		}
+
+		fmt.Println("Invalid grade. Please enter a grade from 1 to 12.")
+	}
+}
+
+func ReadStudentStatus(prompt string) models.StudentStatus {
+	for {
+		fmt.Print(prompt)
+
+		input, err := Reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("Invalid input. Please try again.")
+			continue
+		}
+
+		input = strings.ToLower(strings.TrimSpace(input))
+
+		status := models.StudentStatus(input)
+
+		if status.IsValid() {
+			return status
+		}
+
+		fmt.Println("Invalid status. Use active, inactive, or graduated.")
 	}
 }

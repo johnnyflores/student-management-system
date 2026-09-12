@@ -4,79 +4,83 @@ import { studentSchema } from '@/features/student/schemas/student.schema';
 describe('studentSchema', () => {
   it('accepts a valid student', () => {
     const result = studentSchema.safeParse({
-      name: 'John',
-      age: 25,
-      grade: 'A',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01',
+      grade: '5',
+      status: 'active',
     });
 
     expect(result.success).toBe(true);
   });
 
-  it('rejects an empty name', () => {
+  it('rejects an empty first name', () => {
     const result = studentSchema.safeParse({
-      name: '',
-      age: 25,
-      grade: 'A',
+      firstName: '',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01',
+      grade: '5',
+      status: 'active',
     });
 
     expect(result.success).toBe(false);
   });
 
-  it('rejects age 0', () => {
+  it('rejects an empty last name', () => {
     const result = studentSchema.safeParse({
-      name: 'John',
-      age: 0,
-      grade: 'A',
+      firstName: 'John',
+      lastName: '',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01',
+      grade: '5',
+      status: 'active',
     });
 
     expect(result.success).toBe(false);
   });
 
-  it('rejects age greater than 100', () => {
+  it('rejects a student with missing required fields', () => {
     const result = studentSchema.safeParse({
-      name: 'John',
-      age: 101,
-      grade: 'A',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      dateOfBirth: '',
+      grade: '5',
+      status: 'active',
     });
 
     expect(result.success).toBe(false);
   });
 
-  it('accepts age 1', () => {
+  it('rejects an invalid email', () => {
     const result = studentSchema.safeParse({
-      name: 'John',
-      age: 1,
-      grade: 'A',
-    });
-
-    expect(result.success).toBe(true);
-  });
-
-  it('accepts age 100', () => {
-    const result = studentSchema.safeParse({
-      name: 'John',
-      age: 100,
-      grade: 'A',
-    });
-
-    expect(result.success).toBe(true);
-  });
-
-  it('rejects a decimal age', () => {
-    const result = studentSchema.safeParse({
-      name: 'John',
-      age: 25.5,
-      grade: 'A',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'invalid-email',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01',
+      grade: '5',
+      status: 'active',
     });
 
     expect(result.success).toBe(false);
   });
 
-  it('rejects an empty grade', () => {
+  it('rejects an invalid grade', () => {
     const result = studentSchema.safeParse({
-      name: 'John',
-      age: 25,
-      grade: '',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@example.com',
+      phone: '5141234567',
+      dateOfBirth: '2000-01-01',
+      grade: 'A',
+      status: 'active',
     });
 
     expect(result.success).toBe(false);

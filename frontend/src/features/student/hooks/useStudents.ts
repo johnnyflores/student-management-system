@@ -7,7 +7,10 @@ import {
   updateStudent,
 } from '@/features/student/services/studentApi';
 
-import type { StudentRequest } from '@/features/student/types/student';
+import type {
+  CreateStudentRequest,
+  UpdateStudentRequest,
+} from '@/features/student/types/student';
 import { getStudent } from '@/features/student/services/studentApi';
 
 export default function useStudents(initialLimit = 10) {
@@ -24,7 +27,7 @@ export default function useStudents(initialLimit = 10) {
   });
 
   const createStudentMutation = useMutation({
-    mutationFn: createStudent,
+    mutationFn: (student: CreateStudentRequest) => createStudent(student),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -34,8 +37,13 @@ export default function useStudents(initialLimit = 10) {
   });
 
   const updateStudentMutation = useMutation({
-    mutationFn: ({ id, student }: { id: number; student: StudentRequest }) =>
-      updateStudent(id, student),
+    mutationFn: ({
+      id,
+      student,
+    }: {
+      id: number;
+      student: UpdateStudentRequest;
+    }) => updateStudent(id, student),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
