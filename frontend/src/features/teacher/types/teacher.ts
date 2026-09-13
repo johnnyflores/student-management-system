@@ -1,11 +1,24 @@
 export interface Teacher {
   id: number;
-  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  speciality: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateTeacherRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
   speciality: string;
 }
 
-export interface CreateTeacher {
-  name: string;
+export interface UpdateTeacherRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
   speciality: string;
 }
 

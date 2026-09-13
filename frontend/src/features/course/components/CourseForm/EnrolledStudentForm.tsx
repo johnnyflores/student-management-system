@@ -74,7 +74,7 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
               </label>
               <Input
                 id={`student-${student.id}`}
-                value={student.name ?? ''}
+                value={`${student.firstName ?? ''} ${student.lastName ?? ''}`}
                 disabled
               />
             </div>
@@ -102,8 +102,10 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
             <AlertDialogTitle>Remove enrolled student?</AlertDialogTitle>
             <AlertDialogDescription>
               Are you sure you want to remove{' '}
-              <strong>{student?.name ?? 'this student'}</strong> from this
-              course? This action cannot be undone.
+              <strong>
+                {student?.firstName} {student?.lastName ?? 'this student'}
+              </strong>{' '}
+              from this course? This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

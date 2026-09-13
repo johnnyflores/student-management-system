@@ -2,6 +2,7 @@ package services
 
 import (
 	"strings"
+	"time"
 
 	"student-management-system/models"
 	"student-management-system/storage"
@@ -23,6 +24,10 @@ func (t *TeacherService) AddTeacher(teacher *models.Teacher) bool {
 	}
 
 	teacher.ID = maxID + 1
+
+	now := time.Now()
+	teacher.CreatedAt = now
+	teacher.UpdatedAt = now
 
 	t.Teachers = append(t.Teachers, *teacher)
 
@@ -53,9 +58,11 @@ func (t *TeacherService) SearchTeachersByName(name string) []models.Teacher {
 	var results []models.Teacher
 
 	for _, teacher := range t.Teachers {
-		teacherName := strings.ToLower(teacher.Name)
+		fullName := strings.ToLower(
+			strings.TrimSpace(teacher.FirstName + " " + teacher.LastName),
+		)
 
-		if strings.Contains(teacherName, searchName) {
+		if strings.Contains(fullName, searchName) {
 			results = append(results, teacher)
 		}
 	}
@@ -63,15 +70,18 @@ func (t *TeacherService) SearchTeachersByName(name string) []models.Teacher {
 	return results
 }
 
+
 func (t *TeacherService) UpdateTeacher(
 	id int,
 	updatedTeacher models.Teacher,
 ) bool {
 	for i := range t.Teachers {
 		if t.Teachers[i].ID == id {
-			t.Teachers[i].Name = updatedTeacher.Name
+			t.Teachers[i].FirstName = updatedTeacher.FirstName
+			t.Teachers[i].LastName = updatedTeacher.LastName
+			t.Teachers[i].Email = updatedTeacher.Email
 			t.Teachers[i].Speciality = updatedTeacher.Speciality
-
+			t.Teachers[i].UpdatedAt = time.Now()
 			return true
 		}
 	}

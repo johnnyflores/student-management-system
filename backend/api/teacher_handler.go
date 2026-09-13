@@ -93,12 +93,13 @@ func (h *TeacherHandler) CreateTeacher(
 	r *http.Request,
 ) {
 	var request struct {
-		Name       string `json:"Name"`
-		Speciality string `json:"Speciality"`
+		FirstName  string `json:"firstName"`
+		LastName   string `json:"lastName"`
+		Email      string `json:"email"`
+		Speciality string `json:"speciality"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
-
 	if err != nil {
 		http.Error(
 			w,
@@ -108,10 +109,28 @@ func (h *TeacherHandler) CreateTeacher(
 		return
 	}
 
-	if strings.TrimSpace(request.Name) == "" {
+	if strings.TrimSpace(request.FirstName) == "" {
 		http.Error(
 			w,
-			"teacher name is required",
+			"first name is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if strings.TrimSpace(request.LastName) == "" {
+		http.Error(
+			w,
+			"last name is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if strings.TrimSpace(request.Email) == "" {
+		http.Error(
+			w,
+			"email is required",
 			http.StatusBadRequest,
 		)
 		return
@@ -127,7 +146,9 @@ func (h *TeacherHandler) CreateTeacher(
 	}
 
 	teacher := models.Teacher{
-		Name:       strings.TrimSpace(request.Name),
+		FirstName:  strings.TrimSpace(request.FirstName),
+		LastName:   strings.TrimSpace(request.LastName),
+		Email:      strings.TrimSpace(request.Email),
 		Speciality: strings.TrimSpace(request.Speciality),
 	}
 
@@ -157,6 +178,7 @@ func (h *TeacherHandler) CreateTeacher(
 	json.NewEncoder(w).Encode(teacher)
 }
 
+
 func (h *TeacherHandler) UpdateTeacher(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -173,8 +195,10 @@ func (h *TeacherHandler) UpdateTeacher(
 	}
 
 	var request struct {
-		Name       string `json:"Name"`
-		Speciality string `json:"Speciality"`
+		FirstName  string `json:"firstName"`
+		LastName   string `json:"lastName"`
+		Email      string `json:"email"`
+		Speciality string `json:"speciality"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&request)
@@ -188,10 +212,28 @@ func (h *TeacherHandler) UpdateTeacher(
 		return
 	}
 
-	if strings.TrimSpace(request.Name) == "" {
+	if strings.TrimSpace(request.FirstName) == "" {
 		http.Error(
 			w,
-			"teacher name is required",
+			"first name is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if strings.TrimSpace(request.LastName) == "" {
+		http.Error(
+			w,
+			"last name is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if strings.TrimSpace(request.Email) == "" {
+		http.Error(
+			w,
+			"email is required",
 			http.StatusBadRequest,
 		)
 		return
@@ -207,7 +249,9 @@ func (h *TeacherHandler) UpdateTeacher(
 	}
 
 	teacher := models.Teacher{
-		Name:       strings.TrimSpace(request.Name),
+		FirstName:  strings.TrimSpace(request.FirstName),
+		LastName:   strings.TrimSpace(request.LastName),
+		Email:      strings.TrimSpace(request.Email),
 		Speciality: strings.TrimSpace(request.Speciality),
 	}
 
@@ -237,6 +281,7 @@ func (h *TeacherHandler) UpdateTeacher(
 
 	json.NewEncoder(w).Encode(updatedTeacher)
 }
+
 
 func (h *TeacherHandler) DeleteTeacher(
 	w http.ResponseWriter,

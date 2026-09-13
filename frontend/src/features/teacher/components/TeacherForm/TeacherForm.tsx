@@ -39,7 +39,9 @@ const TeacherForm = (props: {
   const form = useForm<TeacherSchemaType>({
     resolver: zodResolver(teacherSchema),
     defaultValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
+      email: '',
       speciality: '',
     },
   });
@@ -53,7 +55,9 @@ const TeacherForm = (props: {
   useEffect(() => {
     if (isEdit && searchResult) {
       form.reset({
-        name: searchResult.name,
+        firstName: searchResult.firstName,
+        lastName: searchResult.lastName,
+        email: searchResult.email,
         speciality: searchResult.speciality,
       });
     }
@@ -65,14 +69,18 @@ const TeacherForm = (props: {
         await updateTeacher({
           id: Number(teacherId),
           teacher: {
-            name: values.name,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
             speciality: values.speciality,
           },
         });
         toast.success('Teacher updated successfully');
       } else {
         await createTeacher({
-          name: values.name,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
           speciality: values.speciality,
         });
         toast.success('Teacher created successfully');
@@ -102,12 +110,38 @@ const TeacherForm = (props: {
             )}
             <FormField
               control={form.control}
-              name="name"
+              name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Teacher Name</FormLabel>
+                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Teacher name" {...field} />
+                    <Input placeholder="First name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Last name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

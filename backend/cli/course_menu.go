@@ -53,7 +53,6 @@ func courseMenu(service *services.CourseService) {
 }
 
 func addCourse(service *services.CourseService) {
-
 	course := models.Course{}
 
 	course.Name = utils.ReadString("Enter course name: ")
@@ -74,9 +73,10 @@ func addCourse(service *services.CourseService) {
 
 	for _, teacher := range teachers {
 		fmt.Printf(
-			"%d - %s (%s)\n",
+			"%d - %s %s (%s)\n",
 			teacher.ID,
-			teacher.Name,
+			teacher.FirstName,
+			teacher.LastName,
 			teacher.Speciality,
 		)
 	}
@@ -106,6 +106,7 @@ func addCourse(service *services.CourseService) {
 		fmt.Println("Failed to add course")
 	}
 }
+
 
 func viewCourses(service *services.CourseService) {
 

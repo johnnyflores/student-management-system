@@ -105,7 +105,7 @@ const CourseForm = (props: CourseFormProps) => {
                             key={teacher.id}
                             value={String(teacher.id)}
                           >
-                            {teacher.name}
+                            {teacher.firstName} {teacher.lastName}
                           </SelectItem>
                         ))}
                       </SelectContent>

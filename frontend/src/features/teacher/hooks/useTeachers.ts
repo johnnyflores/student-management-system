@@ -7,7 +7,7 @@ import {
   deleteTeacher,
   getTeacher,
 } from '@/features/teacher/services/teacherApi';
-import type { CreateTeacher } from '@/features/teacher/types/teacher';
+import type { UpdateTeacherRequest } from '@/features/teacher/types/teacher';
 
 export function useTeachers(initialLimit = 10) {
   const queryClient = useQueryClient();
@@ -32,8 +32,13 @@ export function useTeachers(initialLimit = 10) {
   });
 
   const updateTeacherMutation = useMutation({
-    mutationFn: ({ id, teacher }: { id: number; teacher: CreateTeacher }) =>
-      updateTeacher(id, teacher),
+    mutationFn: ({
+      id,
+      teacher,
+    }: {
+      id: number;
+      teacher: UpdateTeacherRequest;
+    }) => updateTeacher(id, teacher),
 
     onSuccess: () => {
       queryClient.invalidateQueries({

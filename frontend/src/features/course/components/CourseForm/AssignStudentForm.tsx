@@ -121,7 +121,7 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
                             key={student.id}
                             value={String(student.id)}
                           >
-                            {student.name}
+                            {student.firstName} {student.lastName}
                           </SelectItem>
                         ))}
                       </SelectContent>

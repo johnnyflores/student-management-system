@@ -62,7 +62,7 @@ const TeacherDetails = () => {
                   </div>
                   <div>
                     <h2 className="text-xl font-semibold tracking-tight">
-                      {teacher.name}
+                      {teacher.firstName} {teacher.lastName}
                     </h2>
                     <div className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
                       <Hash className="size-4" />
@@ -94,7 +94,7 @@ const TeacherDetails = () => {
                 <InfoItem
                   icon={UserRound}
                   label="Teacher Name"
-                  value={teacher.name}
+                  value={`${teacher.firstName} ${teacher.lastName}`}
                 />
                 <InfoItem
                   icon={GraduationCap}

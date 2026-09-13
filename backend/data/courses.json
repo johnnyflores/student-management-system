@@ -35,11 +35,22 @@
     "teacherId": 206,
     "studentIds": [104, 106]
   },
-  { "id": 107, "name": "Biologic", "teacherId": 207, "studentIds": [104] },
+  {
+    "id": 107,
+    "name": "Programming Fundamentals",
+    "teacherId": 202,
+    "studentIds": [104]
+  },
   {
     "id": 108,
     "name": "Cybersecurity Fundamentals",
-    "teacherId": 208,
+    "teacherId": 206,
     "studentIds": [104, 107]
+  },
+  {
+    "id": 109,
+    "name": "Network Security",
+    "teacherId": 206,
+    "studentIds": [108]
   }
 ]

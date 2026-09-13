@@ -1,7 +1,8 @@
 import type {
   Teacher,
-  CreateTeacher,
+  CreateTeacherRequest,
   PaginatedTeachers,
+  UpdateTeacherRequest,
 } from '@/features/teacher/types/teacher';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -33,7 +34,9 @@ export async function getTeacher(id: number): Promise<Teacher> {
   return response.json();
 }
 
-export async function createTeacher(teacher: CreateTeacher): Promise<Teacher> {
+export async function createTeacher(
+  teacher: CreateTeacherRequest
+): Promise<Teacher> {
   const response = await fetch(`${API_URL}/teachers`, {
     method: 'POST',
     headers: {
@@ -51,7 +54,7 @@ export async function createTeacher(teacher: CreateTeacher): Promise<Teacher> {
 
 export async function updateTeacher(
   id: number,
-  teacher: CreateTeacher
+  teacher: UpdateTeacherRequest
 ): Promise<Teacher> {
   const response = await fetch(`${API_URL}/teacher?id=${id}`, {
     method: 'PUT',
