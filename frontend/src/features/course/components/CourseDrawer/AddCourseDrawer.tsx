@@ -12,7 +12,11 @@ import {
 } from '@/components/ui/drawer';
 import CourseForm from '@/features/course/components/CourseForm/CourseForm';
 
-const AddCourseDrawer = () => {
+interface AddCourseDrawerProps {
+  showIcon?: boolean;
+}
+
+const AddCourseDrawer = ({ showIcon = false }: AddCourseDrawerProps) => {
   const [open, setOpen] = useState(false);
 
   const onCloseDrawer = () => {
@@ -23,8 +27,14 @@ const AddCourseDrawer = () => {
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="cursor-pointer! text-white!">
-          <PlusIcon className="h-4 w-4" />
-          Add Course
+          {!showIcon ? (
+            <>
+              <PlusIcon className="h-4 w-4" />
+              Add Course
+            </>
+          ) : (
+            <PlusIcon className="h-4 w-4" />
+          )}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">

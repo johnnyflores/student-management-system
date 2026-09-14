@@ -14,13 +14,10 @@ import StudentTable from '@/features/student/components/StudentTable';
 
 const DashboardRecentStudents = () => {
   return (
-    <Card className="shadow-none! border border-gray-100 dark:border-border">
+    <Card className="shadow-none! border border-gray-100 dark:border-border md:col-span-2">
       <CardHeader className="pb-0!">
         <CardTitle className="text-xl">Recent Students</CardTitle>
-        <CardDescription>
-          This section displays the most recently added students to the system.
-          You can view their details and manage their information from here.
-        </CardDescription>
+        <CardDescription>Recently registered students</CardDescription>
         <CardAction>
           <Button
             asChild

@@ -9,10 +9,14 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, XIcon } from 'lucide-react';
+import { PlusIcon, UserRoundPlus, XIcon } from 'lucide-react';
 import StudentForm from '@/features/student/components/StudentForm/StudentForm';
 
-const AddStudentDrawer = () => {
+interface AddStudentDrawerProps {
+  showIcon?: boolean;
+}
+
+const AddStudentDrawer = ({ showIcon = false }: AddStudentDrawerProps) => {
   const [open, setOpen] = useState(false);
 
   const onCloseDrawer = () => {
@@ -22,8 +26,14 @@ const AddStudentDrawer = () => {
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button className="cursor-pointer! text-white!">
-          <PlusIcon className="h-4 w-4" />
-          Add Student
+          {!showIcon ? (
+            <>
+              <PlusIcon className="h-4 w-4" />
+              Add Student
+            </>
+          ) : (
+            <UserRoundPlus className="h-4 w-4" />
+          )}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
