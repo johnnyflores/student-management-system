@@ -15,9 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import useStudents from '@/features/student/hooks/useStudents';
 import {
-  gradeLevels,
   studentSchema,
-  studentStatuses,
   type StudentSchemaType,
 } from '@/features/student/schemas/student.schema';
 import {
@@ -28,6 +26,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toApiDate, toInputDate } from '@/utils/date';
+import { gradeLevels, studentStatuses } from '@/features/student/constants';
 
 const StudentForm = (props: {
   isEdit?: boolean;

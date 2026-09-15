@@ -1,9 +1,25 @@
+import { useMemo, useState } from 'react';
 import { columns } from '@/features/student/components/StudentTable/Columns';
 import useStudents from '@/features/student/hooks/useStudents';
 import { DataTable } from '@/components/DataTable/DataTable';
 import { useSearch } from '@/hooks/useSearch';
+import {
+  STUDENT_STATUSES,
+  type StudentStatus,
+} from '@/features/student/constants';
+
+type FilterType = {
+  type?: StudentStatus | undefined;
+  pageNumber?: number;
+  pageSize?: number;
+};
 
 const DEFAULT_PAGE_SIZE = 3;
+
+const STATUS_FILTER_OPTIONS = STUDENT_STATUSES.map((status) => ({
+  label: status,
+  value: status,
+}));
 
 const StudentTable = (props: {
   pageSize?: number;
@@ -20,7 +36,21 @@ const StudentTable = (props: {
     setLimit,
   } = useStudents(props.pageSize ?? DEFAULT_PAGE_SIZE);
 
+  const [filter, setFilter] = useState<FilterType>({
+    type: undefined,
+    pageNumber: 1,
+    pageSize: props.pageSize ?? DEFAULT_PAGE_SIZE,
+  });
+
   const { data, setSearchTerm } = useSearch(students);
+
+  const filteredData = useMemo(() => {
+    if (!filter.type) {
+      return data;
+    }
+
+    return data.filter((student) => student.status === filter.type);
+  }, [data, filter.type]);
 
   const pagination = {
     totalItems: total,
@@ -39,10 +69,29 @@ const StudentTable = (props: {
 
   const handlePageChange = (pageNumber: number) => {
     setPage(pageNumber);
+    setFilter((prev) => ({
+      ...prev,
+      pageNumber,
+    }));
   };
 
   const handlePageSizeChange = (pageSize: number) => {
     setLimit(pageSize);
+    setPage(1);
+    setFilter((prev) => ({
+      ...prev,
+      pageSize,
+      pageNumber: 1,
+    }));
+  };
+
+  const handleFilterChange = (filters: Record<string, string>) => {
+    const { type } = filters;
+    setFilter((prev) => ({
+      ...prev,
+      type: type as StudentStatus | undefined,
+      pageNumber: 1,
+    }));
     setPage(1);
   };
 
@@ -53,16 +102,24 @@ const StudentTable = (props: {
   return (
     <div className="flex flex-col gap-4">
       <DataTable
-        data={data}
+        data={filteredData}
         searchPlaceholder="Search ..."
         isLoading={isLoading}
         columns={columns}
+        filters={[
+          {
+            key: 'type',
+            label: 'By Status',
+            options: STATUS_FILTER_OPTIONS,
+          },
+        ]}
         onSearch={handleSearch}
         isShowPagination={props.isShowPagination}
         pagination={pagination}
         pageSizeOptions={pageSizeOptions}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
+        onFilterChange={(filters) => handleFilterChange(filters)}
       />
     </div>
   );

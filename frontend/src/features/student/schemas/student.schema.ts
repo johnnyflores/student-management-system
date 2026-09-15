@@ -1,21 +1,6 @@
 import { z } from 'zod';
 
-export const gradeLevels = [
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-] as const;
-
-export const studentStatuses = ['active', 'inactive', 'graduated'] as const;
+import { gradeLevels, studentStatuses } from '@/features/student/constants';
 
 export const studentSchema = z.object({
   firstName: z.string().trim().min(1, { message: 'First name is required' }),

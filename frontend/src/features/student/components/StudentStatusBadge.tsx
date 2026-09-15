@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import type { StudentStatus } from '@/features/student/types/student';
+import type { StudentStatus } from '@/features/student/constants';
 
 interface StudentStatusBadgeProps {
   status: StudentStatus;

@@ -1,7 +1,4 @@
-export type GradeLevel =
-  '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
-
-export type StudentStatus = 'active' | 'inactive' | 'graduated';
+import type { GradeLevel, StudentStatus } from '@/features/student/constants';
 
 export interface Student {
   id: number;

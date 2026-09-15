@@ -24,7 +24,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, X } from 'lucide-react';
+import { PlusCircleIcon, Search, X } from 'lucide-react';
 import {
   features,
   type DataTableFeatures,
@@ -33,6 +33,19 @@ import { EmptyState } from '@/components/EmptyState';
 import { DataTablePagination } from '@/components/DataTable/DataTablePagination';
 import { cn } from '@/lib/utils';
 import DataTableSkeleton from '@/components/DataTable/DataTableSkeleton';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+interface FilterOption {
+  key: string;
+  label: string;
+  options: { label: string; value: string }[];
+}
 
 interface DataTableProps<TData extends RowData> {
   columns: ColumnDef<DataTableFeatures, TData>[];
@@ -40,9 +53,11 @@ interface DataTableProps<TData extends RowData> {
   data: TData[];
   searchPlaceholder?: string;
   showSearch?: boolean;
+  filters?: FilterOption[];
   className?: string;
   selection?: boolean;
   onSearch?: (term: string) => void;
+  onFilterChange?: (filters: Record<string, string>) => void;
   isLoading?: boolean;
   isShowPagination?: boolean;
   pagination?: {
@@ -61,6 +76,7 @@ export function DataTable<TData extends RowData>({
   searchPlaceholder,
   className,
   showSearch = true,
+  filters = [],
   selection = true,
   isLoading = false,
   isShowPagination = true,
@@ -69,8 +85,10 @@ export function DataTable<TData extends RowData>({
   onPageChange,
   onPageSizeChange,
   onSearch,
+  onFilterChange,
 }: DataTableProps<TData>) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterValues, setFilterValues] = useState<Record<string, string>>({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] =
@@ -98,9 +116,17 @@ export function DataTable<TData extends RowData>({
     onSearch?.(value);
   };
 
+  const handleFilterChange = (key: string, value: string) => {
+    const updated = { ...filterValues, [key]: value };
+    setFilterValues(updated);
+    onFilterChange?.(updated);
+  };
+
   const handleClear = () => {
     setSearchTerm('');
     onSearch?.('');
+    setFilterValues({});
+    onFilterChange?.({});
     setRowSelection({});
   };
 
@@ -120,7 +146,31 @@ export function DataTable<TData extends RowData>({
               />
             </div>
           )}
-          {(searchTerm || Object.keys(rowSelection).length > 0) && (
+          {filters.map(({ key, label, options }) => (
+            <Select
+              key={key}
+              value={filterValues[key] ?? ''}
+              disabled={isLoading}
+              onValueChange={(value) => handleFilterChange(key, value)}
+            >
+              <SelectTrigger className="min-w-40">
+                <div className="flex items-center gap-2">
+                  <PlusCircleIcon className="h-4 w-4 opacity-50" />
+                  <SelectValue placeholder={label} />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ))}
+          {(searchTerm ||
+            Object.keys(rowSelection).length > 0 ||
+            Object.keys(filterValues).length > 0) && (
             <Button
               variant="ghost"
               disabled={isLoading}
