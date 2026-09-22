@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { BookOpen, Hash, UserRound, Users } from 'lucide-react';
 import useCourses from '@/features/course/hooks/useCourses';
-import useCourseStudents from '@/features/course/hooks/useCourseStudents';
+import useStudents from '@/features/student/hooks/useStudents';
 import PageLayout from '@/components/PageLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,19 +9,27 @@ import { Separator } from '@/components/ui/separator';
 import CourseStudentsTable from '@/features/course/components/CourseStudentsTable';
 import BackButton from '@/components/BackButton';
 import InfoItem from '@/components/InfoItem';
+import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
 
 const CourseDetails = () => {
   const { id } = useParams();
-
   const { courses } = useCourses();
+  const { students } = useStudents();
+  const {
+    enrollments,
+    isLoading: isLoadingStudents,
+    isError: isStudentsError,
+  } = useEnrollments(id ? parseInt(id) : 0);
 
   const course = courses.find((course) => course.id.toString() === id);
 
-  const {
-    students,
-    isLoading: isLoadingStudents,
-    isError: isStudentsError,
-  } = useCourseStudents(id ? parseInt(id) : 0);
+  const enrolledStudentIds = new Set(
+    enrollments.map((enrollment) => enrollment.studentId)
+  );
+
+  const enrolledStudents = students.filter((student) =>
+    enrolledStudentIds.has(student.id)
+  );
 
   return (
     <PageLayout
@@ -69,7 +77,7 @@ const CourseDetails = () => {
                 </div>
                 <Badge variant="secondary" className="w-fit gap-1.5">
                   <Users className="size-3.5" />
-                  {students.length} Students
+                  {enrolledStudents.length} Students
                 </Badge>
               </div>
             </CardContent>
@@ -101,13 +109,13 @@ const CourseDetails = () => {
                 <InfoItem
                   icon={Users}
                   label="Students"
-                  value={students.length}
+                  value={enrollments.length}
                 />
               </div>
             </CardContent>
           </Card>
           <CourseStudentsTable
-            students={students}
+            students={enrolledStudents}
             isLoading={isLoadingStudents}
             isError={isStudentsError}
           />

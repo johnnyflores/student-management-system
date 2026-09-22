@@ -37,8 +37,20 @@ func main() {
 		Service: teacherService,
 	}
 
+	enrollmentService, err := app.NewEnrollmentService(
+		studentService,
+		courseService,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	enrollmentHandler := api.EnrollmentHandler{
+		Service: enrollmentService,
+	}
+
 	mux := http.NewServeMux()
-	api.RegisterRoutes(mux, &studentHandler, &courseHandler, &teacherHandler)
+	api.RegisterRoutes(mux, &studentHandler, &courseHandler, &teacherHandler, &enrollmentHandler)
 
 	fmt.Println("API running on :8080")
 

@@ -9,16 +9,17 @@ import (
 	"student-management-system/utils"
 )
 
-func courseMenu(service *services.CourseService) {
-
+func courseMenu(
+	courseService *services.CourseService,
+	enrollmentService *services.EnrollmentService,
+) {
 	for {
-
 		fmt.Println("\n===== Course Management =====")
 		fmt.Println("1. Create Course")
 		fmt.Println("2. View Courses")
-		fmt.Println("3. Assign Student")
-		fmt.Println("4. Remove Student")
-		fmt.Println("5. View Courses Students")
+		fmt.Println("3. Enroll Student")
+		fmt.Println("4. Unenroll Student")
+		fmt.Println("5. View Course Enrollments")
 		fmt.Println("6. Back")
 
 		var choice int
@@ -29,19 +30,25 @@ func courseMenu(service *services.CourseService) {
 		switch choice {
 
 		case 1:
-			addCourse(service)
+			addCourse(courseService)
 
 		case 2:
-			viewCourses(service)
+			viewCourses(
+				courseService,
+				enrollmentService,
+			)
 
 		case 3:
-			assignStudent(service)
+			enrollStudent(enrollmentService)
 
 		case 4:
-			removeStudent(service)
+			unenrollStudent(enrollmentService)
 
 		case 5:
-			viewCourseStudents(service)
+			viewCourseEnrollments(
+				courseService,
+				enrollmentService,
+			)
 
 		case 6:
 			return
@@ -107,10 +114,11 @@ func addCourse(service *services.CourseService) {
 	}
 }
 
-
-func viewCourses(service *services.CourseService) {
-
-	courses := service.GetCourses()
+func viewCourses(
+	courseService *services.CourseService,
+	enrollmentService *services.EnrollmentService,
+) {
+	courses := courseService.GetCourses()
 
 	if len(courses) == 0 {
 		fmt.Println("No courses found")
@@ -118,26 +126,31 @@ func viewCourses(service *services.CourseService) {
 	}
 
 	for _, course := range courses {
-
 		fmt.Println("----------------")
 		fmt.Println("ID:", course.ID)
 		fmt.Println("Name:", course.Name)
 		fmt.Println("Teacher ID:", course.TeacherID)
-		fmt.Println("Students:", len(course.StudentIDs))
+
+		enrollments := enrollmentService.GetByCourse(course.ID)
+
+		fmt.Println("Students:", len(enrollments))
+
+		for _, enrollment := range enrollments {
+			fmt.Println("  Student ID:", enrollment.StudentID)
+			fmt.Println("  Enrolled At:", enrollment.EnrolledAt)
+		}
 	}
 }
 
-func assignStudent(service *services.CourseService) {
-
-	fmt.Println("\n--- Assign Student to Course ---")
+func enrollStudent(service *services.EnrollmentService) {
+	fmt.Println("\n--- Enroll Student in Course ---")
 
 	courseID := utils.ReadPositiveInt("Enter course ID: ")
 	studentID := utils.ReadPositiveInt("Enter student ID: ")
 
-	err := service.AssignStudent(courseID, studentID)
+	err := service.Enroll(courseID, studentID)
 
 	if err != nil {
-
 		switch {
 		case errors.Is(err, services.ErrCourseNotFound):
 			fmt.Println("Course not found")
@@ -149,60 +162,47 @@ func assignStudent(service *services.CourseService) {
 			fmt.Println("Student is already enrolled in this course")
 
 		default:
-			fmt.Println("Could not assign student:", err)
+			fmt.Println("Could not enroll student:", err)
 		}
 
 		return
 	}
 
-	if err := service.Save(); err != nil {
-		fmt.Println("Error saving course:", err)
-		return
-	}
-
-	fmt.Println("Student assigned successfully!")
+	fmt.Println("Student enrolled successfully!")
 }
 
-func removeStudent(service *services.CourseService) {
-
-	fmt.Println("\n--- Remove Student from Course ---")
+func unenrollStudent(service *services.EnrollmentService) {
+	fmt.Println("\n--- Unenroll Student from Course ---")
 
 	courseID := utils.ReadPositiveInt("Enter course ID: ")
 	studentID := utils.ReadPositiveInt("Enter student ID: ")
 
-	err := service.RemoveStudent(courseID, studentID)
+	err := service.Unenroll(courseID, studentID)
 
 	if err != nil {
-
 		switch {
-		case errors.Is(err, services.ErrCourseNotFound):
-			fmt.Println("Course not found")
-
 		case errors.Is(err, services.ErrEnrollmentNotFound):
 			fmt.Println("Student is not enrolled in this course")
 
 		default:
-			fmt.Println("Could not remove student:", err)
+			fmt.Println("Could not unenroll student:", err)
 		}
 
 		return
 	}
 
-	if err := service.Save(); err != nil {
-		fmt.Println("Error saving course:", err)
-		return
-	}
-
-	fmt.Println("Student removed successfully!")
+	fmt.Println("Student unenrolled successfully!")
 }
 
-func viewCourseStudents(service *services.CourseService) {
-
-	fmt.Println("\n--- View Course Students ---")
+func viewCourseEnrollments(
+	courseService *services.CourseService,
+	enrollmentService *services.EnrollmentService,
+) {
+	fmt.Println("\n--- View Course Enrollments ---")
 
 	courseID := utils.ReadPositiveInt("Enter course ID: ")
 
-	course := service.SearchCourse(courseID)
+	course := courseService.SearchCourse(courseID)
 
 	if course == nil {
 		fmt.Println("Course not found")
@@ -213,20 +213,24 @@ func viewCourseStudents(service *services.CourseService) {
 	fmt.Println("Course Name:", course.Name)
 	fmt.Println("Teacher ID:", course.TeacherID)
 
-	if len(course.StudentIDs) == 0 {
+	enrollments := enrollmentService.GetByCourse(courseID)
+
+	if len(enrollments) == 0 {
 		fmt.Println("No students enrolled in this course")
 		return
 	}
 
 	fmt.Println("\n--- Enrolled Students ---")
 
-	for _, studentID := range course.StudentIDs {
+	for _, enrollment := range enrollments {
+		student := enrollmentService.StudentService.SearchStudent(
+			enrollment.StudentID,
+		)
 
-		student := service.StudentService.SearchStudent(studentID)
+		fmt.Println("----------------")
 
 		if student == nil {
-			fmt.Println("----------------")
-			fmt.Println("Student ID:", studentID)
+			fmt.Println("Student ID:", enrollment.StudentID)
 			fmt.Println("Student not found")
 			continue
 		}

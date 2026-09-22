@@ -20,13 +20,6 @@ export const columns = columnHelper.columns([
     header: 'Teacher ID',
     cell: (info) => info.getValue(),
   }),
-  columnHelper.accessor('studentIds', {
-    header: 'Students ID',
-    cell: (info) =>
-      info.getValue()?.length
-        ? info.getValue().join(', ')
-        : 'No students enrolled',
-  }),
   columnHelper.display({
     id: 'actions',
     cell: ({ row }) => <Actions row={row} />,

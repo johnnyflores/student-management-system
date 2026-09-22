@@ -30,9 +30,19 @@ func main() {
 		log.Fatal(err)
 	}
 
+	enrollmentService, err := app.NewEnrollmentService(
+		studentService,
+		courseService,
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	cli.Start(
 		studentService,
 		teacherService,
 		courseService,
+		enrollmentService,
 	)
 }

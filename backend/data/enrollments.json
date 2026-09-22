@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "courseId": 101,
+    "studentId": 101,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 3,
+    "courseId": 102,
+    "studentId": 101,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 4,
+    "courseId": 103,
+    "studentId": 102,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 5,
+    "courseId": 104,
+    "studentId": 105,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 7,
+    "courseId": 105,
+    "studentId": 107,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 8,
+    "courseId": 106,
+    "studentId": 104,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 9,
+    "courseId": 106,
+    "studentId": 106,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 10,
+    "courseId": 107,
+    "studentId": 104,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 11,
+    "courseId": 108,
+    "studentId": 104,
+    "enrolledAt": "2026-09-01T10:00:00Z"
+  },
+  {
+    "id": 12,
+    "courseId": 102,
+    "studentId": 106,
+    "enrolledAt": "2026-09-22T16:24:36.219293865-04:00"
+  },
+  {
+    "id": 13,
+    "courseId": 102,
+    "studentId": 108,
+    "enrolledAt": "2026-09-22T16:24:41.046548698-04:00"
+  },
+  {
+    "id": 14,
+    "courseId": 102,
+    "studentId": 110,
+    "enrolledAt": "2026-09-22T16:24:46.259741768-04:00"
+  },
+  {
+    "id": 15,
+    "courseId": 101,
+    "studentId": 112,
+    "enrolledAt": "2026-09-22T16:24:53.326507766-04:00"
+  },
+  {
+    "id": 16,
+    "courseId": 102,
+    "studentId": 109,
+    "enrolledAt": "2026-09-22T16:24:57.921403599-04:00"
+  },
+  {
+    "id": 17,
+    "courseId": 102,
+    "studentId": 105,
+    "enrolledAt": "2026-09-22T16:25:03.310583439-04:00"
+  },
+  {
+    "id": 18,
+    "courseId": 102,
+    "studentId": 107,
+    "enrolledAt": "2026-09-22T16:25:09.763585657-04:00"
+  }
+]

@@ -1,4 +1,5 @@
 import { ROUTES } from '@/routes/common/routePath';
+import EnrollmentPage from '@/pages/enrollments';
 import Dashboard from '@/pages/dashboard';
 import Students from '@/pages/students';
 import StudentDetails from '@/features/student/components/StudentDetails';
@@ -35,5 +36,9 @@ export const routesPaths = [
   {
     path: ROUTES.TEACHER_DETAILS(':id'),
     element: <TeacherDetails />,
+  },
+  {
+    path: ROUTES.COURSE_ENROLLMENTS(':id'),
+    element: <EnrollmentPage />,
   },
 ];

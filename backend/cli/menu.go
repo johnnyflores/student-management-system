@@ -10,10 +10,9 @@ func Start(
 	studentService *services.StudentService,
 	teacherService *services.TeacherService,
 	courseService *services.CourseService,
+	enrollmentService *services.EnrollmentService,
 ) {
-
 	for {
-
 		fmt.Println("\n===== Student Management System =====")
 		fmt.Println("1. Student Management")
 		fmt.Println("2. Teacher Management")
@@ -34,7 +33,10 @@ func Start(
 			teacherMenu(teacherService)
 
 		case 3:
-			courseMenu(courseService)
+			courseMenu(
+				courseService,
+				enrollmentService,
+			)
 
 		case 4:
 			fmt.Println("Goodbye!")

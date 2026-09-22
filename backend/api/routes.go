@@ -9,6 +9,7 @@ func RegisterRoutes(
 	studentHandler *StudentHandler,
 	courseHandler *CourseHandler,
 	teacherHandler *TeacherHandler,
+	enrollmentHandler *EnrollmentHandler,
 ) {
 
 	mux.HandleFunc("/students", func(w http.ResponseWriter, r *http.Request) {
@@ -92,13 +93,13 @@ func RegisterRoutes(
 		switch r.Method {
 
 		case http.MethodGet:
-			courseHandler.ViewCourseStudents(w, r)
+			enrollmentHandler.GetCourseEnrollments(w, r)
 
 		case http.MethodPost:
-			courseHandler.AssignStudent(w, r)
+			enrollmentHandler.EnrollStudent(w, r)
 
 		case http.MethodDelete:
-			courseHandler.RemoveStudent(w, r)
+			enrollmentHandler.UnenrollStudent(w, r)
 
 		default:
 			http.Error(

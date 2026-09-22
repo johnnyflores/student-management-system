@@ -18,13 +18,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import useStudents from '@/features/student/hooks/useStudents';
-import useCourseStudents from '@/features/course/hooks/useCourseStudents';
 import {
   assignStudentSchema,
   type AssignStudentSchemaType,
 } from '@/features/course/schemas/assignStudent.schema';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
+import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
 
 type AssignStudentFormProps = {
   courseId?: string;
@@ -36,12 +36,15 @@ type AssignStudentFormProps = {
 const AssignStudentForm = (props: AssignStudentFormProps) => {
   const { courseId, courseName, teacherId, onCloseDrawer } = props;
 
-  const { students: enrolledStudents, assignStudent } = useCourseStudents(
-    courseId ? parseInt(courseId) : 0
-  );
+  const parsedCourseId = courseId ? parseInt(courseId) : 0;
+
+  const { enrollments, enrollStudent, isEnrolling } =
+    useEnrollments(parsedCourseId);
+
   const { students: allStudents, isLoading: isLoadingStudents } = useStudents();
+
   const enrolledStudentIds = new Set(
-    enrolledStudents.map((student) => student.id)
+    enrollments.map((enrollment) => enrollment.studentId)
   );
 
   const availableStudents = allStudents.filter(
@@ -57,7 +60,7 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
 
   const onSubmit = async (values: AssignStudentSchemaType) => {
     try {
-      await assignStudent(values.StudentID, {
+      await enrollStudent(values.StudentID, {
         onSuccess: () => {
           toast.success('Student assigned successfully');
           onCloseDrawer?.();
@@ -137,16 +140,18 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
               All students are already enrolled.
             </p>
           )}
-          <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
+          <div className="sticky bottom-0 bg-white pb-2 dark:bg-background">
             <Button
               type="submit"
               className="w-full"
-              disabled={isLoadingStudents}
+              disabled={
+                isLoadingStudents ||
+                isEnrolling ||
+                availableStudents.length === 0
+              }
             >
-              {isLoadingStudents ? (
-                <Loader className="h-4 w-4 animate-spin" />
-              ) : null}
-              {isLoadingStudents ? 'Assigning...' : 'Assign Student'}
+              {isEnrolling && <Loader className="h-4 w-4 animate-spin" />}
+              {isEnrolling ? 'Assigning...' : 'Assign Student'}
             </Button>
           </div>
         </form>

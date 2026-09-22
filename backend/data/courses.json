@@ -2,55 +2,46 @@
   {
     "id": 101,
     "name": "Go Programming",
-    "teacherId": 201,
-    "studentIds": [101, 105]
+    "teacherId": 201
   },
   {
     "id": 102,
     "name": "Advanced Software Architecture",
-    "teacherId": 202,
-    "studentIds": [101]
+    "teacherId": 202
   },
   {
     "id": 103,
     "name": "Data Structures Algorithms",
-    "teacherId": 203,
-    "studentIds": [102]
+    "teacherId": 203
   },
   {
     "id": 104,
     "name": "Introduction to Kubernetes",
-    "teacherId": 204,
-    "studentIds": [105]
+    "teacherId": 204
   },
   {
     "id": 105,
     "name": "Cloud Native DevOps",
-    "teacherId": 205,
-    "studentIds": [106, 107]
+    "teacherId": 205
   },
   {
     "id": 106,
     "name": "Database Systems SQL",
-    "teacherId": 206,
-    "studentIds": [104, 106]
+    "teacherId": 206
   },
   {
     "id": 107,
     "name": "Programming Fundamentals",
-    "teacherId": 202,
-    "studentIds": [104]
+    "teacherId": 202
   },
   {
     "id": 108,
     "name": "Cybersecurity Fundamentals",
-    "teacherId": 206,
-    "studentIds": [104, 107]
+    "teacherId": 206
   },
   {
     "id": 109,
     "name": "Network Security",
-    "teacherId": 206,
-    "studentIds": [108]
+    "teacherId": 206
   }
 ]

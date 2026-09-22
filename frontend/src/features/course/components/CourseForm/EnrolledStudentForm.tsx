@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import useCourseStudents from '@/features/course/hooks/useCourseStudents';
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
 import { useState } from 'react';
@@ -13,6 +12,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
+import useStudents from '@/features/student/hooks/useStudents';
 
 type EnrolledStudentFormProps = {
   courseId?: string;
@@ -25,23 +26,39 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
   const courseIdNumber = courseId ? Number(courseId) : 0;
 
   const {
-    students: enrolledStudents,
-    removeStudent,
-    isRemoving,
-    isLoading,
-  } = useCourseStudents(courseIdNumber);
+    enrollments,
+    unenrollStudent,
+    isUnenrolling,
+    isLoading: isLoadingEnrollments,
+  } = useEnrollments(courseIdNumber);
+
+  const { students: allStudents, isLoading: isLoadingStudents } = useStudents();
 
   const [studentToRemove, setStudentToRemove] = useState<number | null>(null);
+
+  const enrolledStudentIds = new Set(
+    enrollments.map((enrollment) => enrollment.studentId)
+  );
+
+  const enrolledStudents = allStudents.filter((student) =>
+    enrolledStudentIds.has(student.id)
+  );
 
   const student = enrolledStudents.find(
     (student) => student.id === studentToRemove
   );
 
-  const handleRemove = () => {
+  const isLoading = isLoadingEnrollments || isLoadingStudents;
+
+  const handleRemove = async () => {
     if (studentToRemove === null) return;
 
-    removeStudent(studentToRemove);
-    setStudentToRemove(null);
+    try {
+      await unenrollStudent(studentToRemove);
+      setStudentToRemove(null);
+    } catch (error) {
+      console.error('Failed to unenroll student:', error);
+    }
   };
 
   if (isLoading) {
@@ -82,45 +99,49 @@ const EnrolledStudentForm = ({ courseId }: EnrolledStudentFormProps) => {
               type="button"
               variant="destructive"
               onClick={() => setStudentToRemove(student.id)}
-              disabled={isRemoving}
+              disabled={isUnenrolling}
             >
               Remove
             </Button>
           </div>
         ))}
+        <AlertDialog
+          open={studentToRemove !== null}
+          onOpenChange={(open) => {
+            if (!open && !isUnenrolling) {
+              setStudentToRemove(null);
+            }
+          }}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Remove enrolled student?</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to remove{' '}
+                <strong>
+                  {student?.firstName} {student?.lastName ?? 'this student'}
+                </strong>{' '}
+                from this course? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel disabled={isUnenrolling}>
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleRemove}
+                variant="destructive"
+                disabled={isUnenrolling}
+              >
+                {isUnenrolling && (
+                  <Loader className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                {isUnenrolling ? 'Removing...' : 'Remove'}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
-      <AlertDialog
-        open={studentToRemove !== null}
-        onOpenChange={(open) => {
-          if (!open && !isRemoving) {
-            setStudentToRemove(null);
-          }
-        }}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Remove enrolled student?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to remove{' '}
-              <strong>
-                {student?.firstName} {student?.lastName ?? 'this student'}
-              </strong>{' '}
-              from this course? This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isRemoving}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleRemove}
-              variant="destructive"
-              disabled={isRemoving}
-            >
-              {isRemoving && <Loader className="mr-2 h-4 w-4 animate-spin" />}
-              {isRemoving ? 'Removing...' : 'Remove'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 };

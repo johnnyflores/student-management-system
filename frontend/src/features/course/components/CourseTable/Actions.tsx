@@ -12,16 +12,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useAssignStudentDrawer from '@/features/course/hooks/useAssignStudentDrawer';
-import useEnrolledStudentDrawer from '@/features/course/hooks/useEnrolledStudentDrawer';
 import { Link } from 'react-router-dom';
+import { ROUTES } from '@/routes/common/routePath';
 
 const Actions = ({ row }: { row: { original: { id: number } } }) => {
   const courseId = row.original.id;
 
   const { onOpenDrawer: openAssignStudentDrawer } = useAssignStudentDrawer();
-
-  const { onOpenDrawer: openEnrolledStudentDrawer } =
-    useEnrolledStudentDrawer();
 
   return (
     <DropdownMenu>
@@ -39,9 +36,14 @@ const Actions = ({ row }: { row: { original: { id: number } } }) => {
           <UserRoundArrowLeft className="mr-1 h-4 w-4" />
           Assign Student
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => openEnrolledStudentDrawer(courseId)}>
-          <Users className="mr-1 h-4 w-4" />
-          Enrolled Students
+        <DropdownMenuItem asChild>
+          <Link
+            to={ROUTES.COURSE_ENROLLMENTS(String(courseId))}
+            className="flex items-center"
+          >
+            <Users className="mr-1 h-4 w-4" />
+            Enrolled Students
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to={`/courses/${courseId}`} className="flex items-center">

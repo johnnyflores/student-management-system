@@ -16,10 +16,7 @@ type CourseService struct {
 }
 
 var (
-	ErrCourseNotFound     = errors.New("course not found")
-	ErrStudentNotFound    = errors.New("student not found")
-	ErrAlreadyEnrolled    = errors.New("student already enrolled")
-	ErrEnrollmentNotFound = errors.New("student is not enrolled in this course")
+	ErrCourseNotFound = errors.New("course not found")
 )
 
 func (c *CourseService) AddCourse(course *models.Course) bool {
@@ -32,7 +29,6 @@ func (c *CourseService) AddCourse(course *models.Course) bool {
 	}
 
 	course.ID = maxID + 1
-	course.StudentIDs = []int{}
 
 	c.Courses = append(c.Courses, *course)
 
@@ -41,26 +37,6 @@ func (c *CourseService) AddCourse(course *models.Course) bool {
 
 func (c *CourseService) GetCourses() []models.Course {
 	return c.Courses
-}
-
-func (c *CourseService) GetCourseStudents(courseID int) ([]models.Student, error) {
-	course := c.SearchCourse(courseID)
-
-	if course == nil {
-		return nil, ErrCourseNotFound
-	}
-
-	var students []models.Student
-
-	for _, studentID := range course.StudentIDs {
-		student := c.StudentService.SearchStudent(studentID)
-
-		if student != nil {
-			students = append(students, *student)
-		}
-	}
-
-	return students, nil
 }
 
 func (c *CourseService) SearchCourse(id int) *models.Course {
@@ -91,75 +67,6 @@ func (c *CourseService) SearchCoursesByName(name string) []models.Course {
 	}
 
 	return results
-}
-
-func (c *CourseService) AssignStudent(
-	courseID int,
-	studentID int,
-) error {
-
-	// Find course
-	courseIndex := -1
-
-	for i := range c.Courses {
-		if c.Courses[i].ID == courseID {
-			courseIndex = i
-			break
-		}
-	}
-
-	if courseIndex == -1 {
-		return ErrCourseNotFound
-	}
-
-	// Check student service
-	if c.StudentService == nil {
-		return ErrStudentNotFound
-	}
-
-	// Check student exists
-	student := c.StudentService.SearchStudent(studentID)
-
-	if student == nil {
-		return ErrStudentNotFound
-	}
-
-	// Prevent duplicate enrollment
-	for _, id := range c.Courses[courseIndex].StudentIDs {
-		if id == studentID {
-			return ErrAlreadyEnrolled
-		}
-	}
-
-	// Assign student
-	c.Courses[courseIndex].StudentIDs = append(
-		c.Courses[courseIndex].StudentIDs,
-		studentID,
-	)
-
-	return nil
-}
-
-func (c *CourseService) RemoveStudent(courseID int, studentID int) error {
-	for i := range c.Courses {
-		if c.Courses[i].ID == courseID {
-
-			for j, id := range c.Courses[i].StudentIDs {
-				if id == studentID {
-
-					c.Courses[i].StudentIDs = append(
-						c.Courses[i].StudentIDs[:j],
-						c.Courses[i].StudentIDs[j+1:]...,
-					)
-
-					return nil
-				}
-			}
-			return ErrEnrollmentNotFound
-		}
-	}
-
-	return ErrCourseNotFound
 }
 
 func (c *CourseService) Save() error {

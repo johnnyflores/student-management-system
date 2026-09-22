@@ -67,3 +67,27 @@ func NewTeacherService() (*services.TeacherService, error) {
 
 	return service, nil
 }
+
+func NewEnrollmentService(
+	studentService *services.StudentService,
+	courseService *services.CourseService,
+) (*services.EnrollmentService, error) {
+	repository := storage.JSONEnrollmentStorage{
+		FileName: "data/enrollments.json",
+	}
+
+	enrollments, err := repository.Load()
+
+	if err != nil {
+		return nil, err
+	}
+
+	service := &services.EnrollmentService{
+		Enrollments:    enrollments,
+		Repository:     repository,
+		StudentService: studentService,
+		CourseService:  courseService,
+	}
+
+	return service, nil
+}
