@@ -49,8 +49,19 @@ func main() {
 		Service: enrollmentService,
 	}
 
+	dashboardService := app.NewDashboardService(
+		studentService,
+		teacherService,
+		courseService,
+		enrollmentService,
+	)
+
+	dashboardHandler := api.DashboardHandler{
+		Service: dashboardService,
+	}
+
 	mux := http.NewServeMux()
-	api.RegisterRoutes(mux, &studentHandler, &courseHandler, &teacherHandler, &enrollmentHandler)
+	api.RegisterRoutes(mux, &studentHandler, &courseHandler, &teacherHandler, &enrollmentHandler, &dashboardHandler)
 
 	fmt.Println("API running on :8080")
 

@@ -91,3 +91,18 @@ func NewEnrollmentService(
 
 	return service, nil
 }
+
+func NewDashboardService(
+	studentService *services.StudentService,
+	teacherService *services.TeacherService,
+	courseService *services.CourseService,
+	enrollmentService *services.EnrollmentService,
+) *services.DashboardService {
+
+	return &services.DashboardService{
+		StudentService:    studentService,
+		TeacherService:    teacherService,
+		CourseService:     courseService,
+		EnrollmentService: enrollmentService,
+	}
+}
