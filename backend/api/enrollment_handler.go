@@ -93,6 +93,29 @@ func (h *EnrollmentHandler) GetCourseEnrollments(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	page := 1
+	limit := 10
+
+	pageParam := r.URL.Query().Get("page")
+	limitParam := r.URL.Query().Get("limit")
+	var err error
+	if pageParam != "" {
+		page, err = strconv.Atoi(pageParam)
+
+		if err != nil || page < 1 {
+			http.Error(w, "invalid page", http.StatusBadRequest)
+			return
+		}
+	}
+
+	if limitParam != "" {
+		limit, err = strconv.Atoi(limitParam)
+
+		if err != nil || limit < 1 {
+			http.Error(w, "invalid limit", http.StatusBadRequest)
+			return
+		}
+	}
 	courseID, err := strconv.Atoi(
 		r.URL.Query().Get("course_id"),
 	)
@@ -116,7 +139,7 @@ func (h *EnrollmentHandler) GetCourseEnrollments(
 		return
 	}
 
-	enrollments := h.Service.GetByCourse(courseID)
+	enrollments := h.Service.GetEnrollmentsPaginated(courseID, page, limit)
 
 	w.Header().Set("Content-Type", "application/json")
 

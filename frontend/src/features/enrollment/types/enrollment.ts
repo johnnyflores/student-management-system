@@ -9,3 +9,11 @@ export interface EnrollStudentRequest {
   courseId: number;
   studentId: number;
 }
+
+export interface PaginatedCourses {
+  items: Enrollment[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}

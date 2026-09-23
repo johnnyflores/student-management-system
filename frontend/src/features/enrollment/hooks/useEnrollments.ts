@@ -4,13 +4,20 @@ import {
   getCourseEnrollments,
   unenrollStudent,
 } from '@/features/enrollment/services/enrollmentApi';
+import { useState } from 'react';
 
-export default function useEnrollments(courseId: number) {
+export default function useEnrollments(
+  courseId: number,
+  initialLimit: number = 10
+) {
   const queryClient = useQueryClient();
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(initialLimit);
+
   const enrollmentsQuery = useQuery({
-    queryKey: ['course-enrollments', courseId],
-    queryFn: () => getCourseEnrollments(courseId),
+    queryKey: ['course-enrollments', courseId, page, limit],
+    queryFn: () => getCourseEnrollments(courseId, page, limit),
     enabled: courseId > 0,
   });
 
@@ -35,7 +42,7 @@ export default function useEnrollments(courseId: number) {
   });
 
   return {
-    enrollments: enrollmentsQuery.data ?? [],
+    enrollments: enrollmentsQuery.data?.items ?? [],
     isLoading: enrollmentsQuery.isLoading,
     isError: enrollmentsQuery.isError,
     error: enrollmentsQuery.error,
@@ -47,5 +54,12 @@ export default function useEnrollments(courseId: number) {
     unenrollStudent: unenrollMutation.mutateAsync,
     isUnenrolling: unenrollMutation.isPending,
     unenrollError: unenrollMutation.error,
+
+    page,
+    limit,
+    total: enrollmentsQuery.data?.total ?? 0,
+    totalPages: enrollmentsQuery.data?.totalPages ?? 0,
+    setPage,
+    setLimit,
   };
 }

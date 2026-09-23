@@ -6,6 +6,7 @@ import (
 
 	"student-management-system/models"
 	"student-management-system/storage"
+	"student-management-system/utils"
 )
 
 var (
@@ -162,4 +163,14 @@ func (s *EnrollmentService) Load() error {
 	s.Enrollments = enrollments
 
 	return nil
+}
+
+func (s *EnrollmentService) GetEnrollmentsPaginated(
+	courseID int,
+	page int,
+	limit int,
+) models.Paginated[models.Enrollment] {
+	courseEnrollments := s.GetByCourse(courseID)
+
+	return utils.Paginate(courseEnrollments, page, limit)
 }
