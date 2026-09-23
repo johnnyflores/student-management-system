@@ -1,6 +1,7 @@
 import PageLayout from '@/components/PageLayout';
 import DashboardQuickActions from '@/features/dashboard/components/DashboardQuickActions';
 import DashboardRecentStudents from '@/features/dashboard/components/DashboardRecentStudents';
+import DashboardChart from '@/features/dashboard/components/DashboardChart';
 import DashboardStats from '@/features/dashboard/components/DashboardStats';
 
 const Dashboard = () => {
@@ -17,6 +18,9 @@ const Dashboard = () => {
         </div>
         <div className="w-full mt-6">
           <DashboardStats />
+        </div>
+        <div className="w-full mt-6">
+          <DashboardChart />
         </div>
         <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
           <DashboardRecentStudents />

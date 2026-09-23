@@ -3,7 +3,7 @@ import { columns } from '@/features/course/components/CourseTable/Columns';
 import useCourses from '@/features/course/hooks/useCourses';
 import { useSearch } from '@/hooks/useSearch';
 
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 5;
 
 const CourseTable = (props: {
   pageSize?: number;

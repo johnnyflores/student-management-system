@@ -7,10 +7,12 @@ export interface DashboardStats {
   enrollments: number;
 }
 
+export type StatCardColor = 'blue' | 'green' | 'orange' | 'purple';
+
 export interface StatCard {
   title: string;
   value: number;
   description: string;
   icon: LucideIcon;
-  color: 'blue' | 'green' | 'orange' | 'purple';
+  color: StatCardColor;
 }
