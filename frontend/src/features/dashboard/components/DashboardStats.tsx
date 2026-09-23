@@ -6,8 +6,6 @@ import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
 const DashboardStats = () => {
   const { data, isLoading, isError, error } = useDashboardStats();
 
-  console.log({ data, isLoading, isError, error });
-
   if (isLoading) {
     return <div>Loading dashboard...</div>;
   }

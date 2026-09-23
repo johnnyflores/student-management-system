@@ -5,6 +5,7 @@ import type { DataTableFeatures } from '@/components/DataTable/DataTableFeatures
 import type { Student } from '@/features/student/types/student';
 import Actions from '@/features/student/components/StudentTable/Actions';
 import { StudentStatusBadge } from '@/features/student/components/StudentStatusBadge';
+import StudentName from '@/features/student/components/StudentName';
 
 const columnHelper = createColumnHelper<DataTableFeatures, Student>();
 
@@ -16,7 +17,12 @@ export const columns = columnHelper.columns([
   columnHelper.display({
     id: 'name',
     header: 'Name',
-    cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
+    cell: ({ row }) => (
+      <StudentName
+        firstName={row.original.firstName}
+        lastName={row.original.lastName}
+      />
+    ),
   }),
   columnHelper.accessor('email', {
     header: 'Email',
