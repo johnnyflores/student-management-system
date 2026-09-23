@@ -178,7 +178,6 @@ func (h *TeacherHandler) CreateTeacher(
 	json.NewEncoder(w).Encode(teacher)
 }
 
-
 func (h *TeacherHandler) UpdateTeacher(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -281,7 +280,6 @@ func (h *TeacherHandler) UpdateTeacher(
 
 	json.NewEncoder(w).Encode(updatedTeacher)
 }
-
 
 func (h *TeacherHandler) DeleteTeacher(
 	w http.ResponseWriter,

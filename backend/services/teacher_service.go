@@ -70,7 +70,6 @@ func (t *TeacherService) SearchTeachersByName(name string) []models.Teacher {
 	return results
 }
 
-
 func (t *TeacherService) UpdateTeacher(
 	id int,
 	updatedTeacher models.Teacher,

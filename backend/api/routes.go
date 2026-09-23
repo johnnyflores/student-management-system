@@ -154,19 +154,18 @@ func RegisterRoutes(
 
 	mux.HandleFunc("/dashboard/stats", func(w http.ResponseWriter, r *http.Request) {
 
-	switch r.Method {
+		switch r.Method {
 
-	case http.MethodGet:
-		dashboardHandler.GetStats(w, r)
+		case http.MethodGet:
+			dashboardHandler.GetStats(w, r)
 
-	default:
-		http.Error(
-			w,
-			"Method not allowed",
-			http.StatusMethodNotAllowed,
-		)
-	}
-})
-
+		default:
+			http.Error(
+				w,
+				"Method not allowed",
+				http.StatusMethodNotAllowed,
+			)
+		}
+	})
 
 }
