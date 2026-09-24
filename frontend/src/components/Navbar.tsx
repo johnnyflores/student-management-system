@@ -51,28 +51,27 @@ export default function Navbar() {
               </Button>
               <Logo />
             </div>
-            <nav className="hidden md:flex items-center gap-x-2 overflow-x-auto">
-              {routes?.map((route) => (
-                <Button
-                  key={route.href}
-                  size="sm"
-                  variant="ghost"
-                  className={cn(
-                    `w-full lg:w-auto font-normal py-4.5
-                     hover:text-white border-none
-                     text-white/60 focus:bg-white/30
-                     transition bg-transparent! text-[14.5px]!
-                     `,
-                    pathname === route.href && 'text-white'
-                  )}
-                  asChild
-                >
-                  <NavLink key={route.href} to={route.href}>
-                    {route.label}
-                  </NavLink>
-                </Button>
-              ))}
-            </nav>
+            <div className="overflow-x-auto">
+              <nav className="hidden md:flex items-center gap-x-2 px-1 py-1">
+                {routes?.map((route) => (
+                  <Button
+                    key={route.href}
+                    size="sm"
+                    variant="ghost"
+                    asChild
+                    className={cn(
+                      `w-full lg:w-auto font-normal py-4.5
+                    hover:text-white border-none
+                    text-white/60 focus:bg-white/30
+                      transition bg-transparent! text-[14.5px]!`,
+                      pathname === route.href && 'text-white'
+                    )}
+                  >
+                    <NavLink to={route.href}>{route.label}</NavLink>
+                  </Button>
+                ))}
+              </nav>
+            </div>
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetContent side="left" className="bg-white">
                 <nav className="flex flex-col gap-y-2 pt-9">
