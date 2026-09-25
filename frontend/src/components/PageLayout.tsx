@@ -23,7 +23,7 @@ const PageLayout = ({
   renderPageHeader,
 }: PageLayoutProps) => {
   return (
-    <div>
+    <>
       {showHeader && (
         <PageHeader
           title={title}
@@ -41,7 +41,7 @@ const PageLayout = ({
       >
         {children}
       </div>
-    </div>
+    </>
   );
 };
 

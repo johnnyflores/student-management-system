@@ -15,11 +15,13 @@ const Courses = () => {
         </div>
       }
     >
-      <Card className="border-0 shadow-none">
-        <CardContent>
-          <CourseTable />
-        </CardContent>
-      </Card>
+      <div className="w-full px-5 lg:px-0">
+        <Card className="border-0 shadow-none">
+          <CardContent>
+            <CourseTable />
+          </CardContent>
+        </Card>
+      </div>
     </PageLayout>
   );
 };

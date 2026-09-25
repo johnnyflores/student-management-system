@@ -30,7 +30,7 @@ export const getColumns = (
     }),
     columnHelper.display({
       id: 'actions',
-      header: 'Actions',
+      header: () => <span className="sr-only">Actions</span>,
       cell: ({ row }) => (
         <Actions
           enrollment={row.original}

@@ -11,11 +11,13 @@ const Teachers = () => {
       addMarginTop
       rightAction={<AddTeacherDrawer />}
     >
-      <Card className="border-0 shadow-none">
-        <CardContent>
-          <TeacherTable />
-        </CardContent>
-      </Card>
+      <div className="w-full px-5 lg:px-0">
+        <Card className="border-0 shadow-none">
+          <CardContent>
+            <TeacherTable />
+          </CardContent>
+        </Card>
+      </div>
     </PageLayout>
   );
 };

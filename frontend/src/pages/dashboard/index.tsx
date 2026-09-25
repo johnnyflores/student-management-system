@@ -6,23 +6,33 @@ import DashboardStats from '@/features/dashboard/components/DashboardStats';
 
 const Dashboard = () => {
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full px-5 lg:px-0">
       <PageLayout showHeader={false} addMarginTop={false}>
         <div className="w-full flex flex-col gap-4">
-          <div className="w-full flex flex-col gap-4">
-            <h1 className="text-2xl font-semibold">Dashboard</h1>
-            <p className="text-sm text-gray-600">
-              Welcome to the Student Management System Dashboard.
-            </p>
-          </div>
+          <h1 className="text-2xl font-semibold">Dashboard</h1>
+          <p className="text-sm text-gray-600">
+            Welcome to the Student Management System Dashboard.
+          </p>
         </div>
-        <div className="w-full mt-6">
+        <section
+          className="mt-6 w-full"
+          aria-labelledby="dashboard-stats-heading"
+        >
+          <h2 id="dashboard-stats-heading" className="sr-only">
+            Dashboard statistics
+          </h2>
           <DashboardStats />
-        </div>
-        <div className="w-full mt-6">
+        </section>
+        <section
+          className="mt-6 w-full"
+          aria-labelledby="dashboard-chart-heading"
+        >
+          <h2 id="dashboard-chart-heading" className="sr-only">
+            Dashboard chart
+          </h2>
           <DashboardChart />
-        </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+        </section>
+        <div className="w-full grid grid-cols-1 gap-4 md:grid-cols-3 mt-8">
           <DashboardRecentStudents />
           <DashboardQuickActions />
         </div>

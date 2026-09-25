@@ -40,6 +40,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 interface FilterOption {
   key: string;
@@ -136,8 +137,15 @@ export function DataTable<TData extends RowData>({
         <div className="flex items-center gap-2 flex-wrap flex-1">
           {showSearch && (
             <div className="relative w-full max-w-sm">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Label htmlFor="table-search" className="sr-only">
+                Search
+              </Label>
+              <Search
+                className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
+                id="table-search"
                 placeholder={searchPlaceholder}
                 value={searchTerm}
                 disabled={isLoading}

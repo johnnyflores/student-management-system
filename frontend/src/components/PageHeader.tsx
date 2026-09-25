@@ -22,7 +22,7 @@ const PageHeader = ({
             {(title || subtitle) && (
               <div className="space-y-1">
                 {title && (
-                  <h2 className="text-2xl lg:text-4xl font-medium">{title}</h2>
+                  <h1 className="text-2xl lg:text-4xl font-medium">{title}</h1>
                 )}
                 {subtitle && (
                   <p className="text-white/60 text-sm">{subtitle}</p>

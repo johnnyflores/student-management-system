@@ -42,6 +42,7 @@ export const columns = columnHelper.columns([
   }),
   columnHelper.display({
     id: 'actions',
+    header: () => <span className="sr-only">Actions</span>,
     cell: ({ row }) => <Actions row={row} />,
   }),
 ]);

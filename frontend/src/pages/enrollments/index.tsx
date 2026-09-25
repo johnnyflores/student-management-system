@@ -13,11 +13,13 @@ const EnrollmentPage = () => {
       subtitle="View and manage all enrollments"
       addMarginTop
     >
-      <Card className="border-0 shadow-none">
-        <CardContent>
-          <EnrollmentTable courseId={courseId} isShowPagination={true} />
-        </CardContent>
-      </Card>
+      <div className="w-full px-5 lg:px-0">
+        <Card className="border-0 shadow-none">
+          <CardContent>
+            <EnrollmentTable courseId={courseId} isShowPagination={true} />
+          </CardContent>
+        </Card>
+      </div>
     </PageLayout>
   );
 };

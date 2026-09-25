@@ -6,17 +6,15 @@ import EditTeacherDrawer from '@/features/teacher/components/TeacherDrawer/EditT
 
 const AppLayout = () => {
   return (
-    <>
-      <div>
-        <Navbar />
-        <main>
-          <Outlet />
-        </main>
-      </div>
+    <div className="min-h-screen">
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
       <EditStudentDrawer />
       <AssignCourseDrawer />
       <EditTeacherDrawer />
-    </>
+    </div>
   );
 };
 

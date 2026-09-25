@@ -26,14 +26,14 @@ const AddCourseDrawer = ({ showIcon = false }: AddCourseDrawerProps) => {
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="cursor-pointer! text-white!">
+        <Button className="cursor-pointer! text-white!" aria-label="Add course">
           {!showIcon ? (
             <>
-              <PlusIcon className="h-4 w-4" />
+              <PlusIcon className="h-4 w-4" aria-hidden="true" />
               Add Course
             </>
           ) : (
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon className="h-4 w-4" aria-hidden="true" />
           )}
         </Button>
       </DrawerTrigger>
