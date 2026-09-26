@@ -32,14 +32,16 @@ const PageLayout = ({
           renderPageHeader={renderPageHeader}
         />
       )}
-      <div
-        className={cn(
-          'w-full max-w-(--max-width) mx-auto pt-8',
-          addMarginTop && '-mt-20',
-          className
-        )}
-      >
-        {children}
+      <div className="w-full px-4 lg:px-14">
+        <div
+          className={cn(
+            'w-full max-w-(--max-width) mx-auto pt-8',
+            addMarginTop && '-mt-20',
+            className
+          )}
+        >
+          {children}
+        </div>
       </div>
     </>
   );
