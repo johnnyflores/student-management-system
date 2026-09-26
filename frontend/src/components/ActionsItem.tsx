@@ -11,7 +11,7 @@ const ActionsItem = ({ title, description, btnAction }: InfoItemProps) => {
         {btnAction}
       </div>
       <div>
-        <p className="text-sm font-medium text-slate-900">{title}</p>
+        <p className="text-sm font-medium text-accent-foreground">{title}</p>
         <p className="text-xs text-slate-500">{description}</p>
       </div>
     </div>
