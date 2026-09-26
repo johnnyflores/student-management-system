@@ -2,8 +2,10 @@ import PageLayout from '@/components/PageLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import AddTeacherDrawer from '@/features/teacher/components/TeacherDrawer/AddTeacherDrawer';
 import TeacherTable from '@/features/teacher/components/TeacherTable';
+import useTitle from '@/hooks/useTitle';
 
 const Teachers = () => {
+  useTitle({ title: 'Teachers' });
   return (
     <PageLayout
       title="All Teachers"

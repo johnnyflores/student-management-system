@@ -3,8 +3,10 @@ import DashboardQuickActions from '@/features/dashboard/components/DashboardQuic
 import DashboardRecentStudents from '@/features/dashboard/components/DashboardRecentStudents';
 import DashboardChart from '@/features/dashboard/components/DashboardChart';
 import DashboardStats from '@/features/dashboard/components/DashboardStats';
+import useTitle from '@/hooks/useTitle';
 
 const Dashboard = () => {
+  useTitle({ title: 'Dashboard' });
   return (
     <div className="w-full px-5 lg:px-0">
       <PageLayout showHeader={false} addMarginTop={false}>

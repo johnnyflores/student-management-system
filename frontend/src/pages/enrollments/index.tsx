@@ -2,12 +2,13 @@ import { useParams } from 'react-router-dom';
 import PageLayout from '@/components/PageLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import EnrollmentTable from '@/features/enrollment/components/EnrollmentTable';
-
 import BackButton from '@/components/BackButton';
+import useTitle from '@/hooks/useTitle';
 
 const EnrollmentPage = () => {
   const { id } = useParams<{ id: string }>();
   const courseId = parseInt(id || '0');
+  useTitle({ title: 'Enrollments' });
 
   return (
     <PageLayout

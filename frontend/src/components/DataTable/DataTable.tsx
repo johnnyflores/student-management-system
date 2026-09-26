@@ -151,6 +151,7 @@ export function DataTable<TData extends RowData>({
                 disabled={isLoading}
                 onChange={(e) => handleSearch(e.target.value)}
                 className="pl-8"
+                data-testid="table-search"
               />
             </div>
           )}

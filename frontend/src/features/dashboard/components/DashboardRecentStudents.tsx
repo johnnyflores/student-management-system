@@ -16,7 +16,9 @@ const DashboardRecentStudents = () => {
   return (
     <Card className="shadow-none! border border-gray-100 dark:border-border md:col-span-2">
       <CardHeader className="pb-0!">
-        <CardTitle className="text-xl">Recent Students</CardTitle>
+        <CardTitle className="text-xl" data-testid="recent-students-title">
+          Recent Students
+        </CardTitle>
         <CardDescription>Recently registered students</CardDescription>
         <CardAction>
           <Button

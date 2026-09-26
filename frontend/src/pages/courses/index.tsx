@@ -2,8 +2,9 @@ import PageLayout from '@/components/PageLayout';
 import { Card, CardContent } from '@/components/ui/card';
 import CourseTable from '@/features/course/components/CourseTable/CourseTable';
 import AddCourseDrawer from '@/features/course/components/CourseDrawer/AddCourseDrawer';
-
+import useTitle from '@/hooks/useTitle';
 const Courses = () => {
+  useTitle({ title: 'Courses' });
   return (
     <PageLayout
       title="All Courses"
