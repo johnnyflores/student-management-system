@@ -27,7 +27,7 @@ export default function Navbar() {
   ];
 
   return (
-    <header className="w-full border-b border-border bg-background px-4 py-3 pb-3 text-foreground lg:px-14">
+    <header className="w-full border-b dark:border-white/25 border-border bg-background px-4 py-3 pb-3 text-foreground lg:px-14">
       <div className="w-full flex h-14 max-w-(--max-width) items-center mx-auto">
         <div className="w-full flex items-center justify-between">
           <div className="flex items-center gap-4">

@@ -13,7 +13,7 @@ const PageHeader = ({
   renderPageHeader,
 }: PageHeaderProps) => {
   return (
-    <div className="w-full pb-20 pt-5 px-5 lg:px-0 bg-[#1a1e2a] text-white">
+    <div className="w-full pb-20 pt-10 px-5 lg:px-0 bg-[#1a1e2a] text-white">
       <div className="w-full max-w-(--max-width)  mx-auto">
         {renderPageHeader ? (
           <Fragment>{renderPageHeader}</Fragment>
