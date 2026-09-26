@@ -32,22 +32,26 @@ const AddTeacherDrawer = ({
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
-          className={`cursor-pointer! text-white! ${styles.background}`}
+          className={`cursor-pointer! ${styles.background}`}
           aria-label="Add teacher"
         >
           {!showIcon ? (
             <>
-              <PlusIcon className="h-4 w-4" aria-hidden="true" />
-              Add Teacher
+              <PlusIcon
+                className={`size-4 ${styles.icon}`}
+                aria-hidden="true"
+              />
+              <span className={styles.icon}>Add Teacher</span>
             </>
           ) : (
             <UserRoundPlus
-              className={`h-4 w-4 ${styles.icon}`}
+              className={`size-4 ${styles.icon}`}
               aria-hidden="true"
             />
           )}
         </Button>
       </DrawerTrigger>
+
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader className="relative">
           <div>

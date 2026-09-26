@@ -12,10 +12,10 @@ const Logo = (props: LogoProps) => {
       to={props.url || ROUTES.DASHBOARD}
       className="flex items-center gap-2"
     >
-      <div className="bg-green-500 text-white h-6.5 w-6.5 rounded flex items-center justify-center">
-        <Airplay className="h-4 w-4" />
+      <div className="bg-orange-500 text-muted-foreground h-6.5 w-6.5 rounded flex items-center justify-center">
+        <Airplay className="h-4 w-4 text-white" />
       </div>
-      <span className="text-white text-[18px] font-semibold">
+      <span className="text-accent-foreground text-[18px] font-semibold">
         Student Management
       </span>
     </Link>

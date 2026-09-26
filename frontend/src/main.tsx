@@ -7,13 +7,18 @@ import { Toaster } from 'sonner';
 import './index.css';
 import App from './App.tsx';
 
+import { THEME } from '@/constants/theme.ts';
+import { ThemeProvider } from '@/providers/ThemeProvider.tsx';
+
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <NuqsAdapter>
-        <App />
+        <ThemeProvider defaultTheme={THEME.SYSTEM}>
+          <App />
+        </ThemeProvider>
       </NuqsAdapter>
       <Toaster
         position="top-center"

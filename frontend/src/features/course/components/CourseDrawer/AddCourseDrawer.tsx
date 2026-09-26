@@ -33,17 +33,11 @@ const AddCourseDrawer = ({
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
-          className={`cursor-pointer! text-white! ${styles.background}`}
+          className={`cursor-pointer! ${styles.background}`}
           aria-label="Add course"
         >
-          {!showIcon ? (
-            <>
-              <PlusIcon className="h-4 w-4" aria-hidden="true" />
-              Add Course
-            </>
-          ) : (
-            <PlusIcon className={`h-4 w-4 ${styles.icon}`} aria-hidden="true" />
-          )}
+          <PlusIcon className={`size-4 ${styles.icon}`} aria-hidden="true" />
+          {!showIcon && <span className={styles.icon}>Add Course</span>}
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
