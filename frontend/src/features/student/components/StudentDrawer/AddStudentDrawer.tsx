@@ -11,13 +11,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { PlusIcon, UserRoundPlus, XIcon } from 'lucide-react';
 import StudentForm from '@/features/student/components/StudentForm/StudentForm';
+import { colorStyles, type ColorName } from '@/constants/colorStyles';
 
 interface AddStudentDrawerProps {
   showIcon?: boolean;
+  color?: ColorName;
 }
 
-const AddStudentDrawer = ({ showIcon = false }: AddStudentDrawerProps) => {
+const AddStudentDrawer = ({
+  showIcon = false,
+  color = 'blue',
+}: AddStudentDrawerProps) => {
   const [open, setOpen] = useState(false);
+  const styles = colorStyles[color];
 
   const onCloseDrawer = () => {
     setOpen(false);
@@ -26,7 +32,7 @@ const AddStudentDrawer = ({ showIcon = false }: AddStudentDrawerProps) => {
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
-          className="cursor-pointer! text-white!"
+          className={`cursor-pointer! text-white! ${styles.background}`}
           aria-label="Add student"
         >
           {!showIcon ? (
@@ -35,7 +41,10 @@ const AddStudentDrawer = ({ showIcon = false }: AddStudentDrawerProps) => {
               Add Student
             </>
           ) : (
-            <UserRoundPlus className="h-4 w-4" aria-hidden="true" />
+            <UserRoundPlus
+              className={`h-4 w-4 ${styles.icon}`}
+              aria-hidden="true"
+            />
           )}
         </Button>
       </DrawerTrigger>

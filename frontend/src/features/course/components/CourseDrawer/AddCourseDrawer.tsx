@@ -11,13 +11,19 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import CourseForm from '@/features/course/components/CourseForm/CourseForm';
+import { colorStyles, type ColorName } from '@/constants/colorStyles';
 
 interface AddCourseDrawerProps {
   showIcon?: boolean;
+  color?: ColorName;
 }
 
-const AddCourseDrawer = ({ showIcon = false }: AddCourseDrawerProps) => {
+const AddCourseDrawer = ({
+  showIcon = false,
+  color = 'orange',
+}: AddCourseDrawerProps) => {
   const [open, setOpen] = useState(false);
+  const styles = colorStyles[color];
 
   const onCloseDrawer = () => {
     setOpen(false);
@@ -26,14 +32,17 @@ const AddCourseDrawer = ({ showIcon = false }: AddCourseDrawerProps) => {
   return (
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button className="cursor-pointer! text-white!" aria-label="Add course">
+        <Button
+          className={`cursor-pointer! text-white! ${styles.background}`}
+          aria-label="Add course"
+        >
           {!showIcon ? (
             <>
               <PlusIcon className="h-4 w-4" aria-hidden="true" />
               Add Course
             </>
           ) : (
-            <PlusIcon className="h-4 w-4" aria-hidden="true" />
+            <PlusIcon className={`h-4 w-4 ${styles.icon}`} aria-hidden="true" />
           )}
         </Button>
       </DrawerTrigger>

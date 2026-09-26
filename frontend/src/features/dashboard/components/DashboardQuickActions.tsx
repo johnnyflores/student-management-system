@@ -23,17 +23,17 @@ const QuickActions = () => {
         <ActionsItem
           title="Add Student"
           description="Register a new student"
-          btnAction={<AddStudentDrawer showIcon={true} />}
+          btnAction={<AddStudentDrawer showIcon={true} color="blue" />}
         />
         <ActionsItem
           title="Add Teacher"
           description="Register a new teacher"
-          btnAction={<AddTeacherDrawer showIcon={true} />}
+          btnAction={<AddTeacherDrawer showIcon={true} color="green" />}
         />
         <ActionsItem
           title="Add Course"
           description="Create a new course"
-          btnAction={<AddCourseDrawer showIcon={true} />}
+          btnAction={<AddCourseDrawer showIcon={true} color="orange" />}
         />
       </CardContent>
     </Card>

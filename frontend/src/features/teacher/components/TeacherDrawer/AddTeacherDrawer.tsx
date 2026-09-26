@@ -11,13 +11,19 @@ import {
 } from '@/components/ui/drawer';
 import { PlusIcon, UserRoundPlus, XIcon } from 'lucide-react';
 import { useState } from 'react';
+import { colorStyles, type ColorName } from '@/constants/colorStyles';
 
 interface AddTeacherDrawerProps {
   showIcon?: boolean;
+  color?: ColorName;
 }
 
-const AddTeacherDrawer = ({ showIcon = false }: AddTeacherDrawerProps) => {
+const AddTeacherDrawer = ({
+  showIcon = false,
+  color = 'green',
+}: AddTeacherDrawerProps) => {
   const [open, setOpen] = useState(false);
+  const styles = colorStyles[color];
 
   const onCloseDrawer = () => {
     setOpen(false);
@@ -26,7 +32,7 @@ const AddTeacherDrawer = ({ showIcon = false }: AddTeacherDrawerProps) => {
     <Drawer direction="right" open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
         <Button
-          className="cursor-pointer! text-white!"
+          className={`cursor-pointer! text-white! ${styles.background}`}
           aria-label="Add teacher"
         >
           {!showIcon ? (
@@ -35,7 +41,10 @@ const AddTeacherDrawer = ({ showIcon = false }: AddTeacherDrawerProps) => {
               Add Teacher
             </>
           ) : (
-            <UserRoundPlus className="h-4 w-4" aria-hidden="true" />
+            <UserRoundPlus
+              className={`h-4 w-4 ${styles.icon}`}
+              aria-hidden="true"
+            />
           )}
         </Button>
       </DrawerTrigger>
