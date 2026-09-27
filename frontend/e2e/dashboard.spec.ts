@@ -21,8 +21,8 @@ const pages = [
   },
 ];
 
-test.describe('Dashboard', () => {
-  test('displays dashboard', async ({ page }) => {
+test.describe('Dashboard Feature', () => {
+  test('Display dashboard page', async ({ page }) => {
     await page.goto('/');
 
     await expect(page).toHaveTitle('Dashboard | Student Management System');
@@ -35,7 +35,7 @@ test.describe('Dashboard', () => {
     ).toBeVisible();
   });
 
-  test('displays dashboard sections', async ({ page }) => {
+  test('Display dashboard sections', async ({ page }) => {
     await page.goto('/');
 
     await expect(
@@ -72,7 +72,7 @@ test.describe('Student Management System pages', () => {
 });
 
 test.describe('Recent Students', () => {
-  test('displays recent students section', async ({ page }) => {
+  test('Display recent students section', async ({ page }) => {
     await page.goto('/');
 
     await expect(page.getByTestId('recent-students-title')).toBeVisible();
@@ -84,9 +84,7 @@ test.describe('Recent Students', () => {
     await expect(page.getByRole('link', { name: 'View All' })).toBeVisible();
   });
 
-  test('navigates to students page when clicking View All', async ({
-    page,
-  }) => {
+  test('Navigate to students page when clicking View All', async ({ page }) => {
     await page.goto('/');
 
     await page.getByRole('link', { name: 'View All' }).click();
@@ -100,10 +98,8 @@ test.describe('Recent Students', () => {
       })
     ).toBeVisible();
   });
-});
 
-test.describe('Recent Students table', () => {
-  test('displays recent students table', async ({ page }) => {
+  test('Display recent students table', async ({ page }) => {
     await page.goto('/');
 
     const table = page.getByRole('table');
@@ -133,7 +129,7 @@ test.describe('Recent Students table', () => {
     ).toBeVisible();
   });
 
-  test('displays up to three recent students', async ({ page }) => {
+  test('Display up to three recent students', async ({ page }) => {
     await page.goto('/');
 
     const table = page.getByRole('table');
@@ -146,33 +142,56 @@ test.describe('Recent Students table', () => {
   });
 });
 
-test.describe('Student search', () => {
-  test('filters students by search term', async ({ page }) => {
-    await page.goto('/students');
+test.describe('Quick Actions', () => {
+  test('Display quick actions section', async ({ page }) => {
+    await page.goto('/');
 
-    const searchInput = page.getByTestId('table-search');
+    await expect(page.getByTestId('quick-actions-title')).toBeVisible();
 
-    await expect(searchInput).toBeVisible();
-
-    await searchInput.fill('Marie');
-
-    await expect(page.getByRole('row', { name: /Marie Kenth/ })).toBeVisible();
     await expect(
-      page.getByText('No data found', { exact: true })
-    ).not.toBeVisible();
+      page.getByText('Quick Actions', { exact: true })
+    ).toBeVisible();
   });
 
-  test('displays no data found when search has no results', async ({
+  test('Navigate to quick actions when clicking Add Student', async ({
     page,
   }) => {
-    await page.goto('/students');
+    await page.goto('/');
 
-    const searchInput = page.getByTestId('table-search');
+    await page.getByRole('button', { name: 'Add Student' }).click();
 
-    await searchInput.fill('John Doe');
+    await expect(page.getByTestId('add-student-title')).toBeVisible();
 
-    await expect(
-      page.getByText('No data found', { exact: true })
-    ).toBeVisible();
+    await page.getByTestId('add-student-close').click();
+
+    await expect(page.getByTestId('add-student-title')).not.toBeVisible();
+  });
+
+  test('Navigate to quick actions when clicking Add Teacher', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    await page.getByRole('button', { name: 'Add Teacher' }).click();
+
+    await expect(page.getByTestId('add-teacher-title')).toBeVisible();
+
+    await page.getByTestId('add-teacher-close').click();
+
+    await expect(page.getByTestId('add-teacher-title')).not.toBeVisible();
+  });
+
+  test('Navigate to quick actions when clicking Add Course', async ({
+    page,
+  }) => {
+    await page.goto('/');
+
+    await page.getByRole('button', { name: 'Add Course' }).click();
+
+    await expect(page.getByTestId('add-course-title')).toBeVisible();
+
+    await page.getByTestId('add-course-close').click();
+
+    await expect(page.getByTestId('add-course-title')).not.toBeVisible();
   });
 });

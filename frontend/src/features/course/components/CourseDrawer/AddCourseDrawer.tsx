@@ -43,14 +43,20 @@ const AddCourseDrawer = ({
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader className="relative">
           <div>
-            <DrawerTitle className="text-xl font-semibold">
+            <DrawerTitle
+              className="text-xl font-semibold"
+              data-testid="add-course-title"
+            >
               Add Course
             </DrawerTitle>
             <DrawerDescription className="text-sm text-muted-foreground">
               Fill in the details below to add a new course to the system.
             </DrawerDescription>
           </div>
-          <DrawerClose className="absolute right-4 top-4">
+          <DrawerClose
+            className="absolute right-4 top-4"
+            data-testid="add-course-close"
+          >
             <XIcon className="h-5 w-5 cursor-pointer!" />
           </DrawerClose>
         </DrawerHeader>

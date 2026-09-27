@@ -55,14 +55,20 @@ const AddTeacherDrawer = ({
       <DrawerContent className="max-w-md overflow-hidden overflow-y-auto">
         <DrawerHeader className="relative">
           <div>
-            <DrawerTitle className="text-xl font-semibold">
+            <DrawerTitle
+              className="text-xl font-semibold"
+              data-testid="add-teacher-title"
+            >
               Add Teacher
             </DrawerTitle>
             <DrawerDescription className="text-sm text-muted-foreground">
               Fill in the details below to add a new teacher to the system.
             </DrawerDescription>
           </div>
-          <DrawerClose className="absolute right-4 top-4">
+          <DrawerClose
+            className="absolute right-4 top-4"
+            data-testid="add-teacher-close"
+          >
             <XIcon className="h-5 w-5 cursor-pointer!" />
           </DrawerClose>
         </DrawerHeader>

@@ -15,7 +15,9 @@ const QuickActions = () => {
   return (
     <Card className="shadow-none! border border-gray-100 dark:border-border">
       <CardHeader className="pb-0!">
-        <CardTitle className="text-xl">Quick Actions</CardTitle>
+        <CardTitle className="text-xl" data-testid="quick-actions-title">
+          Quick Actions
+        </CardTitle>
         <CardDescription>Common tasks</CardDescription>
         <Separator className="mt-3 bg-gray-100! dark:bg-gray-800!" />
       </CardHeader>
