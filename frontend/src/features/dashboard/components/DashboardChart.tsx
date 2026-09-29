@@ -13,7 +13,7 @@ import {
   type ChartConfig,
 } from '@/components/ui/chart';
 import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
-import type { StatCardColor } from '@/features/dashboard/types/dashboard';
+import type { ColorName } from '@/constants/colorStyles';
 import { statColors } from '@/features/dashboard/constants/statColors';
 
 const chartConfig = {
@@ -107,7 +107,7 @@ const DashboardChart = () => {
   ] satisfies {
     name: string;
     value: number;
-    color: StatCardColor;
+    color: ColorName;
   }[];
 
   return (
