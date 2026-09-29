@@ -2,12 +2,13 @@ import { School, UserRound, BookOpen, Users } from 'lucide-react';
 import type { StatCard as StatCardType } from '@/features/dashboard/types/dashboard';
 import StatCard from '@/features/dashboard/components/StatCard';
 import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
+import StatCardSkeleton from './StatCardSkeleton';
 
 const DashboardStats = () => {
   const { data, isLoading, isError, error } = useDashboardStats();
 
   if (isLoading) {
-    return <div>Loading dashboard...</div>;
+    return <StatCardSkeleton />;
   }
 
   if (isError) {
