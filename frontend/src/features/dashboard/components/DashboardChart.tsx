@@ -15,6 +15,7 @@ import {
 import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
 import type { ColorName } from '@/constants/colorStyles';
 import { statColors } from '@/features/dashboard/constants/statColors';
+import DashboardChartSkeleton from '@/features/dashboard/components/DashboardChartSkeleton';
 
 const chartConfig = {
   students: {
@@ -46,9 +47,7 @@ const DashboardChart = () => {
           <CardDescription>Overview of your platform</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-75 flex items-center justify-center">
-            <p className="text-muted-foreground">Loading statistics...</p>
-          </div>
+          <DashboardChartSkeleton />
         </CardContent>
       </Card>
     );
