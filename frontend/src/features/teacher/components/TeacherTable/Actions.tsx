@@ -70,7 +70,13 @@ const Actions = ({ row }: { row: { original: { id: number } } }) => {
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         title="Delete teacher?"
-        description={`Are you sure you want to delete this teacher? This action cannot be undone.`}
+        description={
+          <>
+            Are you sure you want to delete teacher{' '}
+            <strong className="text-red-500">#{teacherId}</strong>? This action
+            cannot be undone.
+          </>
+        }
         confirmText="Delete"
         cancelText="Cancel"
         onConfirm={handleDelete}

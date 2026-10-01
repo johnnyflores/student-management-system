@@ -1,4 +1,4 @@
-const StudentName = ({
+const AvatarName = ({
   firstName,
   lastName,
 }: {
@@ -17,4 +17,4 @@ const StudentName = ({
   );
 };
 
-export default StudentName;
+export default AvatarName;
