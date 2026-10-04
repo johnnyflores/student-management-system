@@ -4,6 +4,7 @@ import type {
   PaginatedTeachers,
   UpdateTeacherRequest,
 } from '@/features/teacher/types/teacher';
+import { handleResponse } from '@/helper/handleResponse';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const DEFAULT_PAGE = 1;
@@ -17,21 +18,16 @@ export async function getTeachers(
     `${API_URL}/teachers?page=${page}&limit=${limit}`
   );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch teachers');
-  }
-
-  return response.json();
+  return handleResponse<PaginatedTeachers>(
+    response,
+    'Failed to fetch teachers'
+  );
 }
 
 export async function getTeacher(id: number): Promise<Teacher> {
   const response = await fetch(`${API_URL}/teacher?id=${id}`);
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch teacher');
-  }
-
-  return response.json();
+  return handleResponse<Teacher>(response, 'Failed to fetch teacher');
 }
 
 export async function createTeacher(
@@ -45,11 +41,7 @@ export async function createTeacher(
     body: JSON.stringify(teacher),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to create teacher');
-  }
-
-  return response.json();
+  return handleResponse<Teacher>(response, 'Failed to create teacher');
 }
 
 export async function updateTeacher(
@@ -64,11 +56,7 @@ export async function updateTeacher(
     body: JSON.stringify(teacher),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to update teacher');
-  }
-
-  return response.json();
+  return handleResponse<Teacher>(response, 'Failed to update teacher');
 }
 
 export async function deleteTeacher(id: number): Promise<void> {
@@ -76,7 +64,5 @@ export async function deleteTeacher(id: number): Promise<void> {
     method: 'DELETE',
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to delete teacher');
-  }
+  return handleResponse<void>(response, 'Failed to delete teacher');
 }

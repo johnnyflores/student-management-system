@@ -5,6 +5,7 @@ export default function useDashboardStats() {
   const dashboardStatsQuery = useQuery({
     queryKey: ['dashboardStats'],
     queryFn: () => getDashboardStats(),
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 
   return {

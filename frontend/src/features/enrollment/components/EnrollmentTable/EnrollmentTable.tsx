@@ -2,6 +2,7 @@ import { DataTable } from '@/components/DataTable/DataTable';
 import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
 import { getColumns } from '@/features/enrollment/components/EnrollmentTable/Columns';
 import { useSearch } from '@/hooks/useSearch';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 const DEFAULT_PAGE_SIZE = 3;
 
@@ -21,7 +22,10 @@ const EnrollmentTable = (props: {
     totalPages,
     setPage,
     setLimit,
+    error,
   } = useEnrollments(props.courseId, props.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  useQueryErrorToast(error);
 
   const { data, setSearchTerm } = useSearch(enrollments);
 

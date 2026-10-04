@@ -263,6 +263,7 @@ describe('deleteStudent', () => {
   it('deletes a student', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: true,
+      status: 204,
     } as Response);
 
     await deleteStudent(101);
@@ -275,7 +276,9 @@ describe('deleteStudent', () => {
   it('throws when deleting a student fails', async () => {
     vi.mocked(fetch).mockResolvedValue({
       ok: false,
-    } as Response);
+      status: 400,
+      json: vi.fn().mockResolvedValue({}),
+    } as unknown as Response);
 
     await expect(deleteStudent(101)).rejects.toThrow(
       'Failed to delete student'

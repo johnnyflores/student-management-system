@@ -2,6 +2,7 @@ import { DataTable } from '@/components/DataTable/DataTable';
 import { columns } from '@/features/teacher/components/TeacherTable/Columns';
 import { useTeachers } from '@/features/teacher/hooks/useTeachers';
 import { useSearch } from '@/hooks/useSearch';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 const DEFAULT_PAGE_SIZE = 3;
 
@@ -18,7 +19,10 @@ const TeacherTable = (props: {
     isLoading,
     setPage,
     setLimit,
+    error,
   } = useTeachers(props.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  useQueryErrorToast(error);
 
   const { data, setSearchTerm } = useSearch(teachers);
 

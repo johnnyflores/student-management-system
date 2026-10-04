@@ -2,6 +2,7 @@ import type {
   Enrollment,
   PaginatedEnrollments,
 } from '@/features/enrollment/types/enrollment';
+import { handleResponse } from '@/helper/handleResponse';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,13 +18,10 @@ export async function getCourseEnrollments(
     `${API_URL}/courses/students?course_id=${courseId}&page=${page}&limit=${limit}`
   );
 
-  if (!response.ok) {
-    const message = await response.text();
-
-    throw new Error(message || 'Failed to fetch course enrollments');
-  }
-
-  return response.json();
+  return handleResponse<PaginatedEnrollments>(
+    response,
+    'Failed to fetch course enrollments'
+  );
 }
 
 export async function enrollStudent(
@@ -37,13 +35,7 @@ export async function enrollStudent(
     }
   );
 
-  if (!response.ok) {
-    const message = await response.text();
-
-    throw new Error(message || 'Failed to enroll student');
-  }
-
-  return response.json();
+  return handleResponse<Enrollment[]>(response, 'Failed to enroll student');
 }
 
 export async function unenrollStudent(
@@ -57,9 +49,5 @@ export async function unenrollStudent(
     }
   );
 
-  if (!response.ok) {
-    const message = await response.text();
-
-    throw new Error(message || 'Failed to unenroll student');
-  }
+  return handleResponse<void>(response, 'Failed to unenroll student');
 }

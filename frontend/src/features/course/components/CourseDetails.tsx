@@ -10,6 +10,7 @@ import CourseStudentsTable from '@/features/course/components/CourseStudentsTabl
 import BackButton from '@/components/BackButton';
 import InfoItem from '@/components/InfoItem';
 import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -19,7 +20,10 @@ const CourseDetails = () => {
     enrollments,
     isLoading: isLoadingStudents,
     isError: isStudentsError,
+    error,
   } = useEnrollments(id ? parseInt(id) : 0);
+
+  useQueryErrorToast(error);
 
   const course = courses.find((course) => course.id.toString() === id);
 

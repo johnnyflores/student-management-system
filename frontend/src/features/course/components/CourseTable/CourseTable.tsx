@@ -2,6 +2,7 @@ import { DataTable } from '@/components/DataTable/DataTable';
 import { columns } from '@/features/course/components/CourseTable/Columns';
 import useCourses from '@/features/course/hooks/useCourses';
 import { useSearch } from '@/hooks/useSearch';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 const DEFAULT_PAGE_SIZE = 5;
 
@@ -12,15 +13,16 @@ const CourseTable = (props: {
   const {
     courses,
     isLoading,
-    isError,
-    error,
     page,
     limit,
     total,
     totalPages,
     setPage,
     setLimit,
+    error,
   } = useCourses(props.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  useQueryErrorToast(error);
 
   const { data, setSearchTerm } = useSearch(courses);
 
@@ -51,10 +53,6 @@ const CourseTable = (props: {
   const handleSearch = (value: string) => {
     setSearchTerm(value);
   };
-
-  if (isError) {
-    return <div>Error: {error?.message}</div>;
-  }
 
   return (
     <div className="flex flex-col gap-4">

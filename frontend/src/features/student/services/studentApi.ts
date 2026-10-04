@@ -4,6 +4,7 @@ import type {
   UpdateStudentRequest,
   CreateStudentRequest,
 } from '@/features/student/types/student';
+import { handleResponse } from '@/helper/handleResponse';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const DEFAULT_PAGE = 1;
@@ -17,21 +18,16 @@ export async function getStudents(
     `${API_URL}/students?page=${page}&limit=${limit}`
   );
 
-  if (!response.ok) {
-    throw new Error('Failed to fetch students');
-  }
-
-  return response.json();
+  return handleResponse<PaginatedStudents>(
+    response,
+    'Failed to fetch students'
+  );
 }
 
 export async function getStudent(id: number): Promise<Student> {
   const response = await fetch(`${API_URL}/student?id=${id}`);
 
-  if (!response.ok) {
-    throw new Error('Student not found');
-  }
-
-  return response.json();
+  return handleResponse<Student>(response, 'Student not found');
 }
 
 export async function searchStudentsByName(name: string): Promise<Student[]> {
@@ -39,11 +35,7 @@ export async function searchStudentsByName(name: string): Promise<Student[]> {
     `${API_URL}/students?name=${encodeURIComponent(name)}`
   );
 
-  if (!response.ok) {
-    throw new Error('Failed to search students');
-  }
-
-  return response.json();
+  return handleResponse<Student[]>(response, 'Failed to search students');
 }
 
 export async function createStudent(
@@ -57,11 +49,7 @@ export async function createStudent(
     body: JSON.stringify(student),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to create student');
-  }
-
-  return response.json();
+  return handleResponse<Student>(response, 'Failed to create student');
 }
 
 export async function updateStudent(
@@ -76,11 +64,7 @@ export async function updateStudent(
     body: JSON.stringify(student),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to update student');
-  }
-
-  return response.json();
+  return handleResponse<Student>(response, 'Failed to update student');
 }
 
 export async function deleteStudent(id: number): Promise<void> {
@@ -88,7 +72,5 @@ export async function deleteStudent(id: number): Promise<void> {
     method: 'DELETE',
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to delete student');
-  }
+  return handleResponse<void>(response, 'Failed to delete student');
 }

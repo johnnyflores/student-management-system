@@ -3,16 +3,15 @@ import type { StatCard as StatCardType } from '@/features/dashboard/types/dashbo
 import StatCard from '@/features/dashboard/components/StatCard';
 import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
 import StatCardSkeleton from '@/features/dashboard/components/StatCardSkeleton';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 const DashboardStats = () => {
-  const { data, isLoading, isError, error } = useDashboardStats();
+  const { data, isLoading, error } = useDashboardStats();
+
+  useQueryErrorToast(error);
 
   if (isLoading) {
     return <StatCardSkeleton />;
-  }
-
-  if (isError) {
-    return <div>{isError && error?.message}</div>;
   }
 
   const stats: StatCardType[] = [

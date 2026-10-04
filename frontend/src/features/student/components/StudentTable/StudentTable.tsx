@@ -7,6 +7,7 @@ import {
   STUDENT_STATUSES,
   type StudentStatus,
 } from '@/features/student/constants';
+import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
 
 type FilterType = {
   type?: StudentStatus | undefined;
@@ -34,7 +35,10 @@ const StudentTable = (props: {
     isLoading,
     setPage,
     setLimit,
+    error,
   } = useStudents(props.pageSize ?? DEFAULT_PAGE_SIZE);
+
+  useQueryErrorToast(error);
 
   const [filter, setFilter] = useState<FilterType>({
     type: undefined,

@@ -3,6 +3,7 @@ import type {
   CreateCourse,
   PaginatedCourses,
 } from '@/features/course/types/course';
+import { handleResponse } from '@/helper/handleResponse';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,13 +18,7 @@ export async function getCourses(
     `${API_URL}/courses?page=${page}&limit=${limit}`
   );
 
-  if (!response.ok) {
-    const message = await response.text();
-
-    throw new Error(message || 'Failed to fetch courses');
-  }
-
-  return response.json();
+  return handleResponse<PaginatedCourses>(response, 'Failed to fetch courses');
 }
 
 export async function createCourse(course: CreateCourse): Promise<Course> {
@@ -35,11 +30,5 @@ export async function createCourse(course: CreateCourse): Promise<Course> {
     body: JSON.stringify(course),
   });
 
-  if (!response.ok) {
-    const message = await response.text();
-
-    throw new Error(message || 'Failed to create course');
-  }
-
-  return response.json();
+  return handleResponse<Course>(response, 'Failed to create course');
 }
