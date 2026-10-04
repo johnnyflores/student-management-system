@@ -25,6 +25,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Loader } from 'lucide-react';
 import useEnrollments from '@/features/enrollment/hooks/useEnrollments';
+import { getErrorMessage } from '@/utils/error';
 
 type AssignStudentFormProps = {
   courseId?: string;
@@ -67,11 +68,8 @@ const AssignStudentForm = (props: AssignStudentFormProps) => {
         },
       });
     } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again.'
-      );
+      console.error(error);
+      toast.error(getErrorMessage(error));
     }
   };
 

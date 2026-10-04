@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/select';
 import { toApiDate, toInputDate } from '@/utils/date';
 import { gradeLevels, studentStatuses } from '@/features/student/constants';
+import { getErrorMessage } from '@/utils/error';
 
 const StudentForm = (props: {
   isEdit?: boolean;
@@ -109,11 +110,8 @@ const StudentForm = (props: {
       }
       onCloseDrawer?.();
     } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again.'
-      );
+      console.error(error);
+      toast.error(getErrorMessage(error));
     }
   };
   return (

@@ -18,6 +18,7 @@ import {
   teacherSchema,
   type TeacherSchemaType,
 } from '@/features/teacher/schemas/teacher.schema';
+import { getErrorMessage } from '@/utils/error';
 
 const TeacherForm = (props: {
   isEdit?: boolean;
@@ -87,11 +88,8 @@ const TeacherForm = (props: {
       }
       onCloseDrawer?.();
     } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again.'
-      );
+      console.error(error);
+      toast.error(getErrorMessage(error));
     }
   };
 

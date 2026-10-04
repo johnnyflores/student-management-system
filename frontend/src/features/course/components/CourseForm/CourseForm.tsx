@@ -25,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { getErrorMessage } from '@/utils/error';
 
 type CourseFormProps = {
   onCloseDrawer?: () => void;
@@ -53,11 +54,8 @@ const CourseForm = (props: CourseFormProps) => {
       toast.success('Course created successfully');
       onCloseDrawer?.();
     } catch (error) {
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : 'Something went wrong. Please try again.'
-      );
+      console.error(error);
+      toast.error(getErrorMessage(error));
     }
   };
 

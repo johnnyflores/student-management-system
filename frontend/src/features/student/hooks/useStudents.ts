@@ -6,7 +6,6 @@ import {
   getStudents,
   updateStudent,
 } from '@/features/student/services/studentApi';
-
 import type {
   CreateStudentRequest,
   UpdateStudentRequest,
