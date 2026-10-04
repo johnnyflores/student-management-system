@@ -1,6 +1,6 @@
 import type {
   Enrollment,
-  PaginatedCourses,
+  PaginatedEnrollments,
 } from '@/features/enrollment/types/enrollment';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,7 +12,7 @@ export async function getCourseEnrollments(
   courseId: number,
   page: number = DEFAULT_PAGE,
   limit: number = DEFAULT_PAGE_SIZE
-): Promise<PaginatedCourses> {
+): Promise<PaginatedEnrollments> {
   const response = await fetch(
     `${API_URL}/courses/students?course_id=${courseId}&page=${page}&limit=${limit}`
   );

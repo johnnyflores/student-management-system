@@ -10,7 +10,7 @@ export interface EnrollStudentRequest {
   studentId: number;
 }
 
-export interface PaginatedCourses {
+export interface PaginatedEnrollments {
   items: Enrollment[];
   page: number;
   limit: number;
