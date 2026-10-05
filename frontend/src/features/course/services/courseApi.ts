@@ -1,7 +1,8 @@
 import type {
   Course,
-  CreateCourse,
+  CreateCourseRequest,
   PaginatedCourses,
+  UpdateCourseRequest,
 } from '@/features/course/types/course';
 import { handleResponse } from '@/helper/handleResponse';
 
@@ -21,7 +22,9 @@ export async function getCourses(
   return handleResponse<PaginatedCourses>(response, 'Failed to fetch courses');
 }
 
-export async function createCourse(course: CreateCourse): Promise<Course> {
+export async function createCourse(
+  course: CreateCourseRequest
+): Promise<Course> {
   const response = await fetch(`${API_URL}/courses`, {
     method: 'POST',
     headers: {
@@ -31,4 +34,27 @@ export async function createCourse(course: CreateCourse): Promise<Course> {
   });
 
   return handleResponse<Course>(response, 'Failed to create course');
+}
+
+export async function updateCourse(
+  id: number,
+  course: UpdateCourseRequest
+): Promise<Course> {
+  const response = await fetch(`${API_URL}/course?id=${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(course),
+  });
+
+  return handleResponse<Course>(response, 'Failed to update course');
+}
+
+export async function deleteCourse(id: number): Promise<void> {
+  const response = await fetch(`${API_URL}/course?id=${id}`, {
+    method: 'DELETE',
+  });
+
+  return handleResponse<void>(response, 'Failed to delete course');
 }

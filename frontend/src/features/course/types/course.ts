@@ -4,9 +4,14 @@ export interface Course {
   teacherId: number;
 }
 
-export interface CreateCourse {
-  Name: string;
-  TeacherID: number;
+export interface CreateCourseRequest {
+  name: string;
+  teacherId: number;
+}
+
+export interface UpdateCourseRequest {
+  name: string;
+  teacherId: number;
 }
 
 export interface CourseWithStudents {
