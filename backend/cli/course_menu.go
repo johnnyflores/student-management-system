@@ -3,6 +3,8 @@ package cli
 import (
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 
 	"student-management-system/models"
 	"student-management-system/services"
@@ -20,7 +22,9 @@ func courseMenu(
 		fmt.Println("3. Enroll Student")
 		fmt.Println("4. Unenroll Student")
 		fmt.Println("5. View Course Enrollments")
-		fmt.Println("6. Back")
+		fmt.Println("6. Update Course")
+		fmt.Println("7. Delete Course")
+		fmt.Println("8. Back")
 
 		var choice int
 
@@ -51,6 +55,12 @@ func courseMenu(
 			)
 
 		case 6:
+			updateCourse(courseService)
+
+		case 7:
+			deleteCourse(courseService)
+
+		case 8:
 			return
 
 		default:
@@ -140,6 +150,80 @@ func viewCourses(
 			fmt.Println("  Enrolled At:", enrollment.EnrolledAt)
 		}
 	}
+}
+
+func updateCourse(service *services.CourseService) {
+	id := utils.ReadInt("Enter course ID: ")
+
+	course := service.SearchCourse(id)
+
+	if course == nil {
+		fmt.Println("Course not found")
+		return
+	}
+
+	fmt.Println("\n===== Update Course =====")
+	fmt.Println("Current Course Name:", course.Name)
+	fmt.Println("Current Teacher ID:", course.TeacherID)
+
+	fmt.Println("\nPress Enter to keep the current value.")
+
+	fmt.Printf("Enter new course name [%s]: ", course.Name)
+	name := utils.ReadString("")
+
+	if strings.TrimSpace(name) == "" {
+		name = course.Name
+	}
+
+	fmt.Printf("Enter new teacher ID [%d]: ", course.TeacherID)
+	teacherIDInput := utils.ReadString("")
+
+	teacherID := course.TeacherID
+
+	if strings.TrimSpace(teacherIDInput) != "" {
+		newTeacherID, err := strconv.Atoi(strings.TrimSpace(teacherIDInput))
+
+		if err != nil || newTeacherID < 1 {
+			fmt.Println("Invalid teacher ID")
+			return
+		}
+
+		teacherID = newTeacherID
+	}
+
+	updatedCourse := models.Course{
+		ID:        course.ID,
+		Name:      strings.TrimSpace(name),
+		TeacherID: teacherID,
+	}
+
+	if !service.UpdateCourse(id, updatedCourse) {
+		fmt.Println("Failed to update course")
+		return
+	}
+
+	if err := service.Save(); err != nil {
+		fmt.Println("Error saving course:", err)
+		return
+	}
+
+	fmt.Println("Course updated successfully!")
+}
+
+func deleteCourse(service *services.CourseService) {
+	id := utils.ReadPositiveInt("Enter course ID to delete: ")
+
+	if !service.DeleteCourse(id) {
+		fmt.Println("Course not found")
+		return
+	}
+
+	if err := service.Save(); err != nil {
+		fmt.Println("Failed to save course:", err)
+		return
+	}
+
+	fmt.Println("Course deleted successfully")
 }
 
 func enrollStudent(service *services.EnrollmentService) {

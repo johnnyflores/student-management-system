@@ -80,6 +80,12 @@ func RegisterRoutes(
 		case http.MethodGet:
 			courseHandler.GetCourse(w, r)
 
+		case http.MethodPut:
+			courseHandler.UpdateCourse(w, r)
+
+		case http.MethodDelete:
+			courseHandler.DeleteCourse(w, r)
+
 		default:
 			http.Error(
 				w,

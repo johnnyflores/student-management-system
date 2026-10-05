@@ -69,6 +69,31 @@ func (c *CourseService) SearchCoursesByName(name string) []models.Course {
 	return results
 }
 
+func (c *CourseService) UpdateCourse(
+	id int,
+	updatedCourse models.Course,
+) bool {
+	for i := range c.Courses {
+		if c.Courses[i].ID == id {
+			c.Courses[i].Name = updatedCourse.Name
+			c.Courses[i].TeacherID = updatedCourse.TeacherID
+			return true
+		}
+	}
+
+	return false
+}
+
+func (c *CourseService) DeleteCourse(id int) bool {
+	for i, course := range c.Courses {
+		if course.ID == id {
+			c.Courses = append(c.Courses[:i], c.Courses[i+1:]...)
+			return true
+		}
+	}
+	return false
+}
+
 func (c *CourseService) Save() error {
 	return c.Repository.Save(c.Courses)
 }

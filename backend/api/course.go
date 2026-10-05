@@ -169,3 +169,112 @@ func (h *CourseHandler) GetCourse(
 
 	json.NewEncoder(w).Encode(course)
 }
+
+func (h *CourseHandler) UpdateCourse(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+	if err != nil || id < 1 {
+		http.Error(
+			w,
+			"invalid id",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	var request struct {
+		Name      string `json:"name"`
+		TeacherID int    `json:"teacherId"`
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&request)
+
+	if err != nil {
+		http.Error(
+			w,
+			"invalid request",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	request.Name = strings.TrimSpace(request.Name)
+
+	if request.Name == "" {
+		http.Error(
+			w,
+			"Name is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	if request.TeacherID < 1 {
+		http.Error(
+			w,
+			"Teacher ID is required",
+			http.StatusBadRequest,
+		)
+		return
+	}
+
+	course := models.Course{
+		Name:      request.Name,
+		TeacherID: request.TeacherID,
+	}
+
+	success := h.Service.UpdateCourse(id, course)
+
+	if !success {
+		http.Error(
+			w,
+			"course not found",
+			http.StatusNotFound,
+		)
+		return
+	}
+
+	if err := h.Service.Save(); err != nil {
+		http.Error(
+			w,
+			"failed to save course",
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	updatedCourse := h.Service.SearchCourse(id)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(updatedCourse)
+}
+
+func (h *CourseHandler) DeleteCourse(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+	if err != nil {
+		http.Error(w, "invalid id", http.StatusBadRequest)
+		return
+	}
+
+	success := h.Service.DeleteCourse(id)
+
+	if !success {
+		http.Error(w, "course not found", http.StatusNotFound)
+		return
+	}
+
+	if err := h.Service.Save(); err != nil {
+		http.Error(w, "failed to save course", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+}
