@@ -25,7 +25,7 @@ export async function getCourses(
 export async function getCourse(id: number): Promise<Course> {
   const response = await fetch(`${API_URL}/course?id=${id}`);
 
-  return handleResponse<Course>(response, 'Failed to fetch course');
+  return handleResponse<Course>(response, 'Course not found');
 }
 
 export async function createCourse(
