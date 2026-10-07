@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createCourse,
   deleteCourse,
+  getCourse,
   getCourses,
   updateCourse,
 } from '@/features/course/services/courseApi';
@@ -13,6 +14,8 @@ import type {
 
 export default function useCourses(initialLimit = 10) {
   const queryClient = useQueryClient();
+
+  const [searchId, setSearchId] = useState<number | null>(null);
 
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(initialLimit);
@@ -47,6 +50,16 @@ export default function useCourses(initialLimit = 10) {
     onSuccess: invalidateCourses,
   });
 
+  const searchQuery = useQuery({
+    queryKey: ['course', searchId],
+    queryFn: () => getCourse(searchId!),
+    enabled: searchId !== null,
+  });
+
+  const searchCourse = useCallback((id: number) => {
+    setSearchId(id);
+  }, []);
+
   return {
     courses: coursesQuery.data?.items ?? [],
     isLoading: coursesQuery.isLoading,
@@ -64,6 +77,11 @@ export default function useCourses(initialLimit = 10) {
     deleteCourse: deleteCourseMutation.mutateAsync,
     isDeleting: deleteCourseMutation.isPending,
     deleteError: deleteCourseMutation.error,
+
+    searchResult: searchQuery.data,
+    isSearching: searchQuery.isLoading,
+    searchError: searchQuery.error,
+    searchCourse,
 
     page,
     limit,

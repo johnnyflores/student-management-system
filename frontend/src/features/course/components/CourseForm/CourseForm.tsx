@@ -1,5 +1,6 @@
 import useCourses from '@/features/course/hooks/useCourses';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   courseSchema,
@@ -28,34 +29,81 @@ import {
 import { getErrorMessage } from '@/utils/error';
 
 type CourseFormProps = {
+  isEdit?: boolean;
+  courseId?: string;
   onCloseDrawer?: () => void;
 };
 
 const CourseForm = (props: CourseFormProps) => {
-  const { onCloseDrawer } = props;
-  const { createCourse, isCreating } = useCourses();
+  const { isEdit = false, courseId, onCloseDrawer } = props;
+  const {
+    createCourse,
+    isCreating,
+    isLoading,
+    updateCourse,
+    isUpdating,
+    searchCourse,
+    searchResult,
+  } = useCourses();
 
   const { teachers, isLoading: isLoadingTeachers } = useTeachers();
 
   const form = useForm<courseSchemaType>({
     resolver: zodResolver(courseSchema),
     defaultValues: {
-      Name: '',
-      TeacherID: 0,
+      name: '',
+      teacherId: 0,
     },
   });
 
-  const onSubmit = async (values: courseSchemaType) => {
-    try {
-      await createCourse({
-        Name: values.Name,
-        TeacherID: values.TeacherID,
+  useEffect(() => {
+    if (isEdit && courseId) {
+      searchCourse(Number(courseId));
+    }
+  }, [isEdit, courseId, searchCourse]);
+
+  useEffect(() => {
+    if (isEdit && searchResult) {
+      form.reset({
+        name: searchResult.name,
+        teacherId: searchResult.teacherId,
       });
-      toast.success('Course created successfully');
+    }
+  }, [isEdit, form, searchResult]);
+
+  const onSubmit = async (values: courseSchemaType) => {
+    const payload = {
+      name: values.name,
+      teacherId: values.teacherId,
+    };
+    try {
+      if (isEdit && courseId) {
+        await updateCourse({
+          id: Number(courseId),
+          course: {
+            ...payload,
+          },
+        });
+        toast.success('Course updated successfully');
+      } else {
+        await createCourse({
+          ...payload,
+        });
+        toast.success('Course created successfully');
+      }
       onCloseDrawer?.();
     } catch (error) {
       console.error(error);
       toast.error(getErrorMessage(error));
+    }
+  };
+
+  const handleSelectChange = (
+    onChange: (value: number) => void,
+    value: number
+  ) => {
+    if (value !== 0) {
+      onChange(value);
     }
   };
 
@@ -66,7 +114,7 @@ const CourseForm = (props: CourseFormProps) => {
           <div className="space-y-6">
             <FormField
               control={form.control}
-              name="Name"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Course Name</FormLabel>
@@ -79,7 +127,7 @@ const CourseForm = (props: CourseFormProps) => {
             />
             <FormField
               control={form.control}
-              name="TeacherID"
+              name="teacherId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="font-normal!">Teacher Name</FormLabel>
@@ -89,8 +137,10 @@ const CourseForm = (props: CourseFormProps) => {
                     </p>
                   ) : (
                     <Select
-                      onValueChange={(value) => field.onChange(Number(value))}
-                      value={field.value ? String(field.value) : ''}
+                      onValueChange={(value) => {
+                        handleSelectChange(field.onChange, Number(value));
+                      }}
+                      value={String(field.value)}
                     >
                       <FormControl className="w-full">
                         <SelectTrigger>
@@ -115,11 +165,23 @@ const CourseForm = (props: CourseFormProps) => {
             />
           </div>
           <div className="sticky bottom-0 bg-white dark:bg-background pb-2">
-            <Button type="submit" className="w-full" disabled={isCreating}>
-              {isCreating && <Loader className="h-4 w-4 animate-spin" />}
-              {isCreating ? 'Creating...' : 'Create Course'}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isCreating || isUpdating}
+            >
+              {isCreating || isUpdating ? (
+                <Loader className="h-4 w-4 animate-spin" />
+              ) : null}
+
+              {isEdit ? 'Update' : 'Save'}
             </Button>
           </div>
+          {isLoading && (
+            <div className="absolute top-0 left-0 right-0 bottom-0 bg-white/70 dark:bg-background/70 z-50 flex justify-center">
+              <Loader className="h-8 w-8 animate-spin" />
+            </div>
+          )}
         </form>
       </Form>
     </div>

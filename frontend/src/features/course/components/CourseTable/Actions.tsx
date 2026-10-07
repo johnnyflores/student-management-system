@@ -22,6 +22,7 @@ import { ROUTES } from '@/routes/common/routePath';
 import useCourses from '@/features/course/hooks/useCourses';
 import ConfirmDialog from '@/components/Dialogs/ConfirmDialog';
 import { useQueryErrorToast } from '@/hooks/useQueryErrorToast';
+import useEditCourseDrawer from '@/features/course/hooks/useEditCourseDrawer';
 
 const Actions = ({ row }: { row: { original: { id: number } } }) => {
   const courseId = row.original.id;
@@ -32,6 +33,7 @@ const Actions = ({ row }: { row: { original: { id: number } } }) => {
   useQueryErrorToast(deleteError);
 
   const { onOpenDrawer: openAssignStudentDrawer } = useAssignStudentDrawer();
+  const { onOpenDrawer: openEditCourseDrawer } = useEditCourseDrawer();
 
   const handleDelete = async () => {
     try {
@@ -43,8 +45,6 @@ const Actions = ({ row }: { row: { original: { id: number } } }) => {
       console.error('Failed to delete course:', error);
     }
   };
-
-  //TODO: Implement edit functionality for the course
 
   return (
     <>
@@ -59,7 +59,7 @@ const Actions = ({ row }: { row: { original: { id: number } } }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
+          <DropdownMenuItem onClick={() => openEditCourseDrawer(courseId)}>
             <Pencil className="mr-1 h-4 w-4" />
             Edit
           </DropdownMenuItem>

@@ -88,7 +88,7 @@ const CourseStudentsTable = ({
           </div>
         )}
         {!isLoading && !isError && students.length > 0 && (
-          <div className="overflow-hidden rounded-md border min-h-45">
+          <div className="overflow-hidden rounded-md border">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>

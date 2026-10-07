@@ -22,6 +22,12 @@ export async function getCourses(
   return handleResponse<PaginatedCourses>(response, 'Failed to fetch courses');
 }
 
+export async function getCourse(id: number): Promise<Course> {
+  const response = await fetch(`${API_URL}/course?id=${id}`);
+
+  return handleResponse<Course>(response, 'Failed to fetch course');
+}
+
 export async function createCourse(
   course: CreateCourseRequest
 ): Promise<Course> {
