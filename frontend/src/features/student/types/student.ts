@@ -1,4 +1,5 @@
-import type { GradeLevel, StudentStatus } from '@/features/student/constants';
+import type { GradeLevel } from '@/constants/gradeLevels';
+import type { StudentStatus } from '@/features/student/constants';
 
 export interface Student {
   id: number;

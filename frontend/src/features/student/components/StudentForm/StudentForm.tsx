@@ -26,8 +26,9 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { toApiDate, toInputDate } from '@/utils/date';
-import { gradeLevels, studentStatuses } from '@/features/student/constants';
+import { studentStatuses } from '@/features/student/constants';
 import { getErrorMessage } from '@/utils/error';
+import { gradeLevels } from '@/constants/gradeLevels';
 
 const StudentForm = (props: {
   isEdit?: boolean;

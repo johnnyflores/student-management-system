@@ -5,7 +5,7 @@ import type { DataTableFeatures } from '@/components/DataTable/DataTableFeatures
 import Actions from '@/features/teacher/components/TeacherTable/Actions';
 import type { Teacher } from '@/features/teacher/types/teacher';
 import { formatDate } from '@/utils/formatDate';
-import AvatarName from '@/components/AvatarName';
+import Avatar from '@/components/Avatar';
 
 const columnHelper = createColumnHelper<DataTableFeatures, Teacher>();
 
@@ -18,7 +18,7 @@ export const columns = columnHelper.columns([
     id: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <AvatarName
+      <Avatar
         firstName={row.original.firstName}
         lastName={row.original.lastName}
       />
