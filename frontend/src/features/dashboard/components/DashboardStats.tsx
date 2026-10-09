@@ -1,4 +1,9 @@
-import { School, UserRound, BookOpen, Users } from 'lucide-react';
+import {
+  GraduationCap,
+  BookOpenText,
+  UserRound,
+  UserRoundGroup,
+} from 'lucide-react';
 import type { StatCard as StatCardType } from '@/features/dashboard/types/dashboard';
 import StatCard from '@/features/dashboard/components/StatCard';
 import useDashboardStats from '@/features/dashboard/hooks/useDashboardStats';
@@ -19,7 +24,7 @@ const DashboardStats = () => {
       title: 'Students',
       value: data?.students ?? 0,
       description: 'Total registered students',
-      icon: School,
+      icon: GraduationCap,
       color: 'blue',
     },
     {
@@ -33,14 +38,14 @@ const DashboardStats = () => {
       title: 'Courses',
       value: data?.courses ?? 0,
       description: 'Available courses',
-      icon: BookOpen,
+      icon: BookOpenText,
       color: 'orange',
     },
     {
       title: 'Enrollments',
       value: data?.enrollments ?? 0,
       description: 'Total course enrollments',
-      icon: Users,
+      icon: UserRoundGroup,
       color: 'purple',
     },
   ];
