@@ -159,22 +159,20 @@ const TeacherForm = (props: {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Speciality</FormLabel>
-                  <FormControl>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl className="w-full">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a speciality" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {teacherSpecialities.map((speciality) => (
-                          <SelectItem key={speciality} value={speciality}>
-                            {speciality}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl className="w-full">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a speciality" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {teacherSpecialities.map((speciality) => (
+                        <SelectItem key={speciality} value={speciality}>
+                          {speciality}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
