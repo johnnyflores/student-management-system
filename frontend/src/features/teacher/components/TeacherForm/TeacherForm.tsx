@@ -19,6 +19,14 @@ import {
   type TeacherSchemaType,
 } from '@/features/teacher/schemas/teacher.schema';
 import { getErrorMessage } from '@/utils/error';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { teacherSpecialities } from '@/features/teacher/constants';
 
 const TeacherForm = (props: {
   isEdit?: boolean;
@@ -43,7 +51,7 @@ const TeacherForm = (props: {
       firstName: '',
       lastName: '',
       email: '',
-      speciality: '',
+      speciality: teacherSpecialities[0],
     },
   });
 
@@ -152,7 +160,20 @@ const TeacherForm = (props: {
                 <FormItem>
                   <FormLabel>Speciality</FormLabel>
                   <FormControl>
-                    <Input placeholder="Speciality" {...field} />
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl className="w-full">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a speciality" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {teacherSpecialities.map((speciality) => (
+                          <SelectItem key={speciality} value={speciality}>
+                            {speciality}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

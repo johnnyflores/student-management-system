@@ -1,4 +1,5 @@
 import z from 'zod';
+import { teacherSpecialities } from '@/features/teacher/constants';
 
 export const teacherSchema = z.object({
   firstName: z.string().trim().min(1, 'First name is required'),
@@ -8,7 +9,9 @@ export const teacherSchema = z.object({
     .trim()
     .min(1, 'Email is required')
     .email('Invalid email address'),
-  speciality: z.string().trim().min(1, 'Speciality is required'),
+  speciality: z.enum(teacherSpecialities, {
+    message: 'Speciality is required',
+  }),
 });
 
 export type TeacherSchemaType = z.infer<typeof teacherSchema>;

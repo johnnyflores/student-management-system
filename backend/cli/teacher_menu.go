@@ -58,32 +58,38 @@ func addTeacher(service *services.TeacherService) {
 	teacher.FirstName = utils.ReadString("Enter teacher first name: ")
 	teacher.LastName = utils.ReadString("Enter teacher last name: ")
 	teacher.Email = utils.ReadString("Enter teacher email: ")
-	teacher.Speciality = utils.ReadString("Enter teacher speciality: ")
+	specialityInput := strings.TrimSpace(utils.ReadString("Enter teacher speciality: "))
 
-	if strings.TrimSpace(teacher.FirstName) == "" {
+	firstName := strings.TrimSpace(teacher.FirstName)
+	lastName := strings.TrimSpace(teacher.LastName)
+	email := strings.TrimSpace(teacher.Email)
+	teacher.Speciality = models.TeacherSpeciality(specialityInput)
+
+	if firstName == "" {
 		fmt.Println("Teacher first name cannot be empty")
 		return
 	}
 
-	if strings.TrimSpace(teacher.LastName) == "" {
+	if lastName == "" {
 		fmt.Println("Teacher last name cannot be empty")
 		return
 	}
 
-	if strings.TrimSpace(teacher.Email) == "" {
+	if email == "" {
 		fmt.Println("Teacher email cannot be empty")
 		return
 	}
 
-	if strings.TrimSpace(teacher.Speciality) == "" {
-		fmt.Println("Teacher speciality cannot be empty")
+	if !teacher.Speciality.IsValid() {
+		fmt.Println("Invalid or missing teacher speciality: ")
+		fmt.Println("Allowed specialities: Engineering, Programming, Mathematics, Chemistry, Psychology, Biology")
 		return
 	}
 
 	teacher.FirstName = strings.TrimSpace(teacher.FirstName)
 	teacher.LastName = strings.TrimSpace(teacher.LastName)
 	teacher.Email = strings.TrimSpace(teacher.Email)
-	teacher.Speciality = strings.TrimSpace(teacher.Speciality)
+	teacher.Speciality = models.TeacherSpeciality(strings.TrimSpace(string(teacher.Speciality)))
 
 	if service.AddTeacher(&teacher) {
 
@@ -170,22 +176,35 @@ func updateTeacher(service *services.TeacherService) {
 	email := utils.ReadString("")
 
 	fmt.Printf("Enter new speciality [%s]: ", teacher.Speciality)
-	speciality := utils.ReadString("")
+	specialityInput := utils.ReadString("")
 
-	if strings.TrimSpace(firstName) == "" {
+	firstName = strings.TrimSpace(firstName)
+	lastName = strings.TrimSpace(lastName)
+	email = strings.TrimSpace(email)
+	specialityInput = strings.TrimSpace(specialityInput)
+
+	if firstName == "" {
 		firstName = teacher.FirstName
 	}
 
-	if strings.TrimSpace(lastName) == "" {
+	if lastName == "" {
 		lastName = teacher.LastName
 	}
 
-	if strings.TrimSpace(email) == "" {
+	if email == "" {
 		email = teacher.Email
 	}
 
-	if strings.TrimSpace(speciality) == "" {
-		speciality = teacher.Speciality
+	speciality := teacher.Speciality
+
+	if specialityInput != "" {
+		speciality = models.TeacherSpeciality(specialityInput)
+
+		if !speciality.IsValid() {
+			fmt.Println("Invalid teacher speciality")
+			fmt.Println("Allowed specialities: Engineering, Programming, Mathematics, Chemistry, Psychology, Biology")
+			return
+		}
 	}
 
 	updatedTeacher := models.Teacher{
@@ -193,7 +212,7 @@ func updateTeacher(service *services.TeacherService) {
 		FirstName:  strings.TrimSpace(firstName),
 		LastName:   strings.TrimSpace(lastName),
 		Email:      strings.TrimSpace(email),
-		Speciality: strings.TrimSpace(speciality),
+		Speciality: speciality,
 	}
 
 	success := service.UpdateTeacher(id, updatedTeacher)

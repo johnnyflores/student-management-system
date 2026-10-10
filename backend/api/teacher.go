@@ -93,10 +93,10 @@ func (h *TeacherHandler) CreateTeacher(
 	r *http.Request,
 ) {
 	var request struct {
-		FirstName  string `json:"firstName"`
-		LastName   string `json:"lastName"`
-		Email      string `json:"email"`
-		Speciality string `json:"speciality"`
+		FirstName  string                   `json:"firstName"`
+		LastName   string                   `json:"lastName"`
+		Email      string                   `json:"email"`
+		Speciality models.TeacherSpeciality `json:"speciality"`
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&request)
@@ -136,10 +136,12 @@ func (h *TeacherHandler) CreateTeacher(
 		return
 	}
 
-	if strings.TrimSpace(request.Speciality) == "" {
+	request.Speciality = models.TeacherSpeciality(strings.TrimSpace(string(request.Speciality)))
+
+	if !request.Speciality.IsValid() {
 		http.Error(
 			w,
-			"speciality is required",
+			"invalid or missing speciality",
 			http.StatusBadRequest,
 		)
 		return
@@ -149,7 +151,7 @@ func (h *TeacherHandler) CreateTeacher(
 		FirstName:  strings.TrimSpace(request.FirstName),
 		LastName:   strings.TrimSpace(request.LastName),
 		Email:      strings.TrimSpace(request.Email),
-		Speciality: strings.TrimSpace(request.Speciality),
+		Speciality: request.Speciality,
 	}
 
 	success := h.Service.AddTeacher(&teacher)
@@ -194,10 +196,10 @@ func (h *TeacherHandler) UpdateTeacher(
 	}
 
 	var request struct {
-		FirstName  string `json:"firstName"`
-		LastName   string `json:"lastName"`
-		Email      string `json:"email"`
-		Speciality string `json:"speciality"`
+		FirstName  string                   `json:"firstName"`
+		LastName   string                   `json:"lastName"`
+		Email      string                   `json:"email"`
+		Speciality models.TeacherSpeciality `json:"speciality"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&request)
@@ -238,10 +240,12 @@ func (h *TeacherHandler) UpdateTeacher(
 		return
 	}
 
-	if strings.TrimSpace(request.Speciality) == "" {
+	request.Speciality = models.TeacherSpeciality(strings.TrimSpace(string(request.Speciality)))
+
+	if !request.Speciality.IsValid() {
 		http.Error(
 			w,
-			"speciality is required",
+			"invalid or missing speciality",
 			http.StatusBadRequest,
 		)
 		return
@@ -251,7 +255,7 @@ func (h *TeacherHandler) UpdateTeacher(
 		FirstName:  strings.TrimSpace(request.FirstName),
 		LastName:   strings.TrimSpace(request.LastName),
 		Email:      strings.TrimSpace(request.Email),
-		Speciality: strings.TrimSpace(request.Speciality),
+		Speciality: request.Speciality,
 	}
 
 	success := h.Service.UpdateTeacher(id, teacher)
