@@ -1,100 +1,149 @@
 # Student Management System
 
-A full-stack student and course management application built with Go on the backend and React + TypeScript on the frontend.
+A full-stack application for managing students, courses, and enrollments using Go on the backend and React + TypeScript on the frontend.
 
-The project now includes:
-
-- a REST API for students and courses
-- an interactive CLI for terminal-based management
-- a browser UI with dashboard, student, and course pages
+This project was built to practice full-stack development, REST API design, UI flows, and Docker-based local development in a realistic application structure.
 
 ## Features
 
 ### Backend
 
-- REST API built with `net/http`
-- Student management: create, list, search, update, and delete
-- Course management: create, list, inspect, assign students, and remove students
-- Pagination and search support for the students endpoint
-- JSON file persistence for students and courses
-- Layered design with handlers, services, and storage repositories
-- CORS enabled for the frontend
-- Unit tests for storage and service behavior
+- Go REST API with `net/http`
+- Student CRUD operations
+- Course and enrollment management
+- Search and pagination support
+- JSON-based persistence for core entities
+- Service and repository layering
+- CORS support for frontend integration
+- Go tests for services and storage logic
 
 ### Frontend
 
-- React, TypeScript, and Vite
-- TanStack Query for server state management
-- Dashboard, students, and courses pages
-- Student details route
-- Drawer-based create and edit flows
+- React + TypeScript + Vite
+- Modern dashboard and management pages
+- Student details and course management views
+- Search and filtering flows
+- Drawer-based create/edit interactions
 - Loading, empty, and error states
+- TanStack Query for API data handling
 
 ### CLI
 
-- Interactive terminal menu for student and course management
-- Uses the same service layer as the API
-- Persists changes back to the JSON data files
+- Terminal-based management interface
+- Uses the same business logic as the API layer
+- Allows CRUD operations without the browser UI
 
-## Requirements
+## Tech Stack
 
-- Go 1.25+
-- Node.js 18+
-- npm
+- Backend: Go 1.25+
+- Frontend: React, TypeScript, Vite
+- Styling: Tailwind / custom component styling
+- Data fetching: TanStack Query
+- Testing: Go tests, Vitest, Playwright
+- Containerization: Docker + Docker Compose
 
 ## Project Structure
 
 ```text
 student-management-system/
 ├── backend/
-│   ├── api/              # HTTP/API handlers
+│   ├── api/              # HTTP handlers and routes
 │   ├── cli/              # CLI commands
-│   ├── cmd/              # Application entry points
-│   ├── data/             # Seed/sample data
-│   ├── internal/         # Internal application packages
+│   ├── cmd/              # App entry points
+│   ├── data/             # Seed JSON data
+│   ├── internal/         # Internal app setup
 │   ├── models/           # Domain models
 │   ├── services/         # Business logic
-│   ├── storage/          # Data persistence
-│   ├── utils/            # Shared backend utilities
-│   └── go.mod
+│   ├── storage/          # Persistence layer
+│   ├── utils/            # Shared helpers
+│   ├── Dockerfile.dev    # Backend dev container
+│   ├── go.mod            # Go module definition
+│   └── ...
 │
-└── frontend/
-    ├── src/
-    │   ├── components/   # Shared and reusable UI components
-    │   ├── features/     # Feature-specific functionality
-    │   ├── hooks/        # Shared React hooks
-    │   ├── layout/       # Application layouts
-    │   ├── lib/          # Libraries and shared utilities
-    │   ├── pages/        # Route-level pages
-    │   ├── routes/       # Application routing configuration
-    │   └── test/         # Frontend testing utilities and setup
-    │
-    ├── e2e/              # End-to-end tests
-    ├── public/           # Static assets
-    └── package.json
+├── frontend/
+│   ├── src/
+|   │   ├── components/   # Shared and reusable UI components
+|   │   ├── features/     # Feature-specific functionality
+|   │   ├── hooks/        # Shared React hooks
+|   │   ├── layout/       # Application layouts
+|   │   ├── lib/          # Libraries and shared utilities
+|   │   ├── pages/        # Route-level pages
+|   │   ├── routes/       # Application routing configuration
+|   │   └── test/         # Frontend testing utilities and setup
+|   |
+│   ├── e2e/              # Playwright end-to-end tests
+│   ├── public/           # Static assets
+│   ├── Dockerfile.dev    # Frontend dev container
+│   ├── package.json      # Frontend scripts and dependencies
+│   └── ...
+│
+├── docker-compose.yml    # Multi-container local setup
+├── README.md
+└── .gitignore
 ```
 
-## Backend
+## Requirements
 
-Start the API:
+- Docker Desktop or Docker Engine + Compose
+- Go 1.25+ (for local non-Docker development)
+- Node.js 18+ and npm (for local non-Docker frontend development)
+
+## Quick Start with Docker Compose
+
+From the project root, run:
+
+```bash
+docker compose up --build
+```
+
+Or with the legacy CLI:
+
+```bash
+docker-compose up --build
+```
+
+This starts:
+
+- Backend API: `http://localhost:8080`
+- Frontend app: `http://localhost:5173`
+
+To stop the services:
+
+```bash
+docker compose down
+```
+
+## Local Development (without Docker)
+
+### Backend
 
 ```bash
 cd backend
 go run ./cmd/api
 ```
 
-The API listens on `http://localhost:8080`.
+The API will run on `http://localhost:8080`.
 
-Start the CLI:
+To start the CLI:
 
 ```bash
 cd backend
 go run ./cmd/cli
 ```
 
-### API Routes
+### Frontend
 
-Students:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The app is available at `http://localhost:5173`.
+
+## API Overview
+
+### Students
 
 - `GET /students?page=1&limit=10&name=alice` - list or search students
 - `POST /students` - create a student
@@ -102,18 +151,18 @@ Students:
 - `PUT /student?id=101` - update a student
 - `DELETE /student?id=101` - delete a student
 
-Courses:
+### Courses
 
-- `GET /courses` - list all courses
+- `GET /courses` - list courses
 - `POST /courses` - create a course
 - `GET /course?id=201` - get one course
 - `GET /courses/students?course_id=201` - view enrolled students
-- `POST /courses/students?course_id=201&student_id=101` - assign a student to a course
-- `DELETE /courses/students?course_id=201&student_id=101` - remove a student from a course
+- `POST /courses/students?course_id=201&student_id=101` - assign a student
+- `DELETE /courses/students?course_id=201&student_id=101` - remove a student
 
-### Example Requests
+### Example payloads
 
-Create a student:
+Create student:
 
 ```json
 {
@@ -123,7 +172,7 @@ Create a student:
 }
 ```
 
-Create a course:
+Create course:
 
 ```json
 {
@@ -132,49 +181,42 @@ Create a course:
 }
 ```
 
-## Frontend
+## Frontend Routes
 
-Install dependencies:
-
-```bash
-cd frontend
-npm install
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-The app is available at `http://localhost:5173`.
-
-Frontend routes:
-
-- `/` dashboard
-- `/students` students list
-- `/courses` courses list
-- `/students/:id` student details
+- `/` - dashboard
+- `/students` - student list
+- `/courses` - course list
+- `/students/:id` - student details
 
 ## Testing
 
-Backend tests:
+### Backend
 
 ```bash
 cd backend
 go test ./...
 ```
 
-Frontend tests:
+### Frontend
 
 ```bash
 cd frontend
 npm run test:run
 ```
 
-Frontend end-to-end tests:
+### E2E
 
 ```bash
 cd frontend
 npm run e2e
 ```
+
+## Troubleshooting
+
+- If ports `8080` or `5173` are already in use, stop the conflicting process or update the port mappings in `docker-compose.yml`.
+- If the frontend fails to start, rebuild the containers: `docker compose up --build`.
+- To inspect logs: `docker compose logs -f backend` and `docker compose logs -f frontend`.
+
+## License
+
+This project is shared as a personal portfolio project to demonstrate full-stack development skills, hands-on learning, and professional growth.
