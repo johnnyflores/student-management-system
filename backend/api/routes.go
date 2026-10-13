@@ -13,7 +13,7 @@ func RegisterRoutes(
 	dashboardHandler *DashboardHandler,
 ) {
 
-	mux.HandleFunc("/students", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/students", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -32,7 +32,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/student", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/student", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -54,7 +54,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/courses", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/courses", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -73,7 +73,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/course", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/course", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -95,7 +95,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/courses/students", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/courses/students", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -117,7 +117,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/teachers", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/teachers", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -136,7 +136,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/teacher", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/teacher", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 
@@ -158,7 +158,7 @@ func RegisterRoutes(
 		}
 	})
 
-	mux.HandleFunc("/dashboard/stats", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/dashboard/stats", func(w http.ResponseWriter, r *http.Request) {
 
 		switch r.Method {
 

@@ -143,22 +143,24 @@ The app is available at `http://localhost:5173`.
 
 ## API Overview
 
+All API endpoints use the /api prefix
+
 ### Students
 
-- `GET /students?page=1&limit=10&name=alice` - list or search students
-- `POST /students` - create a student
-- `GET /student?id=101` - get one student
-- `PUT /student?id=101` - update a student
-- `DELETE /student?id=101` - delete a student
+- `GET /api/students?page=1&limit=10&name=alice` - list or search students
+- `POST /api/students` - create a student
+- `GET /api/student?id=101` - get one student
+- `PUT /api/student?id=101` - update a student
+- `DELETE /api/student?id=101` - delete a student
 
 ### Courses
 
-- `GET /courses` - list courses
-- `POST /courses` - create a course
-- `GET /course?id=201` - get one course
-- `GET /courses/students?course_id=201` - view enrolled students
-- `POST /courses/students?course_id=201&student_id=101` - assign a student
-- `DELETE /courses/students?course_id=201&student_id=101` - remove a student
+- `GET /api/courses` - list courses
+- `POST /api/courses` - create a course
+- `GET /api/course?id=201` - get one course
+- `GET /api/courses/students?course_id=201` - view enrolled students
+- `POST /api/courses/students?course_id=201&student_id=101` - assign a student
+- `DELETE /api/courses/students?course_id=201&student_id=101` - remove a student
 
 ### Example payloads
 
